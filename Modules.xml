@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<Root>
+	<Module name="Descendent's Reticle HUD"
+		movie="descendent.hud.reticle/App.swf"
+		flags="GMF_DONT_UNLOAD"
+		depth_layer="Middle"
+		sub_depth="0"
+		variable="descendent_hud_reticle"
+		criteria="descendent_hud_reticle &amp;&amp; (guimode &amp; (GUIMODEFLAGS_INPLAY | GUIMODEFLAGS_ENABLEALLGUI))"
+		config_name="descendent_hud_reticle_archive"/>
+</Root>
