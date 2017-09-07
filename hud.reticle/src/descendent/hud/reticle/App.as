@@ -3,8 +3,8 @@ import flash.geom.Rectangle;
 
 import mx.utils.Delegate;
 
-import com.GameInterface.DistributedValue;
 import com.Utils.Archive;
+import GUIFramework.SFClipLoader;
 
 import descendent.hud.reticle.Hud;
 
@@ -16,8 +16,6 @@ class descendent.hud.reticle.App
 
 	private var _hud:Hud;
 
-	private var _setting_GUIResolutionScale:DistributedValue;
-
 	public function App(content:MovieClip)
 	{
 		this._content = content;
@@ -27,25 +25,20 @@ class descendent.hud.reticle.App
 		this._content.OnUnload = Delegate.create(this, this.content_onDiscard);
 		this._content.OnModuleActivated = Delegate.create(this, this.content_onPresent);
 		this._content.OnModuleDeactivated = Delegate.create(this, this.content_onDismiss);
-
-		this._setting_GUIResolutionScale = DistributedValue.Create("GUIResolutionScale");
 	}
 
 	private function prepare():Void
 	{
-		var stage:Rectangle = Stage["visibleRect"];
-
 		this._hud = new Hud();
-		this._hud.setTranslation(new Point(stage.width * 0.5, stage.height * 0.5));
 		this._hud.prepare(this._content);
 
 		this.rescale();
-		this._setting_GUIResolutionScale.SignalChanged.Connect(this.rescale, this);
+		SFClipLoader.SignalDisplayResolutionChanged.Connect(this.rescale, this);
 	}
 
 	private function discard():Void
 	{
-		this._setting_GUIResolutionScale.SignalChanged.Disconnect(this.rescale, this);
+		SFClipLoader.SignalDisplayResolutionChanged.Disconnect(this.rescale, this);
 
 		this._hud.discard();
 		this._hud = null;
@@ -63,7 +56,12 @@ class descendent.hud.reticle.App
 
 	private function rescale():Void
 	{
-		this._hud.setScale(this._setting_GUIResolutionScale.GetValue());
+		var display:Rectangle = Stage["visibleRect"];
+
+		this._hud.setTranslation(new Point(display.width * 0.5, display.height * 0.5));
+
+		var k:Number = (display.height / 1080.0) * 100;
+		this._hud.setScale(new Point(k, k));
 	}
 
 	private function content_onPrepare():Void

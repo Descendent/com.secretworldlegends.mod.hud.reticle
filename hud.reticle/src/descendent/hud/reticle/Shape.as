@@ -18,7 +18,7 @@ class descendent.hud.reticle.Shape implements IShape
 	{
 		this._translation = new Point(0.0, 0.0);
 		this._orientation = 0.0;
-		this._scale = new Point(1.0, 1.0);
+		this._scale = new Point(100, 100);
 		this._alpha = 100;
 	}
 
