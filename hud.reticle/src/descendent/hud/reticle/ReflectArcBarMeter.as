@@ -30,7 +30,11 @@ class descendent.hud.reticle.ReflectArcBarMeter extends Shape implements IMeter
 
 	private var _notch_shaft:MovieClip;
 
+	private var _meter_a:MovieClip;
+
 	private var _meter_stencil_a:MovieClip;
+
+	private var _meter_b:MovieClip;
 
 	private var _meter_stencil_b:MovieClip;
 
@@ -41,8 +45,6 @@ class descendent.hud.reticle.ReflectArcBarMeter extends Shape implements IMeter
 	private var _notch_meter_b:MovieClip;
 
 	private var _notch_meter_stencil_b:MovieClip;
-
-	private var _pulse:MovieClip;
 
 	private var _tween_pulse:TweenMax;
 
@@ -192,6 +194,7 @@ class descendent.hud.reticle.ReflectArcBarMeter extends Shape implements IMeter
 
 		o.setMask(m);
 
+		this._meter_a = o;
 		this._meter_stencil_a = m;
 	}
 
@@ -213,6 +216,7 @@ class descendent.hud.reticle.ReflectArcBarMeter extends Shape implements IMeter
 
 		o.setMask(m);
 
+		this._meter_b = o;
 		this._meter_stencil_b = m;
 	}
 
@@ -278,22 +282,18 @@ class descendent.hud.reticle.ReflectArcBarMeter extends Shape implements IMeter
 
 	private function prepare_pulse():Void
 	{
-		var o:MovieClip = this.content.createEmptyMovieClip("", this.content.getNextHighestDepth());
+		var o:Array = (this._shaft != null)
+			? [this._shaft, this._meter_a, this._meter_b]
+			: [this._meter_a, this._meter_b];
 
-		o.lineStyle();
-		o.beginFill(0xFFFFFF, 100);
-		this._shape.traceShape(o, new Point(0.0, 0.0));
-		o.endFill();
-
-		o.blendMode = "screen";
-		o._visible = false;
-
-		this._pulse = o;
-
-		this._tween_pulse = TweenMax.fromTo(this._pulse, 0.3, {
-			_alpha: 0
+		this._tween_pulse = TweenMax.fromTo(o, 0.3, {
+			colorTransform: {
+				brightness: 1.0
+			}
 		}, {
-			_alpha: 100,
+			colorTransform: {
+				brightness: 1.5
+			},
 			ease: Sine.easeInOut,
 			repeat: -1,
 			yoyo: true,
@@ -452,7 +452,6 @@ class descendent.hud.reticle.ReflectArcBarMeter extends Shape implements IMeter
 			return;
 
 		this._tween_pulse.play(0.0);
-		this._pulse._visible = true;
 	}
 
 	public function pulseEnd():Void
@@ -463,7 +462,7 @@ class descendent.hud.reticle.ReflectArcBarMeter extends Shape implements IMeter
 		if (!this._tween_pulse.isActive())
 			return;
 
+		this._tween_pulse.restart();
 		this._tween_pulse.kill();
-		this._pulse._visible = false;
 	}
 }
