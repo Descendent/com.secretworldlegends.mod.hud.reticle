@@ -133,9 +133,9 @@ class descendent.hud.reticle.special.ElementalismGauge extends Gauge
 	private function refresh_pulse():Void
 	{
 		if (this.pulse())
-			this._meter_b.pulseBegin();
+			this._meter_a.pulseBegin();
 		else
-			this._meter_b.pulseEnd();
+			this._meter_a.pulseEnd();
 	}
 
 	private function pulse():Boolean
