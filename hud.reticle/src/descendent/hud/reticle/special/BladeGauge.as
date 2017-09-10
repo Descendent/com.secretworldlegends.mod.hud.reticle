@@ -85,7 +85,7 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 			: angle_m + t;
 
 		this._meter_a = new DefaultArcBarMeter(this._r, this._angle_a, angle_b, this._thickness,
-			new Color(0x30AADF, 25), new Color(0x30AADF, 100), new Color(0xFFFFFF, 100), BladeGauge.CHI_MAX, false);
+			new Color(0x7688ED, 25), new Color(0x7688ED, 100), new Color(0xFFFFFF, 100), BladeGauge.CHI_MAX, false);
 		this._meter_a.prepare(this.content);
 	}
 
@@ -100,7 +100,7 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 			: angle_m - t;
 
 		this._meter_b = new DefaultArcBarMeter(this._r, angle_a, this._angle_b, this._thickness,
-			new Color(0x30AADF, 25), new Color(0x30AADF, 100), new Color(0xFFFFFF, 100), BladeGauge.SPIRITBLADE_MAX, false);
+			new Color(0x7688ED, 25), new Color(0x7688ED, 100), new Color(0xFFFFFF, 100), BladeGauge.SPIRITBLADE_MAX, false);
 		this._meter_b.setNotch(notch);
 		this._meter_b.prepare(this.content);
 	}

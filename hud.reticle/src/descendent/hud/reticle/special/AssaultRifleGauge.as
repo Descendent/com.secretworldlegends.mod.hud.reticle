@@ -90,7 +90,7 @@ class descendent.hud.reticle.special.AssaultRifleGauge extends Gauge
 	private function prepare_meter():Void
 	{
 		this._meter = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0x9EE8F0, 25), new Color(0x9EE8F0, 100), new Color(0xFFFFFF, 100), AssaultRifleGauge.FUSE_MAX, false);
+			new Color(0x10B9D6, 25), new Color(0x10B9D6, 100), new Color(0xFFFFFF, 100), AssaultRifleGauge.FUSE_MAX, false);
 		this._meter.prepare(this.content);
 
 		this.refresh_maximum();

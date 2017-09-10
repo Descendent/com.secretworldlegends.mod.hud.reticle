@@ -73,7 +73,7 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 	private function prepare_meter():Void
 	{
 		this._meter = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0xCD91ED, 25), new Color(0xCD91ED, 100), new Color(0xFFFFFF, 100), ChaosGauge.PARADOX_MAX, false);
+			new Color(0xD188F7, 25), new Color(0xD188F7, 100), new Color(0xFFFFFF, 100), ChaosGauge.PARADOX_MAX, false);
 		this._meter.prepare(this.content);
 	}
 
