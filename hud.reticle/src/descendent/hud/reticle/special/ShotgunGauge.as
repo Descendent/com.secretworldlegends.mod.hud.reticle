@@ -138,7 +138,7 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		var notch:/*Number*/Array = [2, 4];
 
 		this._meter_x = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0xCCCCCC, 25), new Color(0xCCCCCC, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
+			new Color(0xD7D7D7, 25), new Color(0xD7D7D7, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_x.setNotch(notch);
 		this._meter_x.prepare(this.content);
 	}
