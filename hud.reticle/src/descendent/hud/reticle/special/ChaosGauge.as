@@ -59,7 +59,6 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 		this.prepare_meter();
 
 		this.refresh_meter();
-		this.refresh_pulse();
 
 		this._character.SignalInvisibleBuffAdded.Connect(this.character_onTag, this);
 		this._character.SignalInvisibleBuffUpdated.Connect(this.character_onTag, this);
@@ -75,6 +74,8 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 		this._meter = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0xD188F7, 25), new Color(0xD188F7, 100), new Color(0xFFFFFF, 100), ChaosGauge.PARADOX_MAX, false);
 		this._meter.prepare(this.content);
+
+		this.refresh_notch();
 	}
 
 	private function refresh_meter():Void
@@ -93,43 +94,26 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 
 		TweenMax.to(this._meter, 0.3, {
 			setMeter: value,
-			ease: Linear.easeNone,
-			onComplete: this.meter_onMeter,
-			onCompleteParams: [value],
-			onCompleteScope: this
+			ease: Linear.easeNone
 		});
 	}
 
-	private function refresh_pulse():Void
+	private function refresh_notch():Void
 	{
-		if (this.pulse())
-			this._meter.pulseBegin();
-		else
-			this._meter.pulseEnd();
+		if (this._meter == null)
+			return;
+
+		this._meter.setNotch(this.loadout_duality()
+			? [ChaosGauge.PARADOX_MAX - 2]
+			: null);
 	}
 
-	private function pulse():Boolean
-	{
-		if (this.pulse_duality())
-			return true;
-
-		return false;
-	}
-
-	private function pulse_duality():Boolean
+	private function loadout_duality():Boolean
 	{
 		if (!SpellBase.IsPassiveEquipped(ChaosGauge.ABILITY_DUALITY))
 			return false;
 
 		if (!Shortcut.IsSpellEquipped(ChaosGauge.ABILITY_TUMULTUOUSWHISPER))
-			return false;
-
-		var value:Number = this._meter.getMeter();
-
-		if (value >= ChaosGauge.PARADOX_MAX)
-			return false;
-
-		if (value <= ChaosGauge.PARADOX_MAX - 3)
 			return false;
 
 		return true;
@@ -196,16 +180,11 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 
 	private function loadout_onPlant(which:Number, name:String, icon:String, item:Number, palette:Number):Void
 	{
-		this.refresh_pulse();
+		this.refresh_notch();
 	}
 
 	private function loadout_onPluck(which:Number):Void
 	{
-		this.refresh_pulse();
-	}
-
-	private function meter_onMeter(value:Number):Void
-	{
-		this.refresh_pulse();
+		this.refresh_notch();
 	}
 }
