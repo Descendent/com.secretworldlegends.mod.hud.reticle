@@ -29,7 +29,8 @@ class descendent.hud.reticle.ArcBar
 		p = Arc.getPoint(c, this._r_outer, this._angle_b);
 		o.lineTo(p.x, p.y);
 
-		Arc.traceArc(o, c, this._r_outer, this._angle_b, this._angle_a);
+		Arc.traceArc(o, c, this._r_outer, this._angle_b, this._angle_a,
+			true);
 
 		p = Arc.getPoint(c, this._r_inner, this._angle_a);
 		o.lineTo(p.x, p.y);

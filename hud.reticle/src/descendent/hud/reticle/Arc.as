@@ -19,7 +19,8 @@ class descendent.hud.reticle.Arc
 		return Arc.traceArc_point(c, r, angle);
 	}
 
-	public static function traceArc(o:MovieClip, c:Point, r:Point, angle_a:Number, angle_b:Number):Void
+	public static function traceArc(o:MovieClip, c:Point, r:Point, angle_a:Number, angle_b:Number,
+		concatenate:Boolean):Void
 	{
 		// http://www.spaceroots.org/documents/ellipse/elliptical-arc.pdf
 
@@ -29,9 +30,10 @@ class descendent.hud.reticle.Arc
 		var point_a:Point = Arc.traceArc_point(c, r, angle_a);
 		var point_b:Point = Arc.traceArc_point(c, r, angle_b);
 
-		o.moveTo(point_a.x, point_a.y);
+		if (!concatenate)
+			o.moveTo(point_a.x, point_a.y);
+
 		Arc.traceArc_clamp(o, c, r, angle_a, angle_b);
-//		o.moveTo(point_b.x, point_b.y);
 	}
 
 	private static function traceArc_clamp(o:MovieClip, c:Point, r:Point, angle_a:Number, angle_b:Number):Void
