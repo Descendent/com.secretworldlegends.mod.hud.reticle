@@ -3,6 +3,7 @@ import flash.geom.Rectangle;
 
 import mx.utils.Delegate;
 
+import com.GameInterface.DistributedValue;
 import com.Utils.Archive;
 import GUIFramework.SFClipLoader;
 
@@ -13,11 +14,15 @@ import descendent.hud.reticle.Hud;
 
 class descendent.hud.reticle.App
 {
+	private static var OPT_NAMESPACE:String = "descendent_hud_reticle_";
+
+	private static var SCALE_H:Number = 1080.0;
+
 	private var _content:MovieClip;
 
-	private var _archive:Archive;
-
 	private var _hud:Hud;
+
+	private var _opt_scale:DistributedValue;
 
 	public function App(content:MovieClip)
 	{
@@ -37,13 +42,20 @@ class descendent.hud.reticle.App
 		this._hud = new Hud();
 		this._hud.prepare(this._content);
 
-		this.rescale();
+		this._opt_scale = DistributedValue.Create(App.OPT_NAMESPACE + "scale");
+		this._opt_scale.SignalChanged.Connect(this.rescale, this);
+
 		SFClipLoader.SignalDisplayResolutionChanged.Connect(this.rescale, this);
+
+		this.rescale();
 	}
 
 	private function discard():Void
 	{
 		SFClipLoader.SignalDisplayResolutionChanged.Disconnect(this.rescale, this);
+
+		this._opt_scale.SignalChanged.Disconnect(this.rescale, this);
+		this._opt_scale = null;
 
 		this._hud.discard();
 		this._hud = null;
@@ -65,7 +77,7 @@ class descendent.hud.reticle.App
 
 		this._hud.setTranslation(new Point(display.width * 0.5, display.height * 0.5));
 
-		var k:Number = (display.height / 1080.0) * 100;
+		var k:Number = (display.height / App.SCALE_H) * (this._opt_scale.GetValue() / 100.0) * 100;
 		this._hud.setScale(new Point(k, k));
 	}
 
@@ -81,7 +93,7 @@ class descendent.hud.reticle.App
 
 	private function content_onPresent(archive:Archive):Void
 	{
-		this._archive = archive;
+		this._opt_scale.SetValue(archive.FindEntry("scale", 100));
 
 		this.present();
 	}
@@ -90,6 +102,9 @@ class descendent.hud.reticle.App
 	{
 		this.dismiss();
 
-		return this._archive;
+		var archive:Archive = new Archive();
+		archive.AddEntry("scale", this._opt_scale.GetValue());
+
+		return archive;
 	}
 }

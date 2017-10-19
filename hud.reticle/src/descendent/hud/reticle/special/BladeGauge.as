@@ -1,5 +1,6 @@
 import com.GameInterface.Game.BuffData;
 import com.GameInterface.Game.Character;
+import com.GameInterface.Game.Shortcut;
 
 import com.greensock.TweenMax;
 import com.greensock.easing.Linear;
@@ -17,6 +18,8 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 	private static var TAG_SPIRITBLADE:Number = 7631134;
 
 	private static var TAG_CHIOVERFLOW:Number = 9255856;
+
+	private static var ABILITY_SUPREMEHARMONY:Number = 7080586;
 
 	private static var CHI_MAX:Number = 5;
 
@@ -68,12 +71,16 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 		this._character.SignalInvisibleBuffUpdated.Connect(this.character_onTag, this);
 		this._character.SignalBuffRemoved.Connect(this.character_onTagEnd, this);
 		this._character.SignalBuffAdded.Connect(this.character_onTagBegin, this);
+		Shortcut.SignalShortcutAdded.Connect(this.loadout_onPlant, this);
+		Shortcut.SignalShortcutRemoved.Connect(this.loadout_onPluck, this);
 	}
 
 	private function prepare_meter():Void
 	{
 		this.prepare_meter_a();
 		this.prepare_meter_b();
+
+		this.refresh_notch();
 	}
 
 	private function prepare_meter_a():Void
@@ -167,6 +174,16 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 		});
 	}
 
+	private function refresh_notch():Void
+	{
+		if (this._meter_a == null)
+			return;
+
+		this._meter_a.setNotch(Shortcut.IsSpellEquipped(BladeGauge.ABILITY_SUPREMEHARMONY)
+			? [BladeGauge.CHI_MAX - 2]
+			: null);
+	}
+
 	private function refresh_pulse():Void
 	{
 		this.refresh_pulse_a();
@@ -215,6 +232,8 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 		this._character.SignalInvisibleBuffUpdated.Disconnect(this.character_onTag, this);
 		this._character.SignalBuffRemoved.Disconnect(this.character_onTagEnd, this);
 		this._character.SignalBuffAdded.Disconnect(this.character_onTagBegin, this);
+		Shortcut.SignalShortcutAdded.Disconnect(this.loadout_onPlant, this);
+		Shortcut.SignalShortcutRemoved.Disconnect(this.loadout_onPluck, this);
 
 		this.discard_bloom();
 		this.discard_meter();
@@ -298,6 +317,16 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 			this.refresh_meter_a();
 		else if (which == BladeGauge.TAG_SPIRITBLADE)
 			this.refresh_meter_b();
+	}
+
+	private function loadout_onPlant(which:Number, name:String, icon:String, item:Number, palette:Number):Void
+	{
+		this.refresh_notch();
+	}
+
+	private function loadout_onPluck(which:Number):Void
+	{
+		this.refresh_notch();
 	}
 
 	private function meter_a_onMeter(value:Number):Void

@@ -2,7 +2,7 @@
 <Root>
 	<Module name="Descendent's Reticle HUD"
 		movie="descendent.hud.reticle/App.swf"
-		flags="GMF_DONT_UNLOAD"
+		flags="GMF_CFG_STORE_USER_CONFIG | GMF_DONT_UNLOAD"
 		depth_layer="Middle"
 		sub_depth="0"
 		variable="descendent_hud_reticle"
