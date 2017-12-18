@@ -81,8 +81,8 @@ class descendent.hud.reticle.special.ElementalismGauge extends Gauge
 	{
 		var notch:/*Number*/Array = [
 			25, 50, 75,
-			ElementalismGauge.HEAT_MAX - 18,
-			ElementalismGauge.HEAT_MAX - 12,
+			ElementalismGauge.HEAT_MAX - 21,
+			ElementalismGauge.HEAT_MAX - 14,
 			ElementalismGauge.HEAT_MAX - 6];
 
 		this._meter_a = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
@@ -95,8 +95,8 @@ class descendent.hud.reticle.special.ElementalismGauge extends Gauge
 	{
 		var notch:/*Number*/Array = [
 			25, 50, 75,
-			ElementalismGauge.HEAT_MAX - 18,
-			ElementalismGauge.HEAT_MAX - 12,
+			ElementalismGauge.HEAT_MAX - 21,
+			ElementalismGauge.HEAT_MAX - 14,
 			ElementalismGauge.HEAT_MAX - 6];
 
 		this._meter_b = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
