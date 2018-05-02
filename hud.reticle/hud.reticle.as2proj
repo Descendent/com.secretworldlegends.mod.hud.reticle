@@ -42,7 +42,7 @@
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
-    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
+    <asset path="res\Renner-Medium.ttf" update="..\submodules\com.indestructibletype.renner\Finished TrueType\Renner-Medium.ttf" />
   </library>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>

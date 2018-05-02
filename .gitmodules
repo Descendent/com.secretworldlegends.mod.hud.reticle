@@ -4,3 +4,6 @@
 [submodule "submodules/greensock-as2"]
 	path = submodules/greensock-as2
 	url = https://github.com/Descendent/greensock-as2.git
+[submodule "submodules/com.indestructibletype.renner"]
+	path = submodules/com.indestructibletype.renner
+	url = https://github.com/indestructible-type/Renner.git
