@@ -1,7 +1,11 @@
 import flash.geom.Point;
 
+import com.Utils.GlobalSignal;
+import com.Utils.ID32;
+
 import com.GameInterface.DistributedValue;
 import com.GameInterface.Game.Character;
+import com.GameInterface.Game.Dynel;
 
 import com.greensock.TweenMax;
 
@@ -9,10 +13,13 @@ import descendent.hud.reticle.Deg;
 import descendent.hud.reticle.PowerGauge;
 import descendent.hud.reticle.Shape;
 import descendent.hud.reticle.SpecialGauge;
+import descendent.hud.reticle.VitalGauge;
 
 class descendent.hud.reticle.Hud extends Shape
 {
 	private static var GUIMODEFLAGS_MOUSEMODEOVERLAY:Number = 1 << 10;
+
+	private static var NPCFLAGS_HIDENAMETAG:Number = 1 << 2;
 
 	private static var STATE_SLEEP:Number = 0x0;
 
@@ -28,6 +35,10 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private var _special_2:SpecialGauge;
 
+	private var _our_vital:VitalGauge;
+
+	private var _their_vital:VitalGauge;
+
 	private var _character:Character;
 
 	private var _awakeness:Number;
@@ -42,7 +53,6 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		super();
 
-		this._character = Character.GetClientCharacter();
 		this._awakeness = 0;
 //		this._state = Hud.STATE_SLEEP;
 	}
@@ -51,9 +61,16 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		super.prepare(o);
 
+		this._character = Character.GetClientCharacter();
+
 		this.prepare_power();
 		this.prepare_special();
+		this.prepare_our();
+		this.prepare_their();
 
+		GlobalSignal.SignalCrosshairTargetUpdated.Connect(this.character_onReticle, this);
+
+//		this._character.SignalOffensiveTargetChanged.Connect(this.character_onReticle, this);
 		this._character.SignalToggleCombat.Connect(this.character_onAggro, this);
 		this._character.SignalCharacterDied.Connect(this.character_onDeath, this);
 
@@ -61,6 +78,8 @@ class descendent.hud.reticle.Hud extends Shape
 		this._opt_guimode.SignalChanged.Connect(this.refresh_awake, this);
 
 		this.refresh_awake();
+
+		this._our_vital.setSubject(this._character);
 	}
 
 	private function prepare_power():Void
@@ -111,14 +130,45 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_2.prepare(this.content);
 	}
 
+	private function prepare_our():Void
+	{
+		this.prepare_our_vital();
+	}
+
+	private function prepare_our_vital():Void
+	{
+		this._our_vital = new VitalGauge(106.0, Deg.getRad(52.5), Deg.getRad(127.5), 12.0);
+		this._our_vital.onRouse.Connect(this.gauge_onRouse, this);
+		this._our_vital.onSleep.Connect(this.gauge_onSleep, this);
+		this._our_vital.prepare(this.content);
+	}
+
+	private function prepare_their():Void
+	{
+		this.prepare_their_vital();
+	}
+
+	private function prepare_their_vital():Void
+	{
+		this._their_vital = new VitalGauge(106.0, Deg.getRad(232.5), Deg.getRad(307.5), 12.0);
+		this._their_vital.prepare(this.content);
+	}
+
 	public function discard():Void
 	{
 		this._opt_guimode.SignalChanged.Disconnect(this.refresh_awake, this);
 		this._opt_guimode = null;
 
+//		this._character.SignalOffensiveTargetChanged.Disconnect(this.character_onReticle, this);
 		this._character.SignalToggleCombat.Disconnect(this.character_onAggro, this);
 		this._character.SignalCharacterDied.Disconnect(this.character_onDeath, this);
 
+		GlobalSignal.SignalCrosshairTargetUpdated.Disconnect(this.character_onReticle, this);
+
+		TweenMax.killTweensOf(this);
+
+		this.discard_their();
+		this.discard_our();
 		this.discard_special();
 		this.discard_power();
 
@@ -177,6 +227,30 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_2 = null;
 	}
 
+	private function discard_our():Void
+	{
+		this.discard_our_vital();
+	}
+
+	private function discard_our_vital():Void
+	{
+		this._our_vital.discard();
+		this._our_vital.onRouse.Disconnect(this.gauge_onRouse, this);
+		this._our_vital.onSleep.Disconnect(this.gauge_onSleep, this);
+		this._our_vital = null;
+	}
+
+	private function discard_their():Void
+	{
+		this.discard_their_vital();
+	}
+
+	private function discard_their_vital():Void
+	{
+		this._their_vital.discard();
+		this._their_vital = null;
+	}
+
 	private function refresh_awake():Void
 	{
 		var mousemode:Boolean = Boolean(this._opt_guimode.GetValue() & Hud.GUIMODEFLAGS_MOUSEMODEOVERLAY);
@@ -208,8 +282,8 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._state = Hud.STATE_AWAKE;
 
-		TweenMax.to([this._power_1, this._power_2, this._special_1, this._special_2], 0.0, {
-			setAlpha: 100,
+		TweenMax.to(this, 0.0, {
+			setGaugeAlpha: 100,
 			overwrite: "allOnStart",
 			onStart: this.gauge_present,
 			onStartScope: this
@@ -223,8 +297,8 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._state = Hud.STATE_ROUSE;
 
-		TweenMax.to([this._power_1, this._power_2, this._special_1, this._special_2], 0.0, {
-			setAlpha: 50,
+		TweenMax.to(this, 0.0, {
+			setGaugeAlpha: 50,
 			overwrite: "allOnStart",
 			onStart: this.gauge_present,
 			onStartScope: this
@@ -251,13 +325,28 @@ class descendent.hud.reticle.Hud extends Shape
 			delay = 0.3;
 		}
 
-		TweenMax.to([this._power_1, this._power_2, this._special_1, this._special_2], timer, {
-			setAlpha: 0,
+		TweenMax.to(this, timer, {
+			setGaugeAlpha: 0,
 			delay: delay,
 			overwrite: "allOnStart",
 			onComplete: this.gauge_dismiss,
 			onCompleteScope: this
 		});
+	}
+
+	private function getGaugeAlpha():Number
+	{
+		return this._our_vital.getAlpha();
+	}
+
+	private function setGaugeAlpha(value:Number):Void
+	{
+		this._power_1.setAlpha(value);
+		this._power_2.setAlpha(value);
+		this._special_1.setAlpha(value);
+		this._special_2.setAlpha(value);
+		this._our_vital.setAlpha(value);
+		this._their_vital.setAlpha(value);
 	}
 
 	private function gauge_present():Void
@@ -266,6 +355,8 @@ class descendent.hud.reticle.Hud extends Shape
 		this._power_2.present();
 		this._special_1.present();
 		this._special_2.present();
+		this._our_vital.present();
+		this._their_vital.present();
 	}
 
 	private function gauge_dismiss():Void
@@ -274,6 +365,22 @@ class descendent.hud.reticle.Hud extends Shape
 		this._power_2.dismiss();
 		this._special_1.dismiss();
 		this._special_2.dismiss();
+		this._our_vital.dismiss();
+		this._their_vital.dismiss();
+	}
+
+	private function character_onReticle(which:ID32):Void
+	{
+		var dynel:Dynel = Dynel.GetDynel(which);
+		var character:Character = Character.GetCharacter(which);
+
+		if ((character.GetStat(_global.Enums.Stat.e_NPCFlags, 2) & Hud.NPCFLAGS_HIDENAMETAG) != 0)
+		{
+			dynel = null;
+			character = null;
+		}
+
+		this._their_vital.setSubject(dynel);
 	}
 
 	private function character_onAggro(aggro:Boolean):Void
