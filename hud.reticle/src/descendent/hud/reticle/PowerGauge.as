@@ -3,7 +3,6 @@ import com.GameInterface.Inventory;
 import com.GameInterface.InventoryItem;
 import com.GameInterface.Resource;
 import com.Utils.ID32;
-import com.Utils.Signal;
 
 import com.greensock.TweenMax;
 import com.greensock.easing.Linear;
