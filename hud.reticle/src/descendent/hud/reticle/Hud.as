@@ -73,20 +73,18 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this._power_1 = new PowerGauge(96.0, Deg.getRad(142.5), Deg.getRad(217.5), 6.0,
 			_global.Enums.ItemEquipLocation.e_Wear_First_WeaponSlot);
-		this._power_1.prepare(this.content);
-
 		this._power_1.onRouse.Connect(this.gauge_onRouse, this);
 		this._power_1.onSleep.Connect(this.gauge_onSleep, this);
+		this._power_1.prepare(this.content);
 	}
 
 	private function prepare_power_2():Void
 	{
 		this._power_2 = new PowerGauge(96.0, Deg.getRad(37.5), Deg.getRad(-37.5), 6.0,
 			_global.Enums.ItemEquipLocation.e_Wear_Second_WeaponSlot);
-		this._power_2.prepare(this.content);
-
 		this._power_2.onRouse.Connect(this.gauge_onRouse, this);
 		this._power_2.onSleep.Connect(this.gauge_onSleep, this);
+		this._power_2.prepare(this.content);
 	}
 
 	private function prepare_special():Void
@@ -99,20 +97,18 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this._special_1 = new SpecialGauge(106.0, Deg.getRad(142.5), Deg.getRad(217.5), 12.0,
 			_global.Enums.ItemEquipLocation.e_Wear_First_WeaponSlot);
-		this._special_1.prepare(this.content);
-
 		this._special_1.onRouse.Connect(this.gauge_onRouse, this);
 		this._special_1.onSleep.Connect(this.gauge_onSleep, this);
+		this._special_1.prepare(this.content);
 	}
 
 	private function prepare_special_2():Void
 	{
 		this._special_2 = new SpecialGauge(106.0, Deg.getRad(37.5), Deg.getRad(-37.5), 12.0,
 			_global.Enums.ItemEquipLocation.e_Wear_Second_WeaponSlot);
-		this._special_2.prepare(this.content);
-
 		this._special_2.onRouse.Connect(this.gauge_onRouse, this);
 		this._special_2.onSleep.Connect(this.gauge_onSleep, this);
+		this._special_2.prepare(this.content);
 	}
 
 	public function discard():Void
@@ -137,23 +133,21 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private function discard_power_1():Void
 	{
-		this._power_1.onRouse.Disconnect(this.gauge_onRouse, this);
-		this._power_1.onSleep.Disconnect(this.gauge_onSleep, this);
-
 		TweenMax.killTweensOf(this._power_1);
 
 		this._power_1.discard();
+		this._power_1.onRouse.Disconnect(this.gauge_onRouse, this);
+		this._power_1.onSleep.Disconnect(this.gauge_onSleep, this);
 		this._power_1 = null;
 	}
 
 	private function discard_power_2():Void
 	{
-		this._power_2.onRouse.Disconnect(this.gauge_onRouse, this);
-		this._power_2.onSleep.Disconnect(this.gauge_onSleep, this);
-
 		TweenMax.killTweensOf(this._power_2);
 
 		this._power_2.discard();
+		this._power_2.onRouse.Disconnect(this.gauge_onRouse, this);
+		this._power_2.onSleep.Disconnect(this.gauge_onSleep, this);
 		this._power_2 = null;
 	}
 
@@ -165,23 +159,21 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private function discard_special_1():Void
 	{
-		this._special_1.onRouse.Disconnect(this.gauge_onRouse, this);
-		this._special_1.onSleep.Disconnect(this.gauge_onSleep, this);
-
 		TweenMax.killTweensOf(this._special_1);
 
 		this._special_1.discard();
+		this._special_1.onRouse.Disconnect(this.gauge_onRouse, this);
+		this._special_1.onSleep.Disconnect(this.gauge_onSleep, this);
 		this._special_1 = null;
 	}
 
 	private function discard_special_2():Void
 	{
-		this._special_2.onRouse.Disconnect(this.gauge_onRouse, this);
-		this._special_2.onSleep.Disconnect(this.gauge_onSleep, this);
-
 		TweenMax.killTweensOf(this._special_2);
 
 		this._special_2.discard();
+		this._special_2.onRouse.Disconnect(this.gauge_onRouse, this);
+		this._special_2.onSleep.Disconnect(this.gauge_onSleep, this);
 		this._special_2 = null;
 	}
 

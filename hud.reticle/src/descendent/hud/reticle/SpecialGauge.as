@@ -119,10 +119,9 @@ class descendent.hud.reticle.SpecialGauge extends Gauge
 	private function present_gauge_process(gauge:IGauge)
 	{
 		this._gauge = gauge;
-		this._gauge.prepare(this.content);
-
 		this._gauge.onRouse.Connect(this.rouse, this);
 		this._gauge.onSleep.Connect(this.sleep, this);
+		this._gauge.prepare(this.content);
 	}
 
 	public function discard():Void
@@ -142,10 +141,9 @@ class descendent.hud.reticle.SpecialGauge extends Gauge
 		if (this._gauge == null)
 			return;
 
+		this._gauge.discard();
 		this._gauge.onRouse.Disconnect(this.rouse, this);
 		this._gauge.onSleep.Disconnect(this.sleep, this);
-
-		this._gauge.discard();
 		this._gauge = null;
 
 		this.sleep();
