@@ -13,6 +13,7 @@ import descendent.hud.reticle.Deg;
 import descendent.hud.reticle.PowerGauge;
 import descendent.hud.reticle.Shape;
 import descendent.hud.reticle.SpecialGauge;
+import descendent.hud.reticle.UsingGauge;
 import descendent.hud.reticle.VitalGauge;
 
 class descendent.hud.reticle.Hud extends Shape
@@ -37,7 +38,11 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private var _our_vital:VitalGauge;
 
+	private var _our_using:UsingGauge;
+
 	private var _their_vital:VitalGauge;
+
+	private var _their_using:UsingGauge;
 
 	private var _character:Character;
 
@@ -80,6 +85,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this.refresh_awake();
 
 		this._our_vital.setSubject(this._character);
+		this._our_using.setSubject(this._character);
 	}
 
 	private function prepare_power():Void
@@ -133,6 +139,7 @@ class descendent.hud.reticle.Hud extends Shape
 	private function prepare_our():Void
 	{
 		this.prepare_our_vital();
+		this.prepare_our_using();
 	}
 
 	private function prepare_our_vital():Void
@@ -143,15 +150,28 @@ class descendent.hud.reticle.Hud extends Shape
 		this._our_vital.prepare(this.content);
 	}
 
+	private function prepare_our_using():Void
+	{
+		this._our_using = new UsingGauge(96.0, Deg.getRad(52.5), Deg.getRad(127.5), 6.0);
+		this._our_using.prepare(this.content);
+	}
+
 	private function prepare_their():Void
 	{
 		this.prepare_their_vital();
+		this.prepare_their_using();
 	}
 
 	private function prepare_their_vital():Void
 	{
 		this._their_vital = new VitalGauge(106.0, Deg.getRad(232.5), Deg.getRad(307.5), 12.0);
 		this._their_vital.prepare(this.content);
+	}
+
+	private function prepare_their_using():Void
+	{
+		this._their_using = new UsingGauge(96.0, Deg.getRad(232.5), Deg.getRad(307.5), 6.0);
+		this._their_using.prepare(this.content);
 	}
 
 	public function discard():Void
@@ -230,6 +250,7 @@ class descendent.hud.reticle.Hud extends Shape
 	private function discard_our():Void
 	{
 		this.discard_our_vital();
+		this.discard_our_using();
 	}
 
 	private function discard_our_vital():Void
@@ -240,15 +261,28 @@ class descendent.hud.reticle.Hud extends Shape
 		this._our_vital = null;
 	}
 
+	private function discard_our_using():Void
+	{
+		this._our_using.discard();
+		this._our_using = null;
+	}
+
 	private function discard_their():Void
 	{
 		this.discard_their_vital();
+		this.discard_their_using();
 	}
 
 	private function discard_their_vital():Void
 	{
 		this._their_vital.discard();
 		this._their_vital = null;
+	}
+
+	private function discard_their_using():Void
+	{
+		this._their_using.discard();
+		this._their_using = null;
 	}
 
 	private function refresh_awake():Void
@@ -288,6 +322,9 @@ class descendent.hud.reticle.Hud extends Shape
 			onStart: this.gauge_present,
 			onStartScope: this
 		});
+
+		this._our_using.setAlpha(100);
+		this._their_using.setAlpha(100);
 	}
 
 	private function rouse():Void
@@ -303,6 +340,9 @@ class descendent.hud.reticle.Hud extends Shape
 			onStart: this.gauge_present,
 			onStartScope: this
 		});
+
+		this._our_using.setAlpha(50);
+		this._their_using.setAlpha(50);
 	}
 
 	private function sleep(instant:Boolean):Void
@@ -332,6 +372,9 @@ class descendent.hud.reticle.Hud extends Shape
 			onComplete: this.gauge_dismiss,
 			onCompleteScope: this
 		});
+
+		this._our_using.setAlpha(50);
+		this._their_using.setAlpha(50);
 	}
 
 	private function getGaugeAlpha():Number
@@ -381,6 +424,7 @@ class descendent.hud.reticle.Hud extends Shape
 		}
 
 		this._their_vital.setSubject(dynel);
+		this._their_using.setSubject(character);
 	}
 
 	private function character_onAggro(aggro:Boolean):Void
