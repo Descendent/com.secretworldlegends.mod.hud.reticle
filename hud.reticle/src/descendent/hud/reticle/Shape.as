@@ -14,12 +14,15 @@ class descendent.hud.reticle.Shape implements IShape
 
 	private var _alpha:Number;
 
+	private var _dismiss:Boolean;
+
 	private function Shape()
 	{
 		this._translation = new Point(0.0, 0.0);
 		this._orientation = 0.0;
 		this._scale = new Point(100, 100);
 		this._alpha = 100;
+		this._dismiss = false;
 	}
 
 	private function get content():MovieClip
@@ -95,6 +98,13 @@ class descendent.hud.reticle.Shape implements IShape
 
 		this.setTranslation(this.getTranslation());
 		this.setOrientation(this.getOrientation());
+		this.setScale(this.getScale());
+		this.setAlpha(this.getAlpha());
+
+		if (this._dismiss)
+			this.dismiss();
+		else
+			this.present();
 	}
 
 	public function discard():Void
@@ -104,11 +114,21 @@ class descendent.hud.reticle.Shape implements IShape
 
 	public function present():Void
 	{
-		this._content._visible = true;
+		this._dismiss = false;
+
+		if (this._content == null)
+			return;
+
+		this._content._visible = !this._dismiss;
 	}
 
 	public function dismiss():Void
 	{
-		this._content._visible = false;
+		this._dismiss = true;
+
+		if (this._content == null)
+			return;
+
+		this._content._visible = !this._dismiss;
 	}
 }
