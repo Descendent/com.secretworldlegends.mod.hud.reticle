@@ -106,6 +106,11 @@ class descendent.hud.reticle.special.HammerGauge extends Gauge
 
 	private function setMeter(value:Number):Void
 	{
+		if (value >= (HammerGauge.RAGE_MAX / 2))
+			this._meter_b.present();
+		else
+			this._meter_b.dismiss();
+
 		this._meter_a.setMeter(value);
 		this._meter_b.setMeter(value - (HammerGauge.RAGE_MAX / 2));
 	}
