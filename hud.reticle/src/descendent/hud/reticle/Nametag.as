@@ -369,6 +369,12 @@ class descendent.hud.reticle.Nametag extends Gauge
 		if (level == 0)
 			return;
 
+		var value:String;
+		if (this._character.IsBoss())
+			value = level + "*";
+		else
+			value = level;
+
 		var color:Number;
 		if (this._dynel.IsEnemy())
 		{
@@ -391,11 +397,11 @@ class descendent.hud.reticle.Nametag extends Gauge
 		}
 
 		this._level.textColor = color;
-		this._level.text = level;
+		this._level.text = value;
 		this._level._x = this._label._x + this._label._width;
 		this._level._visible = true;
 
-		this._level_backing.text = level;
+		this._level_backing.text = value;
 		this._level_backing._x = this._level._x + 1.0;
 		this._level_backing._visible = true;
 	}
