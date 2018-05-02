@@ -11,6 +11,7 @@ import com.greensock.TweenMax;
 
 import descendent.hud.reticle.Deg;
 import descendent.hud.reticle.DodgeGauge;
+import descendent.hud.reticle.Nametag;
 import descendent.hud.reticle.PowerGauge;
 import descendent.hud.reticle.Shape;
 import descendent.hud.reticle.SpecialGauge;
@@ -46,6 +47,8 @@ class descendent.hud.reticle.Hud extends Shape
 	private var _their_vital:VitalGauge;
 
 	private var _their_using:UsingGauge;
+
+	private var _their_nametag:Nametag;
 
 	private var _character:Character;
 
@@ -172,6 +175,7 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this.prepare_their_vital();
 		this.prepare_their_using();
+		this.prepare_their_nametag();
 	}
 
 	private function prepare_their_vital():Void
@@ -184,6 +188,13 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this._their_using = new UsingGauge(96.0, Deg.getRad(232.5), Deg.getRad(307.5), 6.0);
 		this._their_using.prepare(this.content);
+	}
+
+	private function prepare_their_nametag():Void
+	{
+		this._their_nametag = new Nametag();
+		this._their_nametag.setTranslation(new Point(0.0, -154.0));
+		this._their_nametag.prepare(this.content);
 	}
 
 	public function discard():Void
@@ -292,6 +303,7 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this.discard_their_vital();
 		this.discard_their_using();
+		this.discard_their_nametag();
 	}
 
 	private function discard_their_vital():Void
@@ -304,6 +316,12 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this._their_using.discard();
 		this._their_using = null;
+	}
+
+	private function discard_their_nametag():Void
+	{
+		this._their_nametag.discard();
+		this._their_nametag = null;
 	}
 
 	private function refresh_awake():Void
@@ -449,6 +467,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._their_vital.setSubject(dynel);
 		this._their_using.setSubject(character);
+		this._their_nametag.setSubject(dynel);
 	}
 
 	private function character_onAggro(aggro:Boolean):Void
