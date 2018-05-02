@@ -9,6 +9,7 @@ import com.GameInterface.Game.Dynel;
 
 import com.greensock.TweenMax;
 
+import descendent.hud.reticle.Callout;
 import descendent.hud.reticle.Deg;
 import descendent.hud.reticle.DodgeGauge;
 import descendent.hud.reticle.Nametag;
@@ -49,6 +50,8 @@ class descendent.hud.reticle.Hud extends Shape
 	private var _their_using:UsingGauge;
 
 	private var _their_nametag:Nametag;
+
+	private var _their_callout:Callout;
 
 	private var _character:Character;
 
@@ -176,6 +179,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this.prepare_their_vital();
 		this.prepare_their_using();
 		this.prepare_their_nametag();
+		this.prepare_their_callout();
 	}
 
 	private function prepare_their_vital():Void
@@ -195,6 +199,13 @@ class descendent.hud.reticle.Hud extends Shape
 		this._their_nametag = new Nametag();
 		this._their_nametag.setTranslation(new Point(0.0, -154.0));
 		this._their_nametag.prepare(this.content);
+	}
+
+	private function prepare_their_callout():Void
+	{
+		this._their_callout = new Callout(152.0);
+		this._their_callout.setTranslation(new Point(0.0, -48.0));
+		this._their_callout.prepare(this.content);
 	}
 
 	public function discard():Void
@@ -304,6 +315,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this.discard_their_vital();
 		this.discard_their_using();
 		this.discard_their_nametag();
+		this.discard_their_callout();
 	}
 
 	private function discard_their_vital():Void
@@ -322,6 +334,12 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this._their_nametag.discard();
 		this._their_nametag = null;
+	}
+
+	private function discard_their_callout():Void
+	{
+		this._their_callout.discard();
+		this._their_callout = null;
 	}
 
 	private function refresh_awake():Void
@@ -364,6 +382,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._our_using.setAlpha(100);
 		this._their_using.setAlpha(100);
+		this._their_callout.setAlpha(100);
 	}
 
 	private function rouse():Void
@@ -382,6 +401,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._our_using.setAlpha(50);
 		this._their_using.setAlpha(50);
+		this._their_callout.setAlpha(50);
 	}
 
 	private function sleep(instant:Boolean):Void
@@ -414,6 +434,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._our_using.setAlpha(50);
 		this._their_using.setAlpha(50);
+		this._their_callout.setAlpha(50);
 	}
 
 	private function getGaugeAlpha():Number
@@ -468,6 +489,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this._their_vital.setSubject(dynel);
 		this._their_using.setSubject(character);
 		this._their_nametag.setSubject(dynel);
+		this._their_callout.setSubject(character);
 	}
 
 	private function character_onAggro(aggro:Boolean):Void
