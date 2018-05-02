@@ -50,9 +50,6 @@ class descendent.hud.reticle.PowerGauge extends Gauge
 
 	private function setGauge(value:Number):Void
 	{
-		if (this._meter == null)
-			return;
-
 		TweenMax.to(this._meter, 0.3, {
 			setMeter: value,
 			ease: Linear.easeNone,
@@ -170,6 +167,8 @@ class descendent.hud.reticle.PowerGauge extends Gauge
 			return;
 
 		this._power = 0;
+
+		TweenMax.killTweensOf(this._meter);
 
 		this._meter.discard();
 		this._meter = null;
