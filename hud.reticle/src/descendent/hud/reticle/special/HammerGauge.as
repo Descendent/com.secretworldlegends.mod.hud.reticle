@@ -68,7 +68,7 @@ class descendent.hud.reticle.special.HammerGauge extends Gauge
 	private function prepare_meter_a():Void
 	{
 		this._meter_a = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0xFF8042, 25), new Color(0xFF8042, 100), new Color(0xFFFFFF, 100), HammerGauge.RAGE_MAX / 2, false);
+			new Color(0xFF8042, 33), new Color(0xFF8042, 100), new Color(0xFFFFFF, 100), HammerGauge.RAGE_MAX / 2, false);
 		this._meter_a.prepare(this.content);
 	}
 

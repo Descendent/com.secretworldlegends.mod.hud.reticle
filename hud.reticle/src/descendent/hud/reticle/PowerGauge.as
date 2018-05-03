@@ -87,49 +87,49 @@ class descendent.hud.reticle.PowerGauge extends Gauge
 
 		if ((thing.m_Type & _global.Enums.WeaponTypeFlag.e_WeaponType_AssaultRifle) != 0)
 		{
-			this.prepare_meter_process(new Color(0x10B9D6, 25), new Color(0x10B9D6, 100), new Color(0xFFFFFF, 100),
+			this.prepare_meter_process(new Color(0x10B9D6, 33), new Color(0x10B9D6, 100), new Color(0xFFFFFF, 100),
 				_global.Enums.ResourceType.e_ClipResourceType);
 		}
 		else if ((thing.m_Type & _global.Enums.WeaponTypeFlag.e_WeaponType_Sword) != 0)
 		{
-			this.prepare_meter_process(new Color(0x7688ED, 25), new Color(0x7688ED, 100), new Color(0xFFFFFF, 100),
+			this.prepare_meter_process(new Color(0x7688ED, 33), new Color(0x7688ED, 100), new Color(0xFFFFFF, 100),
 				_global.Enums.ResourceType.e_CutResourceType);
 		}
 		else if ((thing.m_Type & _global.Enums.WeaponTypeFlag.e_WeaponType_Death) != 0)
 		{
-//			this.prepare_meter_process(new Color(0xFF5857, 25), new Color(0xFF5857, 100), new Color(0xFFFFFF, 100),
-			this.prepare_meter_process(new Color(0xAA1D1D, 25), new Color(0xAA1D1D, 100), new Color(0xFFFFFF, 100),
+//			this.prepare_meter_process(new Color(0xFF5857, 33), new Color(0xFF5857, 100), new Color(0xFFFFFF, 100),
+			this.prepare_meter_process(new Color(0xAA1D1D, 33), new Color(0xAA1D1D, 100), new Color(0xFFFFFF, 100),
 				_global.Enums.ResourceType.e_BloodResourceType);
 		}
 		else if ((thing.m_Type & _global.Enums.WeaponTypeFlag.e_WeaponType_Jinx) != 0)
 		{
-			this.prepare_meter_process(new Color(0xD188F7, 25), new Color(0xD188F7, 100), new Color(0xFFFFFF, 100),
+			this.prepare_meter_process(new Color(0xD188F7, 33), new Color(0xD188F7, 100), new Color(0xFFFFFF, 100),
 				_global.Enums.ResourceType.e_ChaosResourceType);
 		}
 		else if ((thing.m_Type & _global.Enums.WeaponTypeFlag.e_WeaponType_Handgun) != 0)
 		{
-//			this.prepare_meter_process(new Color(0xFFEE00, 25), new Color(0xFFEE00, 100), new Color(0xFFFFFF, 100),
-			this.prepare_meter_process(new Color(0xFFC13D, 25), new Color(0xFFC13D, 100), new Color(0xFFFFFF, 100),
+//			this.prepare_meter_process(new Color(0xFFEE00, 33), new Color(0xFFEE00, 100), new Color(0xFFFFFF, 100),
+			this.prepare_meter_process(new Color(0xFFC13D, 33), new Color(0xFFC13D, 100), new Color(0xFFFFFF, 100),
 				_global.Enums.ResourceType.e_BulletResourceType);
 		}
 		else if ((thing.m_Type & _global.Enums.WeaponTypeFlag.e_WeaponType_Fire) != 0)
 		{
-			this.prepare_meter_process(new Color(0xF4802B, 25), new Color(0xF4802B, 100), new Color(0xFFFFFF, 100),
+			this.prepare_meter_process(new Color(0xF4802B, 33), new Color(0xF4802B, 100), new Color(0xFFFFFF, 100),
 				_global.Enums.ResourceType.e_ElementalResourceType);
 		}
 		else if ((thing.m_Type & _global.Enums.WeaponTypeFlag.e_WeaponType_Fist) != 0)
 		{
-			this.prepare_meter_process(new Color(0xEC474B, 25), new Color(0xEC474B, 100), new Color(0xFFFFFF, 100),
+			this.prepare_meter_process(new Color(0xEC474B, 33), new Color(0xEC474B, 100), new Color(0xFFFFFF, 100),
 				_global.Enums.ResourceType.e_StrikeResourceType);
 		}
 		else if ((thing.m_Type & _global.Enums.WeaponTypeFlag.e_WeaponType_Club) != 0)
 		{
-			this.prepare_meter_process(new Color(0xFF8042, 25), new Color(0xFF8042, 100), new Color(0xFFFFFF, 100),
+			this.prepare_meter_process(new Color(0xFF8042, 33), new Color(0xFF8042, 100), new Color(0xFFFFFF, 100),
 				_global.Enums.ResourceType.e_SlamResourceType);
 		}
 		else if ((thing.m_Type & _global.Enums.WeaponTypeFlag.e_WeaponType_Shotgun) != 0)
 		{
-			this.prepare_meter_process(new Color(0xFFB12E, 25), new Color(0xFFB12E, 100), new Color(0xFFFFFF, 100),
+			this.prepare_meter_process(new Color(0xFFB12E, 33), new Color(0xFFB12E, 100), new Color(0xFFFFFF, 100),
 				_global.Enums.ResourceType.e_ShellResourceType);
 		}
 	}

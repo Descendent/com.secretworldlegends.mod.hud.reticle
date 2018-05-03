@@ -128,8 +128,8 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 
 		var o:MovieClip = this.content.createEmptyMovieClip("", this.content.getNextHighestDepth());
 
-		o.lineStyle(2.0, 0x000000, 25, false, "normal", "square", "miter", 1);
-		o.beginFill((r << 16) | (g << 8) | (b << 0), 50);
+		o.lineStyle();
+		o.beginFill((r << 16) | (g << 8) | (b << 0), 80);
 		this._shape.traceShape(o, new Point(0.0, 0.0));
 		o.endFill();
 

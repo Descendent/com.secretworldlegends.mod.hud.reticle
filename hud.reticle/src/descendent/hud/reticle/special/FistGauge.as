@@ -83,7 +83,7 @@ class descendent.hud.reticle.special.FistGauge extends Gauge
 		var notch:/*Number*/Array = [60];
 
 		this._meter = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0xEC474B, 25), new Color(0xEC474B, 100), new Color(0xFFFFFF, 100), FistGauge.FURY_MAX, false);
+			new Color(0xEC474B, 33), new Color(0xEC474B, 100), new Color(0xFFFFFF, 100), FistGauge.FURY_MAX, false);
 		this._meter.setNotch(notch);
 		this._meter.prepare(this.content);
 	}

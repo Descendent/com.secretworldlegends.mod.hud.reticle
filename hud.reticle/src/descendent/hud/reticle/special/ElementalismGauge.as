@@ -85,7 +85,7 @@ class descendent.hud.reticle.special.ElementalismGauge extends Gauge
 			ElementalismGauge.HEAT_MAX - 6];
 
 		this._meter_a = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0xF4802B, 25), new Color(0xF4802B, 100), new Color(0xFFFFFF, 100), ElementalismGauge.HEAT_MAX, false);
+			new Color(0xF4802B, 33), new Color(0xF4802B, 100), new Color(0xFFFFFF, 100), ElementalismGauge.HEAT_MAX, false);
 		this._meter_a.setNotch(notch);
 		this._meter_a.prepare(this.content);
 	}

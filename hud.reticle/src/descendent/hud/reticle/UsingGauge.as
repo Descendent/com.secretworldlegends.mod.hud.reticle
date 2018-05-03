@@ -81,36 +81,36 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 	private function prepare_meter_a():Void
 	{
 		this._meter_a = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-//			new Color(0xFFCC33, 25), new Color(0xFFCC33, 100), new Color(0xFFFFFF, 100), 1.0, true);
-			new Color(0xFFFF00, 25), new Color(0xFFFF00, 100), new Color(0xFFFFFF, 100), 1.0, true);
+//			new Color(0xFFCC33, 33), new Color(0xFFCC33, 100), new Color(0xFFFFFF, 100), 1.0, true);
+			new Color(0xFFFF00, 33), new Color(0xFFFF00, 100), new Color(0xFFFFFF, 100), 1.0, true);
 		this._meter_a.prepare(this.content);
 	}
 
 	private function prepare_meter_a_conditional():Void
 	{
 		this._meter_a_conditional = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-//			new Color(0x230174, 25), new Color(0x230174, 100), new Color(0xFFFFFF, 100), 1.0, true);
-//			new Color(0x5311E8, 25), new Color(0x5311E8, 100), new Color(0xFFFFFF, 100), 1.0, true);
-//			new Color(0x8E48F7, 25), new Color(0x8E48F7, 100), new Color(0xFFFFFF, 100), 1.0, true);
-			new Color(Colors.e_ColorAnimaCritical, 25), new Color(Colors.e_ColorAnimaCritical, 100), new Color(0xFFFFFF, 100), 1.0, true);
+//			new Color(0x230174, 33), new Color(0x230174, 100), new Color(0xFFFFFF, 100), 1.0, true);
+//			new Color(0x5311E8, 33), new Color(0x5311E8, 100), new Color(0xFFFFFF, 100), 1.0, true);
+//			new Color(0x8E48F7, 33), new Color(0x8E48F7, 100), new Color(0xFFFFFF, 100), 1.0, true);
+			new Color(Colors.e_ColorAnimaCritical, 33), new Color(Colors.e_ColorAnimaCritical, 100), new Color(0xFFFFFF, 100), 1.0, true);
 		this._meter_a_conditional.prepare(this.content);
 	}
 
 	private function prepare_meter_b():Void
 	{
 		this._meter_b = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-//			new Color(0xFFCC33, 25), new Color(0xFFCC33, 100), new Color(0xFFFFFF, 100), 1.0, false);
-			new Color(0xFFFF00, 25), new Color(0xFFFF00, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0xFFCC33, 33), new Color(0xFFCC33, 100), new Color(0xFFFFFF, 100), 1.0, false);
+			new Color(0xFFFF00, 33), new Color(0xFFFF00, 100), new Color(0xFFFFFF, 100), 1.0, false);
 		this._meter_b.prepare(this.content);
 	}
 
 	private function prepare_meter_b_conditional():Void
 	{
 		this._meter_b_conditional = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-//			new Color(0x230174, 25), new Color(0x230174, 100), new Color(0xFFFFFF, 100), 1.0, false);
-//			new Color(0x5311E8, 25), new Color(0x5311E8, 100), new Color(0xFFFFFF, 100), 1.0, false);
-//			new Color(0x8E48F7, 25), new Color(0x8E48F7, 100), new Color(0xFFFFFF, 100), 1.0, false);
-			new Color(Colors.e_ColorAnimaCritical, 25), new Color(Colors.e_ColorAnimaCritical, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0x230174, 33), new Color(0x230174, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0x5311E8, 33), new Color(0x5311E8, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0x8E48F7, 33), new Color(0x8E48F7, 100), new Color(0xFFFFFF, 100), 1.0, false);
+			new Color(Colors.e_ColorAnimaCritical, 33), new Color(Colors.e_ColorAnimaCritical, 100), new Color(0xFFFFFF, 100), 1.0, false);
 		this._meter_b_conditional.prepare(this.content);
 	}
 

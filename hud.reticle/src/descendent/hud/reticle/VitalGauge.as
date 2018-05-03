@@ -91,16 +91,16 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	private function prepare_shaft_a():Void
 	{
 		this._shaft_a = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0x20FF8A, 25), new Color(0x20FF8A, 100), new Color(0xFFFFFF, 100), 1.0, false);
-//			new Color(0x88FCCC, 25), new Color(0x88FCCC, 100), new Color(0xFFFFFF, 100), 1.0, false);
+			new Color(0x20FF8A, 33), new Color(0x20FF8A, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0x88FCCC, 33), new Color(0x88FCCC, 100), new Color(0xFFFFFF, 100), 1.0, false);
 		this._shaft_a.prepare(this.content);
 	}
 
 	private function prepare_shaft_b():Void
 	{
 		this._shaft_b = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0xFF4646, 25), new Color(0xFF4646, 100), new Color(0xFFFFFF, 100), 1.0, false);
-//			new Color(0xFFB1B1, 25), new Color(0xFFB1B1, 100), new Color(0xFFFFFF, 100), 1.0, false);
+			new Color(0xFF4646, 33), new Color(0xFF4646, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0xFFB1B1, 33), new Color(0xFFB1B1, 100), new Color(0xFFFFFF, 100), 1.0, false);
 		this._shaft_b.prepare(this.content);
 	}
 

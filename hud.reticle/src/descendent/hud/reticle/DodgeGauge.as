@@ -63,8 +63,8 @@ class descendent.hud.reticle.DodgeGauge extends Gauge
 	private function prepare_meter():Void
 	{
 		this._meter = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-//			new Color(0x37FFFF, 25), new Color(0x37FFFF, 100), new Color(0xFFFFFF, 100), 1.0, true);
-			new Color(0x00FFF6, 25), new Color(0x00FFF6, 100), new Color(0xFFFFFF, 100), 1.0, true);
+//			new Color(0x37FFFF, 33), new Color(0x37FFFF, 100), new Color(0xFFFFFF, 100), 1.0, true);
+			new Color(0x00FFF6, 33), new Color(0x00FFF6, 100), new Color(0xFFFFFF, 100), 1.0, true);
 		this._meter.prepare(this.content);
 	}
 
