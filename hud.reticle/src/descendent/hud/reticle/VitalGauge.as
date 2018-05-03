@@ -151,11 +151,11 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function prepare_dynel(dynel:Dynel):Void
 	{
-		this._dynel = dynel;
-		this._character = Character.GetCharacter(dynel.GetID());
-
 		if (dynel == null)
 			return;
+
+		this._dynel = dynel;
+		this._character = Character.GetCharacter(dynel.GetID());
 
 		if (dynel.IsEnemy())
 		{

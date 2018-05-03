@@ -219,6 +219,17 @@ class descendent.hud.reticle.Nametag extends Gauge
 
 	private function prepare_dynel(dynel:Dynel):Void
 	{
+		if (dynel == null)
+			return;
+
+		var which:ID32 = dynel.GetID();
+
+		if ((which.GetType() != _global.Enums.TypeID.e_Type_GC_Character)
+			&& (which.GetType() != _global.Enums.TypeID.e_Type_GC_Destructible))
+		{
+			return;
+		}
+
 		this._dynel = dynel;
 		this._character = Character.GetCharacter(dynel.GetID());
 
@@ -231,22 +242,6 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._dynel.SignalStatChanged.Connect(this.dynel_onValue, this);
 	}
 
-	private function labelable():Boolean
-	{
-		if (this._dynel == null)
-			return false;
-
-		var which:ID32 = this._dynel.GetID();
-
-		if (which.GetType() == _global.Enums.TypeID.e_Type_GC_Character)
-			return true;
-
-		if (which.GetType() == _global.Enums.TypeID.e_Type_GC_Destructible)
-			return true;
-
-		return false;
-	}
-
 	private function refresh_label():Void
 	{
 		this._label._visible = false;
@@ -255,7 +250,7 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._label_backing._visible = false;
 		this._label_backing.text = "";
 
-		if (!this.labelable())
+		if (this._dynel == null)
 			return;
 
 		var which:ID32 = this._dynel.GetID();
@@ -286,7 +281,7 @@ class descendent.hud.reticle.Nametag extends Gauge
 
 	private function refresh_color():Void
 	{
-		if (!this.labelable())
+		if (this._dynel == null)
 			return;
 
 		var color:Number = Colors.GetNametagColor(this._dynel.GetNametagCategory(), Nametags.GetAggroStanding(this._dynel.GetID()));
@@ -302,7 +297,7 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._title_backing._visible = false;
 		this._title_backing.text = "";
 
-		if (!this.labelable())
+		if (this._dynel == null)
 			return;
 
 		if (!DistributedValue.GetDValue("ShowNametagTitle", false))
@@ -330,7 +325,7 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._cabal_backing._visible = false;
 		this._cabal_backing.text = "";
 
-		if (!this.labelable())
+		if (this._dynel == null)
 			return;
 
 		if (!DistributedValue.GetDValue("ShowNametagGuild", false))
@@ -361,7 +356,7 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._level_backing._visible = false;
 		this._level_backing.text = "";
 
-		if (!this.labelable())
+		if (this._dynel == null)
 			return;
 
 		var level:String = this._dynel.GetStat(_global.Enums.Stat.e_Level);
@@ -416,9 +411,9 @@ class descendent.hud.reticle.Nametag extends Gauge
 
 	public function discard():Void
 	{
-		super.discard();
-
 		this.discard_dynel();
+
+		super.discard();
 	}
 
 	private function discard_dynel():Void
@@ -431,10 +426,10 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._dynel = null;
 		this._character = null;
 
-		this._label._visible = false;
-		this._title._visible = false;
-		this._cabal._visible = false;
-		this._level._visible = false;
+		this.refresh_label();
+		this.refresh_title();
+		this.refresh_cabal();
+		this.refresh_level();
 	}
 
 	private function dynel_onValue(which:Number):Void
