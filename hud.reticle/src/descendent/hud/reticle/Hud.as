@@ -65,6 +65,10 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private var _mousemode:Boolean;
 
+	private var _reticle_hover:ID32;
+
+	private var _reticle_focus:ID32;
+
 	public function Hud()
 	{
 		super();
@@ -72,6 +76,9 @@ class descendent.hud.reticle.Hud extends Shape
 		this._awakeness = 0;
 //		this._state = Hud.STATE_SLEEP;
 		this._their_vital_awakeness = 0;
+
+		this._reticle_hover = new ID32();
+		this._reticle_focus = new ID32();
 	}
 
 	public function prepare(o:MovieClip):Void
@@ -85,9 +92,9 @@ class descendent.hud.reticle.Hud extends Shape
 		this.prepare_our();
 		this.prepare_their();
 
-		GlobalSignal.SignalCrosshairTargetUpdated.Connect(this.character_onReticle, this);
+		GlobalSignal.SignalCrosshairTargetUpdated.Connect(this.character_onReticleHover, this);
 
-//		this._character.SignalOffensiveTargetChanged.Connect(this.character_onReticle, this);
+		this._character.SignalOffensiveTargetChanged.Connect(this.character_onReticleFocus, this);
 		this._character.SignalToggleCombat.Connect(this.character_onAggro, this);
 		this._character.SignalCharacterDied.Connect(this.character_onDeath, this);
 
@@ -219,11 +226,11 @@ class descendent.hud.reticle.Hud extends Shape
 		this._opt_guimode.SignalChanged.Disconnect(this.refresh_awake, this);
 		this._opt_guimode = null;
 
-//		this._character.SignalOffensiveTargetChanged.Disconnect(this.character_onReticle, this);
+		this._character.SignalOffensiveTargetChanged.Disconnect(this.character_onReticleFocus, this);
 		this._character.SignalToggleCombat.Disconnect(this.character_onAggro, this);
 		this._character.SignalCharacterDied.Disconnect(this.character_onDeath, this);
 
-		GlobalSignal.SignalCrosshairTargetUpdated.Disconnect(this.character_onReticle, this);
+		GlobalSignal.SignalCrosshairTargetUpdated.Disconnect(this.character_onReticleHover, this);
 
 		TweenMax.killTweensOf(this);
 
@@ -495,8 +502,12 @@ class descendent.hud.reticle.Hud extends Shape
 			this._their_vital.dismiss();
 	}
 
-	private function character_onReticle(which:ID32):Void
+	private function refresh_reticle():Void
 	{
+		var which:ID32 = (!this._reticle_focus.IsNull())
+			? this._reticle_focus
+			: this._reticle_hover;
+
 		var dynel:Dynel = Dynel.GetDynel(which);
 		var character:Character = Character.GetCharacter(which);
 
@@ -510,6 +521,20 @@ class descendent.hud.reticle.Hud extends Shape
 		this._their_using.setSubject(character);
 		this._their_nametag.setSubject(dynel);
 		this._their_callout.setSubject(character);
+	}
+
+	private function character_onReticleHover(which:ID32):Void
+	{
+		this._reticle_hover = which;
+
+		this.refresh_reticle();
+	}
+
+	private function character_onReticleFocus(which:ID32):Void
+	{
+		this._reticle_focus = which;
+
+		this.refresh_reticle();
 	}
 
 	private function character_onAggro(aggro:Boolean):Void
