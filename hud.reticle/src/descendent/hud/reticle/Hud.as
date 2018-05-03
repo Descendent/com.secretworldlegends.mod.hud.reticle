@@ -59,6 +59,8 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private var _state:Number;
 
+	private var _their_vital_awakeness:Number;
+
 	private var _opt_guimode:DistributedValue;
 
 	private var _mousemode:Boolean;
@@ -69,6 +71,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._awakeness = 0;
 //		this._state = Hud.STATE_SLEEP;
+		this._their_vital_awakeness = 0;
 	}
 
 	public function prepare(o:MovieClip):Void
@@ -92,6 +95,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this._opt_guimode.SignalChanged.Connect(this.refresh_awake, this);
 
 		this.refresh_awake();
+		this.refresh_their_vital_awake();
 
 		this._our_vital.setSubject(this._character);
 		this._our_using.setSubject(this._character);
@@ -185,6 +189,8 @@ class descendent.hud.reticle.Hud extends Shape
 	private function prepare_their_vital():Void
 	{
 		this._their_vital = new VitalGauge(106.0, Deg.getRad(232.5), Deg.getRad(307.5), 12.0);
+		this._their_vital.onRouse.Connect(this.their_vital_onRouse, this);
+		this._their_vital.onSleep.Connect(this.their_vital_onSleep, this);
 		this._their_vital.prepare(this.content);
 	}
 
@@ -321,6 +327,8 @@ class descendent.hud.reticle.Hud extends Shape
 	private function discard_their_vital():Void
 	{
 		this._their_vital.discard();
+		this._their_vital.onRouse.Disconnect(this.their_vital_onRouse, this);
+		this._their_vital.onSleep.Disconnect(this.their_vital_onSleep, this);
 		this._their_vital = null;
 	}
 
@@ -381,6 +389,7 @@ class descendent.hud.reticle.Hud extends Shape
 		});
 
 		this._our_using.setAlpha(100);
+		this._their_vital.setAlpha(100);
 		this._their_using.setAlpha(100);
 		this._their_callout.setAlpha(100);
 	}
@@ -400,6 +409,7 @@ class descendent.hud.reticle.Hud extends Shape
 		});
 
 		this._our_using.setAlpha(50);
+		this._their_vital.setAlpha(50);
 		this._their_using.setAlpha(50);
 		this._their_callout.setAlpha(50);
 	}
@@ -433,6 +443,7 @@ class descendent.hud.reticle.Hud extends Shape
 		});
 
 		this._our_using.setAlpha(50);
+		this._their_vital.setAlpha(50);
 		this._their_using.setAlpha(50);
 		this._their_callout.setAlpha(50);
 	}
@@ -450,7 +461,6 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_2.setAlpha(value);
 		this._our_vital.setAlpha(value);
 		this._our_dodge.setAlpha(value);
-		this._their_vital.setAlpha(value);
 	}
 
 	private function gauge_present():Void
@@ -461,7 +471,6 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_2.present();
 		this._our_vital.present();
 		this._our_dodge.present();
-		this._their_vital.present();
 	}
 
 	private function gauge_dismiss():Void
@@ -472,7 +481,18 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_2.dismiss();
 		this._our_vital.dismiss();
 		this._our_dodge.dismiss();
-		this._their_vital.dismiss();
+	}
+
+	private function refresh_their_vital_awake():Void
+	{
+		if (this._character.IsInCombat())
+			this._their_vital.present();
+		else if (this._character.IsThreatened())
+			this._their_vital.present();
+		else if (this._their_vital_awakeness != 0)
+			this._their_vital.present();
+		else
+			this._their_vital.dismiss();
 	}
 
 	private function character_onReticle(which:ID32):Void
@@ -495,6 +515,7 @@ class descendent.hud.reticle.Hud extends Shape
 	private function character_onAggro(aggro:Boolean):Void
 	{
 		this.refresh_awake();
+		this.refresh_their_vital_awake();
 	}
 
 	private function character_onDeath():Void
@@ -514,5 +535,19 @@ class descendent.hud.reticle.Hud extends Shape
 		--this._awakeness;
 
 		this.refresh_awake();
+	}
+
+	private function their_vital_onRouse():Void
+	{
+		++this._their_vital_awakeness;
+
+		this.refresh_their_vital_awake();
+	}
+
+	private function their_vital_onSleep():Void
+	{
+		--this._their_vital_awakeness;
+
+		this.refresh_their_vital_awake();
 	}
 }
