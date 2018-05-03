@@ -7,7 +7,6 @@ import com.greensock.easing.Linear;
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
 import descendent.hud.reticle.Gauge;
-import descendent.hud.reticle.IGauge;
 import descendent.hud.reticle.IMeter;
 
 class descendent.hud.reticle.special.HammerGauge extends Gauge
@@ -69,7 +68,7 @@ class descendent.hud.reticle.special.HammerGauge extends Gauge
 	private function prepare_meter_a():Void
 	{
 		this._meter_a = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0xFF8042, 25), new Color(0xFF8042, 100), new Color(0xFFFFFF, 100), HammerGauge.RAGE_MAX / 2, false);
+			new Color(0xFF8042, 33), new Color(0xFF8042, 100), new Color(0xFFFFFF, 100), HammerGauge.RAGE_MAX / 2, false);
 		this._meter_a.prepare(this.content);
 	}
 
@@ -107,6 +106,11 @@ class descendent.hud.reticle.special.HammerGauge extends Gauge
 
 	private function setMeter(value:Number):Void
 	{
+		if (value >= (HammerGauge.RAGE_MAX / 2))
+			this._meter_b.present();
+		else
+			this._meter_b.dismiss();
+
 		this._meter_a.setMeter(value);
 		this._meter_b.setMeter(value - (HammerGauge.RAGE_MAX / 2));
 	}

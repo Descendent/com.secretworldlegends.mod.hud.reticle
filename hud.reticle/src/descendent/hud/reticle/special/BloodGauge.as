@@ -7,7 +7,6 @@ import com.greensock.easing.Linear;
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
 import descendent.hud.reticle.Gauge;
-import descendent.hud.reticle.IGauge;
 import descendent.hud.reticle.IMeter;
 
 class descendent.hud.reticle.special.BloodGauge extends Gauge
@@ -72,7 +71,7 @@ class descendent.hud.reticle.special.BloodGauge extends Gauge
 		var notch:/*Number*/Array = [10, 60, 90];
 
 		this._meter_a = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0x4FF47A, 25), new Color(0x4FF47A, 100), new Color(0xFFFFFF, 100), BloodGauge.CORRUPTION_MARTYRDOM_MAX, false);
+			new Color(0x4FF47A, 33), new Color(0x4FF47A, 100), new Color(0xFFFFFF, 100), BloodGauge.CORRUPTION_MARTYRDOM_MAX, false);
 		this._meter_a.setNotch(notch);
 		this._meter_a.prepare(this.content);
 	}
@@ -82,7 +81,7 @@ class descendent.hud.reticle.special.BloodGauge extends Gauge
 		var notch:/*Number*/Array = [10, 60, 90];
 
 		this._meter_b = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0x6600CC, 25), new Color(0x6600CC, 100), new Color(0xFFFFFF, 100), BloodGauge.CORRUPTION_MARTYRDOM_MAX, false);
+			new Color(0x6600CC, 33), new Color(0x6600CC, 100), new Color(0xFFFFFF, 100), BloodGauge.CORRUPTION_MARTYRDOM_MAX, false);
 		this._meter_b.setNotch(notch);
 		this._meter_b.prepare(this.content);
 	}

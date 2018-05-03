@@ -14,7 +14,6 @@ import com.greensock.easing.Linear;
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
 import descendent.hud.reticle.Gauge;
-import descendent.hud.reticle.IGauge;
 import descendent.hud.reticle.IMeter;
 
 class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
@@ -135,8 +134,8 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 			: this._r;
 
 		this._meter_1_a = new DefaultArcBarMeter(r, this._angle_a, this._angle_b, thickness,
-//			new Color(0xA3A3A3, 25), new Color(0xA3A3A3, 100), new Color(0xFFFFFF, 100), 1.0, false);
-			new Color(0xD7D7D7, 25), new Color(0xD7D7D7, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0xA3A3A3, 33), new Color(0xA3A3A3, 100), new Color(0xFFFFFF, 100), 1.0, false);
+			new Color(0xD7D7D7, 33), new Color(0xD7D7D7, 100), new Color(0xFFFFFF, 100), 1.0, false);
 		this._meter_1_a.prepare(this.content);
 	}
 

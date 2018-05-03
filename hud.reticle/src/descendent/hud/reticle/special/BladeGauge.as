@@ -8,7 +8,6 @@ import com.greensock.easing.Linear;
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
 import descendent.hud.reticle.Gauge;
-import descendent.hud.reticle.IGauge;
 import descendent.hud.reticle.IMeter;
 
 class descendent.hud.reticle.special.BladeGauge extends Gauge
@@ -92,7 +91,7 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 			: angle_m + t;
 
 		this._meter_a = new DefaultArcBarMeter(this._r, this._angle_a, angle_b, this._thickness,
-			new Color(0x7688ED, 25), new Color(0x7688ED, 100), new Color(0xFFFFFF, 100), BladeGauge.CHI_MAX, false);
+			new Color(0x7688ED, 33), new Color(0x7688ED, 100), new Color(0xFFFFFF, 100), BladeGauge.CHI_MAX, false);
 		this._meter_a.prepare(this.content);
 	}
 
@@ -107,7 +106,7 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 			: angle_m - t;
 
 		this._meter_b = new DefaultArcBarMeter(this._r, angle_a, this._angle_b, this._thickness,
-			new Color(0x7688ED, 25), new Color(0x7688ED, 100), new Color(0xFFFFFF, 100), BladeGauge.SPIRITBLADE_MAX, false);
+			new Color(0x7688ED, 33), new Color(0x7688ED, 100), new Color(0xFFFFFF, 100), BladeGauge.SPIRITBLADE_MAX, false);
 		this._meter_b.setNotch(notch);
 		this._meter_b.prepare(this.content);
 	}

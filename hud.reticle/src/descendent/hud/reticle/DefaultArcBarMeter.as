@@ -120,17 +120,16 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 		if (this._color_shaft == null)
 			return;
 
-		var a:MovieClip = this.content.createEmptyMovieClip("", this.content.getNextHighestDepth());
-
-		a.lineStyle(2.0, 0x000000, 25, false, "normal", "square", "miter", 1);
-		a.beginFill(0x000000, 50);
-		this._shape.traceShape(a, new Point(0.0, 0.0));
-		a.endFill();
+		var c:Number = this._color_shaft.color;
+		var t:Number = this._color_shaft.alpha / 100.0;
+		var r:Number = Math.floor(((c & 0xFF0000) >> 16) * t);
+		var g:Number = Math.floor(((c & 0x00FF00) >> 8) * t);
+		var b:Number = Math.floor(((c & 0x0000FF) >> 0) * t);
 
 		var o:MovieClip = this.content.createEmptyMovieClip("", this.content.getNextHighestDepth());
 
 		o.lineStyle();
-		o.beginFill(this._color_shaft.color, this._color_shaft.alpha);
+		o.beginFill((r << 16) | (g << 8) | (b << 0), 80);
 		this._shape.traceShape(o, new Point(0.0, 0.0));
 		o.endFill();
 
