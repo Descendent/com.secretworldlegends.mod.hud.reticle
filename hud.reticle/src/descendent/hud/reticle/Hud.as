@@ -50,9 +50,9 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private var _their_using:UsingGauge;
 
-	private var _their_nametag:Nametag;
+	private var _nametag:Nametag;
 
-	private var _their_callout:Callout;
+	private var _callout:Callout;
 
 	private var _rangefinder:Rangefinder;
 
@@ -94,6 +94,8 @@ class descendent.hud.reticle.Hud extends Shape
 		this.prepare_special();
 		this.prepare_our();
 		this.prepare_their();
+		this.prepare_nametag();
+		this.prepare_callout();
 		this.prepare_rangefinder();
 
 		GlobalSignal.SignalCrosshairTargetUpdated.Connect(this.character_onReticleHover, this);
@@ -193,8 +195,6 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this.prepare_their_vital();
 		this.prepare_their_using();
-		this.prepare_their_nametag();
-		this.prepare_their_callout();
 	}
 
 	private function prepare_their_vital():Void
@@ -211,18 +211,18 @@ class descendent.hud.reticle.Hud extends Shape
 		this._their_using.prepare(this.content);
 	}
 
-	private function prepare_their_nametag():Void
+	private function prepare_nametag():Void
 	{
-		this._their_nametag = new Nametag();
-		this._their_nametag.setTranslation(new Point(0.0, -154.0));
-		this._their_nametag.prepare(this.content);
+		this._nametag = new Nametag();
+		this._nametag.setTranslation(new Point(0.0, -154.0));
+		this._nametag.prepare(this.content);
 	}
 
-	private function prepare_their_callout():Void
+	private function prepare_callout():Void
 	{
-		this._their_callout = new Callout(152.0);
-		this._their_callout.setTranslation(new Point(0.0, -48.0));
-		this._their_callout.prepare(this.content);
+		this._callout = new Callout(152.0);
+		this._callout.setTranslation(new Point(0.0, -48.0));
+		this._callout.prepare(this.content);
 	}
 
 	private function prepare_rangefinder():Void
@@ -246,6 +246,8 @@ class descendent.hud.reticle.Hud extends Shape
 		TweenMax.killTweensOf(this);
 
 		this.discard_rangefinder();
+		this.discard_callout();
+		this.discard_nametag();
 		this.discard_their();
 		this.discard_our();
 		this.discard_special();
@@ -339,8 +341,6 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this.discard_their_vital();
 		this.discard_their_using();
-		this.discard_their_nametag();
-		this.discard_their_callout();
 	}
 
 	private function discard_their_vital():Void
@@ -357,16 +357,16 @@ class descendent.hud.reticle.Hud extends Shape
 		this._their_using = null;
 	}
 
-	private function discard_their_nametag():Void
+	private function discard_nametag():Void
 	{
-		this._their_nametag.discard();
-		this._their_nametag = null;
+		this._nametag.discard();
+		this._nametag = null;
 	}
 
-	private function discard_their_callout():Void
+	private function discard_callout():Void
 	{
-		this._their_callout.discard();
-		this._their_callout = null;
+		this._callout.discard();
+		this._callout = null;
 	}
 
 	private function discard_rangefinder():Void
@@ -416,7 +416,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this._our_using.setAlpha(100);
 		this._their_vital.setAlpha(100);
 		this._their_using.setAlpha(100);
-		this._their_callout.setAlpha(100);
+		this._callout.setAlpha(100);
 	}
 
 	private function rouse():Void
@@ -436,7 +436,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this._our_using.setAlpha(50);
 		this._their_vital.setAlpha(50);
 		this._their_using.setAlpha(50);
-		this._their_callout.setAlpha(50);
+		this._callout.setAlpha(50);
 	}
 
 	private function sleep(instant:Boolean):Void
@@ -470,7 +470,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this._our_using.setAlpha(50);
 		this._their_vital.setAlpha(50);
 		this._their_using.setAlpha(50);
-		this._their_callout.setAlpha(50);
+		this._callout.setAlpha(50);
 	}
 
 	private function getGaugeAlpha():Number
@@ -537,8 +537,8 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._their_vital.setSubject(dynel);
 		this._their_using.setSubject(character);
-		this._their_nametag.setSubject(dynel);
-		this._their_callout.setSubject(character);
+		this._nametag.setSubject(dynel);
+		this._callout.setSubject(character);
 		this._rangefinder.setSubject(dynel);
 	}
 
