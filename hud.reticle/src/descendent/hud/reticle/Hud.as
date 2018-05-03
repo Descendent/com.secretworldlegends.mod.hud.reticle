@@ -14,6 +14,7 @@ import descendent.hud.reticle.Deg;
 import descendent.hud.reticle.DodgeGauge;
 import descendent.hud.reticle.Nametag;
 import descendent.hud.reticle.PowerGauge;
+import descendent.hud.reticle.Rangefinder;
 import descendent.hud.reticle.Shape;
 import descendent.hud.reticle.SpecialGauge;
 import descendent.hud.reticle.UsingGauge;
@@ -53,6 +54,8 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private var _their_callout:Callout;
 
+	private var _rangefinder:Rangefinder;
+
 	private var _character:Character;
 
 	private var _awakeness:Number;
@@ -91,6 +94,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this.prepare_special();
 		this.prepare_our();
 		this.prepare_their();
+		this.prepare_rangefinder();
 
 		GlobalSignal.SignalCrosshairTargetUpdated.Connect(this.character_onReticleHover, this);
 
@@ -221,6 +225,13 @@ class descendent.hud.reticle.Hud extends Shape
 		this._their_callout.prepare(this.content);
 	}
 
+	private function prepare_rangefinder():Void
+	{
+		this._rangefinder = new Rangefinder();
+		this._rangefinder.setTranslation(new Point(-24.0, 0.0));
+		this._rangefinder.prepare(this.content);
+	}
+
 	public function discard():Void
 	{
 		this._opt_guimode.SignalChanged.Disconnect(this.refresh_awake, this);
@@ -234,6 +245,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 		TweenMax.killTweensOf(this);
 
+		this.discard_rangefinder();
 		this.discard_their();
 		this.discard_our();
 		this.discard_special();
@@ -355,6 +367,12 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this._their_callout.discard();
 		this._their_callout = null;
+	}
+
+	private function discard_rangefinder():Void
+	{
+		this._rangefinder.discard();
+		this._rangefinder = null;
 	}
 
 	private function refresh_awake():Void
@@ -521,6 +539,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this._their_using.setSubject(character);
 		this._their_nametag.setSubject(dynel);
 		this._their_callout.setSubject(character);
+		this._rangefinder.setSubject(dynel);
 	}
 
 	private function character_onReticleHover(which:ID32):Void
