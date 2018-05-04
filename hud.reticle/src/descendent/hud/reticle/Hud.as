@@ -5,6 +5,7 @@ import com.Utils.ID32;
 
 import com.GameInterface.DistributedValue;
 import com.GameInterface.Game.Character;
+import com.GameInterface.Game.CharacterBase;
 import com.GameInterface.Game.Dynel;
 
 import com.greensock.TweenMax;
@@ -97,6 +98,8 @@ class descendent.hud.reticle.Hud extends Shape
 		this.prepare_nametag();
 		this.prepare_callout();
 		this.prepare_rangefinder();
+
+		CharacterBase.SignalClientCharacterAlive.Connect(this.character_onEnter, this);
 
 		GlobalSignal.SignalCrosshairTargetUpdated.Connect(this.character_onReticleHover, this);
 
@@ -242,6 +245,8 @@ class descendent.hud.reticle.Hud extends Shape
 		this._character.SignalCharacterDied.Disconnect(this.character_onDeath, this);
 
 		GlobalSignal.SignalCrosshairTargetUpdated.Disconnect(this.character_onReticleHover, this);
+
+		CharacterBase.SignalClientCharacterAlive.Disconnect(this.character_onEnter, this);
 
 		TweenMax.killTweensOf(this);
 
@@ -540,6 +545,12 @@ class descendent.hud.reticle.Hud extends Shape
 		this._nametag.setSubject(dynel);
 		this._callout.setSubject(character);
 		this._rangefinder.setSubject(dynel);
+	}
+
+	private function character_onEnter():Void
+	{
+		this._our_using.setSubject(null);
+		this._our_using.setSubject(this._character);
 	}
 
 	private function character_onReticleHover(which:ID32):Void
