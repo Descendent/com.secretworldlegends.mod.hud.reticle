@@ -266,6 +266,16 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function refresh_meter():Void
 	{
+		if (this._value_barrier == 0)
+			this._meter_barrier.dismiss();
+		else
+			this._meter_barrier.present();
+
+		if (this._value_pending <= this._value_current)
+			this._meter_pending.dismiss();
+		else
+			this._meter_pending.present();
+
 		var combine:Number = Math.max(this._value_current, this._value_pending) + this._value_barrier;
 		var maximum:Number = Math.max(combine, this._value_maximum);
 
