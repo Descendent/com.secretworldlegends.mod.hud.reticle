@@ -1,6 +1,7 @@
 import mx.utils.Delegate;
 
 import com.GameInterface.Game.Character;
+import com.GameInterface.Game.CharacterBase;
 import com.GameInterface.Game.BuffData;
 import com.GameInterface.ProjectUtils;
 import com.GameInterface.UtilsBase;
@@ -54,6 +55,8 @@ class descendent.hud.reticle.DodgeGauge extends Gauge
 		this.prepare_meter();
 
 		this.refresh_timer();
+
+		CharacterBase.SignalClientCharacterAlive.Connect(this.character_onEnter, this);
 
 		this._character.SignalInvisibleBuffAdded.Connect(this.character_onTag, this);
 		this._character.SignalInvisibleBuffUpdated.Connect(this.character_onTag, this);
@@ -126,6 +129,8 @@ class descendent.hud.reticle.DodgeGauge extends Gauge
 		this._character.SignalInvisibleBuffUpdated.Disconnect(this.character_onTag, this);
 		this._character.SignalBuffRemoved.Disconnect(this.character_onTag, this);
 
+		CharacterBase.SignalClientCharacterAlive.Disconnect(this.character_onEnter, this);
+
 		clearInterval(this._timer);
 
 		this.discard_meter();
@@ -144,6 +149,11 @@ class descendent.hud.reticle.DodgeGauge extends Gauge
 		this._meter = null;
 
 		this.sleep();
+	}
+
+	private function character_onEnter():Void
+	{
+		this.refresh_timer();
 	}
 
 	private function character_onTag(which:Number):Void
