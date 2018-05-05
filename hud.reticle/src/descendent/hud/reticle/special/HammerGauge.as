@@ -118,16 +118,22 @@ class descendent.hud.reticle.special.HammerGauge extends Gauge
 	private function refresh_pulse():Void
 	{
 		if (this.pulse())
+		{
+			this._meter_a.pulseBegin();
 			this._meter_b.pulseBegin();
+		}
 		else
+		{
+			this._meter_a.pulseEnd();
 			this._meter_b.pulseEnd();
+		}
 	}
 
 	private function pulse():Boolean
 	{
 		var value:Number = this._meter_a.getMeter();
 
-		if (value >= HammerGauge.RAGE_MAX)
+		if (value >= (HammerGauge.RAGE_MAX / 2))
 			return true;
 
 		return false;
