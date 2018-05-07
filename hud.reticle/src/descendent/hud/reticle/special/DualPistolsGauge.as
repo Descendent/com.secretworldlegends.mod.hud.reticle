@@ -306,7 +306,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 	private function timerBegin_process():Void
 	{
 		clearInterval(this._timer);
-		this._timer = setInterval(this._refresh_meter, 100);
+		this._timer = setInterval(this._refresh_meter, 200);
 
 		this.refresh_meter();
 	}
