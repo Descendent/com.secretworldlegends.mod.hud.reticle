@@ -104,7 +104,7 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 	private function timerBegin():Void
 	{
 		clearInterval(this._timer);
-		this._timer = setInterval(this._refresh_label, 300);
+		this._timer = setInterval(this._refresh_label, 100);
 
 		this.refresh_label();
 	}
