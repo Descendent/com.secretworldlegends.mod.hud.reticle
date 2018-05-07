@@ -45,7 +45,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private var _our_using:UsingGauge;
 
-	private var _our_dodge:DodgeGauge;
+	private var _dodge:DodgeGauge;
 
 	private var _their_vital:VitalGauge;
 
@@ -94,6 +94,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this.prepare_power();
 		this.prepare_special();
 		this.prepare_our();
+		this.prepare_dodge();
 		this.prepare_their();
 		this.prepare_nametag();
 		this.prepare_callout();
@@ -169,7 +170,6 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this.prepare_our_vital();
 		this.prepare_our_using();
-		this.prepare_our_dodge();
 	}
 
 	private function prepare_our_vital():Void
@@ -186,12 +186,12 @@ class descendent.hud.reticle.Hud extends Shape
 		this._our_using.prepare(this.content);
 	}
 
-	private function prepare_our_dodge():Void
+	private function prepare_dodge():Void
 	{
-		this._our_dodge = new DodgeGauge(122.0, Deg.getRad(52.5), Deg.getRad(127.5), 6.0);
-		this._our_dodge.onRouse.Connect(this.gauge_onRouse, this);
-		this._our_dodge.onSleep.Connect(this.gauge_onSleep, this);
-		this._our_dodge.prepare(this.content);
+		this._dodge = new DodgeGauge(122.0, Deg.getRad(52.5), Deg.getRad(127.5), 6.0);
+		this._dodge.onRouse.Connect(this.gauge_onRouse, this);
+		this._dodge.onSleep.Connect(this.gauge_onSleep, this);
+		this._dodge.prepare(this.content);
 	}
 
 	private function prepare_their():Void
@@ -254,6 +254,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this.discard_callout();
 		this.discard_nametag();
 		this.discard_their();
+		this.discard_dodge();
 		this.discard_our();
 		this.discard_special();
 		this.discard_power();
@@ -317,7 +318,6 @@ class descendent.hud.reticle.Hud extends Shape
 	{
 		this.discard_our_vital();
 		this.discard_our_using();
-		this.discard_our_dodge();
 	}
 
 	private function discard_our_vital():Void
@@ -334,12 +334,12 @@ class descendent.hud.reticle.Hud extends Shape
 		this._our_using = null;
 	}
 
-	private function discard_our_dodge():Void
+	private function discard_dodge():Void
 	{
-		this._our_dodge.discard();
-		this._our_dodge.onRouse.Disconnect(this.gauge_onRouse, this);
-		this._our_dodge.onSleep.Disconnect(this.gauge_onSleep, this);
-		this._our_dodge = null;
+		this._dodge.discard();
+		this._dodge.onRouse.Disconnect(this.gauge_onRouse, this);
+		this._dodge.onSleep.Disconnect(this.gauge_onSleep, this);
+		this._dodge = null;
 	}
 
 	private function discard_their():Void
@@ -490,7 +490,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_1.setAlpha(value);
 		this._special_2.setAlpha(value);
 		this._our_vital.setAlpha(value);
-		this._our_dodge.setAlpha(value);
+		this._dodge.setAlpha(value);
 	}
 
 	private function gauge_present():Void
@@ -500,7 +500,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_1.present();
 		this._special_2.present();
 		this._our_vital.present();
-		this._our_dodge.present();
+		this._dodge.present();
 	}
 
 	private function gauge_dismiss():Void
@@ -510,7 +510,7 @@ class descendent.hud.reticle.Hud extends Shape
 		this._special_1.dismiss();
 		this._special_2.dismiss();
 		this._our_vital.dismiss();
-		this._our_dodge.dismiss();
+		this._dodge.dismiss();
 	}
 
 	private function refresh_their_vital_awake():Void
