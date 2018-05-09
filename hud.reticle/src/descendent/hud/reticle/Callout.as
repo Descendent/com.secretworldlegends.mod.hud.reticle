@@ -1,7 +1,8 @@
-import flash.filters.DropShadowFilter;
+import flash.filters.BlurFilter;
 
 import com.GameInterface.Game.Character;
 
+import descendent.hud.reticle.Deg;
 import descendent.hud.reticle.Gauge;
 
 class descendent.hud.reticle.Callout extends Gauge
@@ -74,12 +75,11 @@ class descendent.hud.reticle.Callout extends Gauge
 
 		a._width = o._width;
 		a._height = o._height;
-		a._x = o._x + 1.0;
-		a._y = o._y + 1.0;
 
-//		var f:Array = o.filters;
-//		f.push(new DropShadowFilter(3.0, 45.0, 0x000000, 1.0, 3.0, 3.0, 1.0, 1, false, false, false));
-//		o.filters = f;
+		var d:Number = 2.0 * Math.sin(Deg.getRad(45.0));
+		a._x = o._x + d;
+		a._y = o._y + d;
+		a.filters = [new BlurFilter(2.0, 2.0, 3)];
 
 		this._label = o;
 		this._label_backing = a;
