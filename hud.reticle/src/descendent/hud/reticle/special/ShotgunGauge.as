@@ -22,6 +22,8 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 
 	private static var TAG_ANIMAINFUSED:Number = 9253313;
 
+	private static var TAG_ENRICH:Number = 9255619;
+
 	private static var ABILITY_ODDSANDEVENS:Number = 9255598;
 
 	private static var ABILITY_ENRICH:Number = 9255616;
@@ -103,6 +105,8 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._character.SignalInvisibleBuffAdded.Connect(this.character_onTag, this);
 		this._character.SignalInvisibleBuffUpdated.Connect(this.character_onTag, this);
 		this._character.SignalBuffRemoved.Connect(this.character_onTag, this);
+		this._character.SignalBuffAdded.Connect(this.character_onTag, this);
+		this._character.SignalBuffUpdated.Connect(this.character_onTag, this);
 		SpellBase.SignalPassiveAdded.Connect(this.loadout_onPlant, this);
 		SpellBase.SignalPassiveRemoved.Connect(this.loadout_onPluck, this);
 	}
@@ -304,11 +308,8 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 
 	private function refresh_meter():Void
 	{
-		var tag:BuffData = this._character.m_InvisibleBuffList[ShotgunGauge.TAG_SHELL];
-
-		var value:Number = (tag != null)
-			? tag.m_Count
-			: 0;
+		var value:Number = this.count(this._character.m_InvisibleBuffList[ShotgunGauge.TAG_SHELL])
+			+ this.count(this._character.m_BuffList[ShotgunGauge.TAG_ENRICH]);
 
 		if (value == this._meter_x_value.getMeter())
 			return;
@@ -320,6 +321,13 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 			onCompleteParams: [value],
 			onCompleteScope: this
 		});
+	}
+
+	private function count(tag:BuffData):Number
+	{
+		return (tag != null)
+			? tag.m_Count
+			: 0;
 	}
 
 	private function getMeter():Number
@@ -482,6 +490,8 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._character.SignalInvisibleBuffAdded.Disconnect(this.character_onTag, this);
 		this._character.SignalInvisibleBuffUpdated.Disconnect(this.character_onTag, this);
 		this._character.SignalBuffRemoved.Disconnect(this.character_onTag, this);
+		this._character.SignalBuffAdded.Disconnect(this.character_onTag, this);
+		this._character.SignalBuffUpdated.Disconnect(this.character_onTag, this);
 		SpellBase.SignalPassiveAdded.Disconnect(this.loadout_onPlant, this);
 		SpellBase.SignalPassiveRemoved.Disconnect(this.loadout_onPluck, this);
 
@@ -701,6 +711,8 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 			this.refresh_color();
 		else if (which == ShotgunGauge.TAG_ANIMAINFUSED)
 			this.refresh_color();
+		else if (which == ShotgunGauge.TAG_ENRICH)
+			this.refresh_meter();
 	}
 
 	private function loadout_onPlant(which:Number, name:String, icon:String, item:Number, palette:Number):Void
