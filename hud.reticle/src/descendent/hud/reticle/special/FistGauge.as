@@ -161,7 +161,7 @@ class descendent.hud.reticle.special.FistGauge extends Gauge
 
 		var value:Number = this._meter.getMeter();
 
-		if (value >= FistGauge.FURY_MAX)
+		if (value >= 60)
 			return true;
 
 		return false;

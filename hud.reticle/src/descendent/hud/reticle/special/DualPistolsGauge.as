@@ -147,8 +147,8 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 			: this._r;
 
 		this._meter_1_b = new DefaultArcBarMeter(r, this._angle_a, this._angle_b, thickness,
-			new Color(0x4895FF, 25), new Color(0x4895FF, 100), new Color(0xFFFFFF, 100), 1.0, false);
-//			new Color(0x1EA1FF, 25), new Color(0x1EA1FF, 100), new Color(0xFFFFFF, 100), 1.0, false);
+			new Color(0x4895FF, 33), new Color(0x4895FF, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0x1EA1FF, 33), new Color(0x1EA1FF, 100), new Color(0xFFFFFF, 100), 1.0, false);
 		this._meter_1_b.prepare(this.content);
 	}
 
@@ -160,8 +160,8 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 			: this._r;
 
 		this._meter_1_c = new DefaultArcBarMeter(r, this._angle_a, this._angle_b, thickness,
-			new Color(0xFF2E2E, 25), new Color(0xFF2E2E, 100), new Color(0xFFFFFF, 100), 1.0, false);
-//			new Color(0xFF3C3C, 25), new Color(0xFF3C3C, 100), new Color(0xFFFFFF, 100), 1.0, false);
+			new Color(0xFF2E2E, 33), new Color(0xFF2E2E, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0xFF3C3C, 33), new Color(0xFF3C3C, 100), new Color(0xFFFFFF, 100), 1.0, false);
 		this._meter_1_c.prepare(this.content);
 	}
 
@@ -180,8 +180,8 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 			: this._r;
 
 		this._meter_2_a = new DefaultArcBarMeter(r, this._angle_a, this._angle_b, thickness,
-//			new Color(0xA3A3A3, 25), new Color(0xA3A3A3, 100), new Color(0xFFFFFF, 100), 1.0, false);
-			new Color(0xD7D7D7, 25), new Color(0xD7D7D7, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0xA3A3A3, 33), new Color(0xA3A3A3, 100), new Color(0xFFFFFF, 100), 1.0, false);
+			new Color(0xD7D7D7, 33), new Color(0xD7D7D7, 100), new Color(0xFFFFFF, 100), 1.0, false);
 		this._meter_2_a.prepare(this.content);
 	}
 
@@ -193,8 +193,8 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 			: this._r;
 
 		this._meter_2_b = new DefaultArcBarMeter(r, this._angle_a, this._angle_b, thickness,
-			new Color(0x4895FF, 25), new Color(0x4895FF, 100), new Color(0xFFFFFF, 100), 1.0, false);
-//			new Color(0x1EA1FF, 25), new Color(0x1EA1FF, 100), new Color(0xFFFFFF, 100), 1.0, false);
+			new Color(0x4895FF, 33), new Color(0x4895FF, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0x1EA1FF, 33), new Color(0x1EA1FF, 100), new Color(0xFFFFFF, 100), 1.0, false);
 		this._meter_2_b.prepare(this.content);
 	}
 
@@ -206,8 +206,8 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 			: this._r;
 
 		this._meter_2_c = new DefaultArcBarMeter(r, this._angle_a, this._angle_b, thickness,
-			new Color(0xFF2E2E, 25), new Color(0xFF2E2E, 100), new Color(0xFFFFFF, 100), 1.0, false);
-//			new Color(0xFF3C3C, 25), new Color(0xFF3C3C, 100), new Color(0xFFFFFF, 100), 1.0, false);
+			new Color(0xFF2E2E, 33), new Color(0xFF2E2E, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0xFF3C3C, 33), new Color(0xFF3C3C, 100), new Color(0xFFFFFF, 100), 1.0, false);
 		this._meter_2_c.prepare(this.content);
 	}
 
@@ -227,8 +227,8 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		var notch:/*Number*/Array = [1000, 2500];
 
 		this._meter_x_a = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-//			new Color(0xA3A3A3, 25), new Color(0xA3A3A3, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
-			new Color(0xD7D7D7, 25), new Color(0xD7D7D7, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
+//			new Color(0xA3A3A3, 33), new Color(0xA3A3A3, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
+			new Color(0xD7D7D7, 33), new Color(0xD7D7D7, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
 		this._meter_x_a.setNotch(notch);
 		this._meter_x_a.prepare(this.content);
 	}
@@ -238,8 +238,8 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		var notch:/*Number*/Array = [1000, 2500];
 
 		this._meter_x_b = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0x4895FF, 25), new Color(0x4895FF, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
-//			new Color(0x1EA1FF, 25), new Color(0x1EA1FF, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
+			new Color(0x4895FF, 33), new Color(0x4895FF, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
+//			new Color(0x1EA1FF, 33), new Color(0x1EA1FF, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
 		this._meter_x_b.setNotch(notch);
 		this._meter_x_b.prepare(this.content);
 	}
@@ -249,8 +249,8 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		var notch:/*Number*/Array = [1000, 2500];
 
 		this._meter_x_b_conditional = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0x4895FF, 25), new Color(0x4895FF, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX + 2000, false);
-//			new Color(0x1EA1FF, 25), new Color(0x1EA1FF, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX + 2000, false);
+			new Color(0x4895FF, 33), new Color(0x4895FF, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX + 2000, false);
+//			new Color(0x1EA1FF, 33), new Color(0x1EA1FF, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX + 2000, false);
 		this._meter_x_b_conditional.setNotch(notch);
 		this._meter_x_b_conditional.prepare(this.content);
 	}
@@ -260,8 +260,8 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		var notch:/*Number*/Array = [1000, 2500];
 
 		this._meter_x_c = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
-			new Color(0xFF2E2E, 25), new Color(0xFF2E2E, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
-//			new Color(0xFF3C3C, 25), new Color(0xFF3C3C, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
+			new Color(0xFF2E2E, 33), new Color(0xFF2E2E, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
+//			new Color(0xFF3C3C, 33), new Color(0xFF3C3C, 100), new Color(0xFFFFFF, 100), DualPistolsGauge.MATCH_MAX, false);
 		this._meter_x_c.setNotch(notch);
 		this._meter_x_c.prepare(this.content);
 	}
@@ -306,7 +306,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 	private function timerBegin_process():Void
 	{
 		clearInterval(this._timer);
-		this._timer = setInterval(this._refresh_meter, 100);
+		this._timer = setInterval(this._refresh_meter, 200);
 
 		this.refresh_meter();
 	}

@@ -84,7 +84,7 @@ class descendent.hud.reticle.DodgeGauge extends Gauge
 	private function timerBegin():Void
 	{
 		clearInterval(this._timer);
-		this._timer = setInterval(this._refresh_meter, 300);
+		this._timer = setInterval(this._refresh_meter, 200);
 
 		this.refresh_meter();
 		this._meter.present();
