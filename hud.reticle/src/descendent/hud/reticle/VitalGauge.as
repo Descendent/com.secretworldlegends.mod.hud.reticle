@@ -54,6 +54,8 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	private var _value_current:Number;
 
 	private var _value_barrier:Number;
+	
+	private var _value_barrier_maximum:Number;
 
 	private var _value_pending:Number;
 
@@ -80,6 +82,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	{
 		super.prepare(o);
 
+		this.prepare_meter_barrier();
 		this.prepare_shaft();
 		this.prepare_meter();
 		this.prepare_notch();
@@ -135,7 +138,6 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function prepare_meter():Void
 	{
-		this.prepare_meter_barrier();
 		this.prepare_meter_pending();
 		this.prepare_meter_current();
 	}
@@ -159,12 +161,17 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._meter_current_b = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			null, new Color(0xFF4646, 100), new Color(0xFFFFFF, 100), 1.0, false);
 //			null, new Color(0xFFB1B1, 100), new Color(0xFFFFFF, 100), 1.0, false);
+		var notches:/*Number*/Array = [0.25, 0.50, 0.75];
+		this._meter_current_b.setNotch(notches);
 		this._meter_current_b.prepare(this.content);
 	}
 
 	private function prepare_meter_barrier():Void
 	{
-		this._meter_barrier = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
+		var border_thickness:Number = this._thickness * 0.20;
+		var padding_degrees:Number = border_thickness / this._r;
+				
+		this._meter_barrier = new ReflectArcBarMeter(this._r - border_thickness, this._angle_a - padding_degrees, this._angle_b + padding_degrees, this._thickness + 2 * border_thickness,
 			null, new Color(0xFFED70, 100), new Color(0xFFFFFF, 100), 1.0, false);
 //			null, new Color(0xFFF585, 100), new Color(0xFFFFFF, 100), 1.0, false);
 //			null, new Color(0xFFFFFF, 100), new Color(0xFFFFFF, 100), 1.0, false);
@@ -242,6 +249,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._value_maximum = this._dynel.GetStat(_global.Enums.Stat.e_Life, 2);
 		this._value_current = this._dynel.GetStat(_global.Enums.Stat.e_Health, 2);
 		this._value_barrier = this._dynel.GetStat(_global.Enums.Stat.e_BarrierHealthPool, 2);
+		this._value_barrier_maximum = this._value_barrier == 0 ? Number.MAX_VALUE : this._value_barrier;
 		this._value_pending = this._value_current;
 
 		if (this._value_maximum == 0)
@@ -330,6 +338,9 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function setBarrier(value:Number):Void
 	{
+		if (value > this._value_barrier) {
+			this._value_barrier_maximum = value;
+		}
 		this._value_barrier = value;
 
 		this.refresh_meter();
@@ -347,13 +358,9 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		else
 			this._meter_pending.present();
 
-		var combine:Number = Math.max(this._value_current, this._value_pending) + this._value_barrier;
-		var maximum:Number = Math.max(combine, this._value_maximum);
-
-		this._meter_current.setMeter(this._value_current / maximum);
-		this._meter_barrier.setMeter(combine / maximum);
-		this._meter_pending.setMeter(this._value_pending / maximum);
-		this._notch.setMeter(combine / maximum);
+		this._meter_current.setMeter(this._value_current / this._value_maximum);
+		this._meter_barrier.setMeter(this._value_barrier / this._value_barrier_maximum);
+		this._meter_pending.setMeter(this._value_pending / this._value_maximum);
 
 		this.refresh_awake();
 	}
@@ -539,6 +546,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._value_maximum = 0;
 		this._value_current = 0;
 		this._value_barrier = 0;
+		this._value_barrier_maximum = Number.MAX_VALUE;
 		this._value_pending = 0;
 
 		this.sleep();
