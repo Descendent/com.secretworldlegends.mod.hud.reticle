@@ -58,6 +58,8 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	private var _value_barrier_maximum:Number;
 
 	private var _value_pending:Number;
+	
+	private var _previous_barriers:Object = new Object();
 
 	public function VitalGauge(r:Number, angle_a:Number, angle_b:Number, thickness:Number)
 	{
@@ -249,7 +251,9 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._value_maximum = this._dynel.GetStat(_global.Enums.Stat.e_Life, 2);
 		this._value_current = this._dynel.GetStat(_global.Enums.Stat.e_Health, 2);
 		this._value_barrier = this._dynel.GetStat(_global.Enums.Stat.e_BarrierHealthPool, 2);
-		this._value_barrier_maximum = this._value_barrier == 0 ? Number.MAX_VALUE : this._value_barrier;
+		if (this._previous_barriers[this._dynel.GetID()] == null)
+			this._previous_barriers[this._dynel.GetID()] = this._value_barrier;
+		this._value_barrier_maximum = this._value_barrier == 0 ? Number.MAX_VALUE : this._previous_barriers[this._dynel.GetID()];
 		this._value_pending = this._value_current;
 
 		if (this._value_maximum == 0)
@@ -340,6 +344,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	{
 		if (value > this._value_barrier) {
 			this._value_barrier_maximum = value;
+			this._previous_barriers[this._dynel.GetID()] = value;
 		}
 		this._value_barrier = value;
 
@@ -524,6 +529,9 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	{
 		if (this._dynel == null)
 			return;
+			
+		if (this._dynel.IsDead())
+			delete this._previous_barriers[this._dynel.GetID()];
 
 		this._dynel.SignalStatChanged.Disconnect(this.dynel_onValue, this);
 
