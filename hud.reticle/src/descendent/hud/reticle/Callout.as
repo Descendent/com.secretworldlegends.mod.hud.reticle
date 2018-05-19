@@ -14,6 +14,8 @@ class descendent.hud.reticle.Callout extends Gauge
 	private var _label_backing:TextField;
 
 	private var _character:Character;
+	
+	private var _previous_enemy_character:Character;
 
 	public function Callout(w:Number)
 	{
@@ -26,9 +28,15 @@ class descendent.hud.reticle.Callout extends Gauge
 	{
 		if (value == this._character)
 			return;
+			
+		if (value != null && value.IsEnemy())
+			this._previous_enemy_character = value;
 
 		this.discard_character();
-		this.prepare_character(value);
+		if (value == null)
+			this.prepare_character(this._previous_enemy_character);
+		else
+			this.prepare_character(value);
 	}
 
 	public function prepare(o:MovieClip):Void
