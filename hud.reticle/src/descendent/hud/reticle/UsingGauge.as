@@ -27,8 +27,6 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 	private var _meter_b_conditional:IMeter;
 
 	private var _character:Character;
-	
-	private var _previous_enemy_character:Character;
 
 	private var _timer:Number;
 
@@ -56,16 +54,10 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 	{
 		if (value == this._character)
 			return;
-			
-		if (value != null && value.IsEnemy())
-			this._previous_enemy_character = value;
 
 		this.discard_character();
 		
-		if (value == null)
-			this.prepare_character(this._previous_enemy_character);
-		else
-			this.prepare_character(value);
+		this.prepare_character(value);
 
 		this.refresh_color();
 	}
