@@ -176,12 +176,10 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		if (this._value_maximum == 0)
 			return;
 
-		this.refresh_meter();
-
 		this._meter_current.present();
-		this._meter_barrier.present();
-		this._meter_pending.present();
 		this._shaft.present();
+
+		this.refresh_meter();
 
 		this._dynel.SignalStatChanged.Connect(this.dynel_onValue, this);
 	}
