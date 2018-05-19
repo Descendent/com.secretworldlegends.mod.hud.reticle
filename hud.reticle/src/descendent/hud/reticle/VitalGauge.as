@@ -404,6 +404,10 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._dynel = null;
 		this._character = null;
 
+		TweenMax.killTweensOf(this, {
+			setPending: true
+		});
+
 		this._meter_current_a.dismiss();
 		this._meter_current_b.dismiss();
 		this._meter_barrier.dismiss();
