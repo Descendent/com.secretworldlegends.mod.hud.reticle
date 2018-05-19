@@ -95,9 +95,9 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._character = Character.GetClientCharacter();
 
 		this.prepare_meter();
+		this.prepare_notch();
 
 		this.refresh_meter();
-		this.prepare_notch();
 		this.refresh_maximum();
 		this.refresh_color();
 		this.refresh_pulse();
@@ -134,7 +134,6 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._meter_a_shaft = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0x9B52CE, 33), new Color(0x9B52CE, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_a_shaft.setNotch(notch);
-		this._meter_a_shaft.setMeter(0);
 		this._meter_a_shaft.prepare(this.content);
 	}
 
@@ -166,7 +165,6 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._meter_b_shaft = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0xFD853D, 33), new Color(0xFD853D, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_b_shaft.setNotch(notch);
-		this._meter_b_shaft.setMeter(0);
 		this._meter_b_shaft.prepare(this.content);
 	}
 
@@ -198,7 +196,6 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._meter_c_shaft = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0x009CC9, 33), new Color(0x009CC9, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_c_shaft.setNotch(notch);
-		this._meter_c_shaft.setMeter(0);
 		this._meter_c_shaft.prepare(this.content);
 	}
 
@@ -230,7 +227,6 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._meter_d_shaft = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0x0CB700, 33), new Color(0x0CB700, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_d_shaft.setNotch(notch);
-		this._meter_d_shaft.setMeter(0);
 		this._meter_d_shaft.prepare(this.content);
 	}
 
@@ -262,7 +258,6 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._meter_x_shaft = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0xD7D7D7, 33), new Color(0xD7D7D7, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_x_shaft.setNotch(notch);
-		this._meter_x_shaft.setMeter(0);
 		this._meter_x_shaft.prepare(this.content);
 	}
 
