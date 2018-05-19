@@ -46,6 +46,8 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	private var _notch_our:IMeter;
 
 	private var _dynel:Dynel;
+	
+	private var _previous_enemy_dynel:Dynel;
 
 	private var _character:Character;
 
@@ -75,9 +77,15 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	{
 		if (value == this._dynel)
 			return;
+			
+		if (value != null && value.IsEnemy())
+			this._previous_enemy_dynel = value;
 
 		this.discard_dynel();
-		this.prepare_dynel(value);
+		if (value == null)
+			this.prepare_dynel(_previous_enemy_dynel)
+		else 
+			this.prepare_dynel(value)
 	}
 
 	public function prepare(o:MovieClip):Void
