@@ -251,7 +251,7 @@ class descendent.hud.reticle.Nametag extends Gauge
 			return;
 
 		var which:ID32 = this._dynel.GetID();
-		var label:String = LDBFormat.Translate(this._dynel.GetName());
+		var label:String = LDBFormat.Translate(this._dynel.GetName() + " (" + this._dynel.GetID() + ")");
 
 		var value:String;
 		if ((which.IsPlayer())

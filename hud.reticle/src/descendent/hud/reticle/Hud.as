@@ -72,6 +72,8 @@ class descendent.hud.reticle.Hud extends Shape
 	private var _reticle_hover:ID32;
 
 	private var _reticle_focus:ID32;
+	
+	private var _previous_enemy_dynel:Dynel;
 
 	public function Hud()
 	{
@@ -527,6 +529,13 @@ class descendent.hud.reticle.Hud extends Shape
 			: this._reticle_hover;
 
 		var dynel:Dynel = Dynel.GetDynel(which);
+		
+		if (dynel.IsEnemy())
+			_previous_enemy_dynel = dynel;
+		
+		if (dynel == null)
+			dynel = _previous_enemy_dynel;
+		
 		var character:Character = Character.GetCharacter(which);
 
 		if ((character.GetStat(_global.Enums.Stat.e_NPCFlags, 2) & Hud.NPCFLAGS_HIDENAMETAG) != 0)
