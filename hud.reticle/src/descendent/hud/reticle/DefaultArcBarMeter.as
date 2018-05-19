@@ -1,3 +1,4 @@
+import flash.filters.GlowFilter;
 import flash.geom.Point;
 
 import com.greensock.TweenMax;
@@ -120,11 +121,20 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 		if (this._color_shaft == null)
 			return;
 
+		var s:MovieClip = this.content.createEmptyMovieClip("", this.content.getNextHighestDepth());
+
+		s.lineStyle();
+		s.beginFill(0x000000, 100);
+		this._shape.traceShape(s, new Point(0.0, 0.0));
+		s.endFill();
+
+		s.filters = [new GlowFilter(0x000000, 0.8, 2.0, 2.0, 1, 3, false, true)];
+
 		var c:Number = this._color_shaft.color;
-		var t:Number = this._color_shaft.alpha / 100.0;
-		var r:Number = Math.floor(((c & 0xFF0000) >> 16) * t);
-		var g:Number = Math.floor(((c & 0x00FF00) >> 8) * t);
-		var b:Number = Math.floor(((c & 0x0000FF) >> 0) * t);
+		var k:Number = this._color_shaft.alpha / 100.0;
+		var r:Number = Math.floor(((c & 0xFF0000) >> 16) * k);
+		var g:Number = Math.floor(((c & 0x00FF00) >> 8) * k);
+		var b:Number = Math.floor(((c & 0x0000FF) >> 0) * k);
 
 		var o:MovieClip = this.content.createEmptyMovieClip("", this.content.getNextHighestDepth());
 
