@@ -533,7 +533,7 @@ class descendent.hud.reticle.Hud extends Shape
 		if (dynel.IsEnemy())
 			_previous_enemy_dynel = dynel;
 		
-		if (dynel == null)
+		if (dynel == null && !_previous_enemy_dynel.IsDead())
 			dynel = _previous_enemy_dynel;
 		
 		var character:Character = Character.GetCharacter(which);
