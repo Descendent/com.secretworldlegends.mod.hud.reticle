@@ -73,7 +73,10 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private var _reticle_focus:ID32;
 	
-	private var _previous_enemy_dynel:Dynel;
+	/**
+	 * ID32 of the most recent enemy target.
+	 */
+	private var _sticky_id:ID32;
 
 	public function Hud()
 	{
@@ -527,16 +530,32 @@ class descendent.hud.reticle.Hud extends Shape
 		var which:ID32 = (!this._reticle_focus.IsNull())
 			? this._reticle_focus
 			: this._reticle_hover;
+		// Value that determines if we're using our sticky target.
+		var use_sticky_target:Boolean = false;
+			
+		if (which.IsNull())
+		{
+			// If our new target is a null ID, the user has looked away from
+			// the enemy. We should switch over to using the sticky target.
+			which = this._sticky_id;
+			use_sticky_target = true;
+		}
 
 		var dynel:Dynel = Dynel.GetDynel(which);
 		
-		if (dynel.IsEnemy())
-			_previous_enemy_dynel = dynel;
-		
-		if (dynel == null && !_previous_enemy_dynel.IsDead())
-			dynel = _previous_enemy_dynel;
+		if (dynel.IsEnemy() && !dynel.IsDead())
+			// If our target is a living enemy, save that as our new sticky target.
+			this._sticky_id = which;
 		
 		var character:Character = Character.GetCharacter(which);
+		
+		if (use_sticky_target && (character.IsGhosting() || character.IsDead()))
+		{
+			// If the sticky target is ghosting or dead, we should stop tracking it.
+			_sticky_id = null;
+			dynel = null;
+			character = null;
+		}
 
 		if ((character.GetStat(_global.Enums.Stat.e_NPCFlags, 2) & Hud.NPCFLAGS_HIDENAMETAG) != 0)
 		{
@@ -546,9 +565,11 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._their_vital.setSubject(dynel);
 		this._their_using.setSubject(character);
-		this._nametag.setSubject(dynel);
+		// Don't use sticky targeting for the nametag.
+		this._nametag.setSubject(!use_sticky_target ? dynel : null);
 		this._callout.setSubject(character);
-		this._rangefinder.setSubject(dynel);
+		// Don't use sticky targeting for the rangefinder.
+		this._rangefinder.setSubject(!use_sticky_target ? dynel : null);
 	}
 
 	private function character_onEnter():Void
