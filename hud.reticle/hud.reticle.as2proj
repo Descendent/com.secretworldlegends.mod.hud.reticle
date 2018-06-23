@@ -16,6 +16,7 @@
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
     <class path="src" />
+    <class path="..\submodules\tweener-as2\tweener\src" />
     <class path="..\submodules\greensock-as2\src" />
     <class path="..\submodules\secretworldlegends-as2\secretworldlegends\src" />
     <class path="..\submodules\secretworldlegends-as2\flash\src" />
