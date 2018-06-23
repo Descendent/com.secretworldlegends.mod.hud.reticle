@@ -2,8 +2,7 @@ import com.GameInterface.Game.BuffData;
 import com.GameInterface.Game.Character;
 import com.GameInterface.Game.Shortcut;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
@@ -144,9 +143,10 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 		if (value == this._meter_a.getMeter())
 			return;
 
-		TweenMax.to(this._meter_a, 0.3, {
+		Tweener.addTween(this._meter_a, {
 			setMeter: value,
-			ease: Linear.easeNone,
+			time: 0.3,
+			transition: "linear",
 			onComplete: this.meter_a_onMeter,
 			onCompleteParams: [value],
 			onCompleteScope: this
@@ -164,9 +164,10 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 		if (value == this._meter_b.getMeter())
 			return;
 
-		TweenMax.to(this._meter_b, 0.3, {
+		Tweener.addTween(this._meter_b, {
 			setMeter: value,
-			ease: Linear.easeNone,
+			time: 0.3,
+			transition: "linear",
 			onComplete: this.meter_b_onMeter,
 			onCompleteParams: [value],
 			onCompleteScope: this
@@ -251,7 +252,7 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 		if (this._meter_a == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_a);
+		Tweener.removeTweens(this._meter_a);
 
 		this._meter_a.discard();
 		this._meter_a = null;
@@ -262,7 +263,7 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 		if (this._meter_b == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_b);
+		Tweener.removeTweens(this._meter_b);
 
 		this._meter_b.discard();
 		this._meter_b = null;
@@ -273,7 +274,7 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 		if (this._bloom == null)
 			return;
 
-		TweenMax.killTweensOf(this._bloom);
+		Tweener.removeTweens(this._bloom);
 
 		this._bloom.discard();
 		this._bloom = null;
@@ -281,10 +282,11 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 
 	private function bloom():Void
 	{
-		TweenMax.fromTo(this._bloom, 1.5, {
-			setAlpha: 100
-		}, {
+		this._bloom.setAlpha(100);
+		Tweener.addTween(this._bloom, {
 			setAlpha: 0,
+			time: 1.5,
+			transition: "linear",
 			onStart: this._bloom.present,
 			onStartScope: this._bloom,
 			onComplete: this._bloom.dismiss,

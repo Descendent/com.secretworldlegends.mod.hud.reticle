@@ -8,8 +8,7 @@ import com.GameInterface.Game.BuffData;
 import com.GameInterface.Game.Character;
 import com.Utils.ID32;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
@@ -113,11 +112,11 @@ class descendent.hud.reticle.special.AssaultRifleGauge extends Gauge
 			? tag.m_TotalTime - (UtilsBase.GetNormalTime() * 1000)
 			: 0;
 
-		TweenMax.fromTo(this._meter, 0.3, {
-			setMeter: 0
-		}, {
+		this._meter.setMeter(0);
+		Tweener.addTween(this._meter, {
 			setMeter: value - 300,
-			ease: Linear.easeNone,
+			time: 0.3,
+			transition: "linear",
 			onComplete: this.timerBegin_process,
 			onCompleteParams: null,
 			onCompleteScope: this
@@ -151,11 +150,13 @@ class descendent.hud.reticle.special.AssaultRifleGauge extends Gauge
 		if (value == this._meter.getMeter())
 			return;
 
-		TweenMax.fromTo(this._meter, value / 1000, {
-			setMeter: value
-		}, {
+		Tweener.addTween(this._meter, {
 			setMeter: 0,
-			ease: Linear.easeNone
+			time: value / 1000,
+			transition: "linear",
+			onStart: this._meter.setMeter,
+			onStartParams: [value],
+			onStartScope: this._meter
 		});
 	}
 
@@ -234,7 +235,7 @@ class descendent.hud.reticle.special.AssaultRifleGauge extends Gauge
 		if (this._meter == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter);
+		Tweener.removeTweens(this._meter);
 
 		this._meter.discard();
 		this._meter = null;

@@ -2,8 +2,7 @@ import com.GameInterface.SpellBase;
 import com.GameInterface.Game.BuffData;
 import com.GameInterface.Game.Character;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
@@ -115,9 +114,10 @@ class descendent.hud.reticle.special.ElementalismGauge extends Gauge
 		if (value == this._meter_a.getMeter())
 			return;
 
-		TweenMax.to(this._meter_a, 0.3, {
+		Tweener.addTween(this._meter_a, {
 			setMeter: value,
-			ease: Linear.easeNone
+			time: 0.3,
+			transition: "linear"
 		});
 	}
 
@@ -170,7 +170,7 @@ class descendent.hud.reticle.special.ElementalismGauge extends Gauge
 		if (this._meter_a == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_a);
+		Tweener.removeTweens(this._meter_a);
 
 		this._meter_a.discard();
 		this._meter_a = null;
@@ -181,7 +181,7 @@ class descendent.hud.reticle.special.ElementalismGauge extends Gauge
 		if (this._meter_b == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_b);
+		Tweener.removeTweens(this._meter_b);
 
 		this._meter_b.discard();
 		this._meter_b = null;

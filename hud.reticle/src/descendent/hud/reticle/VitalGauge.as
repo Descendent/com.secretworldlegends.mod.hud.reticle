@@ -2,8 +2,7 @@ import com.GameInterface.Game.Character;
 import com.GameInterface.Game.Dynel;
 import com.Utils.Colors;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.Gauge;
@@ -286,9 +285,10 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 			? 0.0
 			: 0.3;
 
-		TweenMax.to(this, timer, {
+		Tweener.addTween(this, {
 			setPending: value,
-			ease: Linear.easeNone
+			time: timer,
+			transition: "linear"
 		});
 	}
 
@@ -384,7 +384,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	public function discard():Void
 	{
-		TweenMax.killTweensOf(this);
+		Tweener.removeTweens(this);
 
 		this.discard_dynel();
 		this.discard_notch();
@@ -523,9 +523,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._dynel = null;
 		this._character = null;
 
-		TweenMax.killTweensOf(this, {
-			setPending: true
-		});
+		Tweener.removeTweens(this, "setPending");
 
 		this._meter_current_a.dismiss();
 		this._meter_current_b.dismiss();

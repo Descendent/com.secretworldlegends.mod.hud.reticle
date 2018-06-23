@@ -4,8 +4,7 @@ import com.GameInterface.InventoryItem;
 import com.GameInterface.Resource;
 import com.Utils.ID32;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
@@ -50,9 +49,10 @@ class descendent.hud.reticle.PowerGauge extends Gauge
 
 	private function setGauge(value:Number):Void
 	{
-		TweenMax.to(this._meter, 0.3, {
+		Tweener.addTween(this._meter, {
 			setMeter: value,
-			ease: Linear.easeNone,
+			time: 0.3,
+			transition: "linear",
 			onComplete: this.meter_onMeter,
 			onCompleteParams: [value],
 			onCompleteScope: this
@@ -168,7 +168,7 @@ class descendent.hud.reticle.PowerGauge extends Gauge
 
 		this._power = 0;
 
-		TweenMax.killTweensOf(this._meter);
+		Tweener.removeTweens(this._meter);
 
 		this._meter.discard();
 		this._meter = null;
