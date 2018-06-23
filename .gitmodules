@@ -1,9 +1,6 @@
 [submodule "submodules/secretworldlegends-as2"]
 	path = submodules/secretworldlegends-as2
 	url = https://github.com/Descendent/secretworldlegends-as2.git
-[submodule "submodules/greensock-as2"]
-	path = submodules/greensock-as2
-	url = https://github.com/Descendent/greensock-as2.git
 [submodule "submodules/tweener-as2"]
 	path = submodules/tweener-as2
 	url = https://github.com/Descendent/tweener-as2.git
