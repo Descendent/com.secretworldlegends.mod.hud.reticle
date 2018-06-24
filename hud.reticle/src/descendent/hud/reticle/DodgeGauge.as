@@ -6,8 +6,7 @@ import com.GameInterface.Game.BuffData;
 import com.GameInterface.ProjectUtils;
 import com.GameInterface.UtilsBase;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.Gauge;
@@ -115,11 +114,11 @@ class descendent.hud.reticle.DodgeGauge extends Gauge
 		if (value == this._meter.getMeter())
 			return;
 
-		TweenMax.fromTo(this._meter, (tag.m_TotalTime - t) / 1000, {
-			setMeter: value
-		}, {
+		this._meter.setMeter(value);
+		Tweener.addTween(this._meter, {
 			setMeter: 1.0,
-			ease: Linear.easeNone
+			time: (tag.m_TotalTime - t) / 1000,
+			transition: "linear"
 		});
 	}
 
@@ -143,7 +142,7 @@ class descendent.hud.reticle.DodgeGauge extends Gauge
 		if (this._meter == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter);
+		Tweener.removeTweens(this._meter);
 
 		this._meter.discard();
 		this._meter = null;

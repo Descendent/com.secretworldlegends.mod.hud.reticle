@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<movie width="1920" height="1080" framerate="30">
+	<background color="#000000"/>
+	<frame>
+		<library>
+			<clip id="gfxfontlib.swf" import="res\gfxfontlib.swf"/>
+		</library>
+	</frame>
+</movie>

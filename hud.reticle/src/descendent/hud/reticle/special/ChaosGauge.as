@@ -1,10 +1,11 @@
+import mx.utils.Delegate;
+
 import com.GameInterface.SpellBase;
 import com.GameInterface.Game.BuffData;
 import com.GameInterface.Game.Character;
 import com.GameInterface.Game.Shortcut;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
@@ -35,7 +36,9 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 
 	private var _meter:IMeter;
 
-	private var _suspend:Boolean;
+	private var _suspend:Number;
+
+	private var _restore:Function;
 
 	public function ChaosGauge(r:Number, angle_a:Number, angle_b:Number, thickness:Number,
 		equip:Number)
@@ -47,6 +50,8 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 		this._angle_b = angle_b;
 		this._thickness = thickness;
 		this._equip = equip;
+
+		this._restore = Delegate.create(this, this.restore);
 	}
 
 	public function prepare(o:MovieClip):Void
@@ -91,9 +96,10 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 		if (value == ChaosGauge.PARADOX_MAX)
 			this.suspend();
 
-		TweenMax.to(this._meter, 0.3, {
+		Tweener.addTween(this._meter, {
 			setMeter: value,
-			ease: Linear.easeNone
+			time: 0.3,
+			transition: "linear"
 		});
 	}
 
@@ -128,7 +134,7 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 		SpellBase.SignalPassiveAdded.Disconnect(this.loadout_onPlant, this);
 		SpellBase.SignalPassiveRemoved.Disconnect(this.loadout_onPluck, this);
 
-		TweenMax.killTweensOf(this.restore);
+		clearTimeout(this._suspend);
 
 		this.discard_meter();
 
@@ -140,7 +146,7 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 		if (this._meter == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter);
+		Tweener.removeTweens(this._meter);
 
 		this._meter.discard();
 		this._meter = null;
@@ -148,20 +154,18 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 
 	private function suspend():Void
 	{
-		if (this._suspend)
+		if (this._suspend != null)
 			return;
 
-		this._suspend = true;
-
-		TweenMax.delayedCall(0.8, this.restore, null, this, false);
+		this._suspend = setTimeout(this._restore, 800);
 	}
 
 	private function restore():Void
 	{
-		if (!this._suspend)
+		if (this._suspend == null)
 			return;
 
-		this._suspend = false;
+		this._suspend = null;
 
 		this.refresh_meter();
 	}
@@ -171,7 +175,7 @@ class descendent.hud.reticle.special.ChaosGauge extends Gauge
 		if (which != ChaosGauge.TAG_PARADOX)
 			return;
 
-		if (this._suspend)
+		if (this._suspend != null)
 			return;
 
 		this.refresh_meter();

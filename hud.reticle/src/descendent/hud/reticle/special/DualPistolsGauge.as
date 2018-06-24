@@ -8,8 +8,7 @@ import com.GameInterface.Game.BuffData;
 import com.GameInterface.Game.Character;
 import com.Utils.ID32;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
@@ -292,11 +291,11 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 
 		meter.present();
 
-		TweenMax.fromTo(meter, 0.3, {
-			setMeter: 0
-		}, {
+		meter.setMeter(0);
+		Tweener.addTween(meter, {
 			setMeter: value - 300,
-			ease: Linear.easeNone,
+			time: 0.3,
+			transition: "linear",
 			onComplete: this.timerBegin_process,
 			onCompleteParams: null,
 			onCompleteScope: this
@@ -333,11 +332,11 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (value == meter.getMeter())
 			return;
 
-		TweenMax.fromTo(meter, value / 1000, {
-			setMeter: value
-		}, {
+		meter.setMeter(value);
+		Tweener.addTween(meter, {
 			setMeter: 0,
-			ease: Linear.easeNone
+			time: value / 1000,
+			transition: "linear"
 		});
 	}
 
@@ -422,11 +421,11 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 
 	private function refresh_color_1_tween(meter:IMeter):Void
 	{
-		TweenMax.fromTo(meter, 0.3, {
-			setMeter: 0.0
-		}, {
+		meter.setMeter(0.0);
+		Tweener.addTween(meter, {
 			setMeter: 1.0,
-			ease: Linear.easeNone
+			time: 0.3,
+			transition: "linear"
 		});
 	}
 
@@ -467,18 +466,19 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 
 	private function refresh_color_2_tween(meter:IMeter):Void
 	{
-		TweenMax.fromTo(meter, 0.3, {
-			setMeter: 0.0
-		}, {
+		meter.setMeter(0.0);
+		Tweener.addTween(meter, {
 			setMeter: 1.0,
-			ease: Linear.easeNone
+			time: 0.3,
+			transition: "linear"
 		});
 
 		// Support for Six Line used during match
-		TweenMax.to([this._meter_1_a, this._meter_1_b, this._meter_1_c], 0.3, {
+		Tweener.addTween([this._meter_1_a, this._meter_1_b, this._meter_1_c], {
 			setMeter: 1.0,
-			ease: Linear.easeNone,
-			overwrite: "none"
+			time: 0.3,
+			transition: "linear",
+			overwrite: false
 		});
 	}
 
@@ -591,7 +591,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (this._meter_1_a == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_1_a);
+		Tweener.removeTweens(this._meter_1_a);
 
 		this._meter_1_a.discard();
 		this._meter_1_a = null;
@@ -602,7 +602,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (this._meter_1_b == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_1_b);
+		Tweener.removeTweens(this._meter_1_b);
 
 		this._meter_1_b.discard();
 		this._meter_1_b = null;
@@ -613,7 +613,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (this._meter_1_c == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_1_c);
+		Tweener.removeTweens(this._meter_1_c);
 
 		this._meter_1_c.discard();
 		this._meter_1_c = null;
@@ -631,7 +631,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (this._meter_2_a == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_2_a);
+		Tweener.removeTweens(this._meter_2_a);
 
 		this._meter_2_a.discard();
 		this._meter_2_a = null;
@@ -642,7 +642,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (this._meter_2_b == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_2_b);
+		Tweener.removeTweens(this._meter_2_b);
 
 		this._meter_2_b.discard();
 		this._meter_2_b = null;
@@ -653,7 +653,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (this._meter_2_c == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_2_c);
+		Tweener.removeTweens(this._meter_2_c);
 
 		this._meter_2_c.discard();
 		this._meter_2_c = null;
@@ -672,7 +672,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (this._meter_x_a == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_x_a);
+		Tweener.removeTweens(this._meter_x_a);
 
 		this._meter_x_a.discard();
 		this._meter_x_a = null;
@@ -683,7 +683,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (this._meter_x_b == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_x_b);
+		Tweener.removeTweens(this._meter_x_b);
 
 		this._meter_x_b.discard();
 		this._meter_x_b = null;
@@ -694,7 +694,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (this._meter_x_b_conditional == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_x_b_conditional);
+		Tweener.removeTweens(this._meter_x_b_conditional);
 
 		this._meter_x_b_conditional.discard();
 		this._meter_x_b_conditional = null;
@@ -705,7 +705,7 @@ class descendent.hud.reticle.special.DualPistolsGauge extends Gauge
 		if (this._meter_x_c == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter_x_c);
+		Tweener.removeTweens(this._meter_x_c);
 
 		this._meter_x_c.discard();
 		this._meter_x_c = null;

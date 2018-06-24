@@ -4,8 +4,7 @@ import com.GameInterface.Game.BuffData;
 import com.GameInterface.Game.Character;
 import com.Utils.ID32;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
@@ -107,19 +106,20 @@ class descendent.hud.reticle.special.FistGauge extends Gauge
 
 	private function refresh_meter_decrease(value:Number):Void
 	{
-		TweenMax.fromTo(this._meter, value / this._consume, {
-			setMeter: value
-		}, {
+		this._meter.setMeter(value);
+		Tweener.addTween(this._meter, {
 			setMeter: 0,
-			ease: Linear.easeNone
+			time: value / this._consume,
+			transition: "linear"
 		});
 	}
 
 	private function refresh_meter_increase(value:Number):Void
 	{
-		TweenMax.to(this._meter, 0.3, {
+		Tweener.addTween(this._meter, {
 			setMeter: value,
-			ease: Linear.easeNone,
+			time: 0.3,
+			transition: "linear",
 			onComplete: this.meter_onMeter,
 			onCompleteParams: [value],
 			onCompleteScope: this
@@ -198,7 +198,7 @@ class descendent.hud.reticle.special.FistGauge extends Gauge
 		if (this._meter == null)
 			return;
 
-		TweenMax.killTweensOf(this._meter);
+		Tweener.removeTweens(this._meter);
 
 		this._meter.discard();
 		this._meter = null;

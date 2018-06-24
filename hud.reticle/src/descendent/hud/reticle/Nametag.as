@@ -61,7 +61,8 @@ class descendent.hud.reticle.Nametag extends Gauge
 	private function prepare_label():Void
 	{
 		var style:TextFormat = new TextFormat();
-		style.font = "res.Renner-Medium.ttf";
+		style.font = "_StandardFont";
+		style.bold = true;
 		style.size = 16.0;
 		style.align = "center";
 
@@ -99,7 +100,8 @@ class descendent.hud.reticle.Nametag extends Gauge
 	private function prepare_title():Void
 	{
 		var style:TextFormat = new TextFormat();
-		style.font = "res.Renner-Medium.ttf";
+		style.font = "_StandardFont";
+		style.bold = true;
 		style.size = 12.0;
 		style.align = "center";
 
@@ -137,7 +139,8 @@ class descendent.hud.reticle.Nametag extends Gauge
 	private function prepare_cabal():Void
 	{
 		var style:TextFormat = new TextFormat();
-		style.font = "res.Renner-Medium.ttf";
+		style.font = "_StandardFont";
+		style.bold = true;
 		style.size = 12.0;
 		style.align = "center";
 
@@ -175,7 +178,8 @@ class descendent.hud.reticle.Nametag extends Gauge
 	private function prepare_level():Void
 	{
 		var style:TextFormat = new TextFormat();
-		style.font = "res.Renner-Medium.ttf";
+		style.font = "_StandardFont";
+		style.bold = true;
 		style.size = 12.0;
 		style.align = "left";
 

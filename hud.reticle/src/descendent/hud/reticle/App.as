@@ -7,10 +7,8 @@ import com.GameInterface.DistributedValue;
 import com.Utils.Archive;
 import GUIFramework.SFClipLoader;
 
-import com.greensock.plugins.ColorTransformPlugin;
-import com.greensock.plugins.TweenPlugin;
-
 import descendent.hud.reticle.Hud;
+import descendent.hud.reticle.TweenerSetup;
 
 class descendent.hud.reticle.App
 {
@@ -29,7 +27,7 @@ class descendent.hud.reticle.App
 		this._content = content;
 		this._content._visible = false;
 
-		TweenPlugin.activate([ColorTransformPlugin]);
+		TweenerSetup.run();
 
 		this._content.onLoad = Delegate.create(this, this.content_onPrepare);
 		this._content.OnUnload = Delegate.create(this, this.content_onDiscard);

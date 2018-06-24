@@ -2,8 +2,7 @@ import com.GameInterface.SpellBase;
 import com.GameInterface.Game.BuffData;
 import com.GameInterface.Game.Character;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
@@ -95,9 +94,9 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._character = Character.GetClientCharacter();
 
 		this.prepare_meter();
+		this.prepare_notch();
 
 		this.refresh_meter();
-		this.prepare_notch();
 		this.refresh_maximum();
 		this.refresh_color();
 		this.refresh_pulse();
@@ -134,7 +133,6 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._meter_a_shaft = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0x9B52CE, 33), new Color(0x9B52CE, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_a_shaft.setNotch(notch);
-		this._meter_a_shaft.setMeter(0);
 		this._meter_a_shaft.prepare(this.content);
 	}
 
@@ -166,7 +164,6 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._meter_b_shaft = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0xFD853D, 33), new Color(0xFD853D, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_b_shaft.setNotch(notch);
-		this._meter_b_shaft.setMeter(0);
 		this._meter_b_shaft.prepare(this.content);
 	}
 
@@ -198,7 +195,6 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._meter_c_shaft = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0x009CC9, 33), new Color(0x009CC9, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_c_shaft.setNotch(notch);
-		this._meter_c_shaft.setMeter(0);
 		this._meter_c_shaft.prepare(this.content);
 	}
 
@@ -230,7 +226,6 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._meter_d_shaft = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0x0CB700, 33), new Color(0x0CB700, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_d_shaft.setNotch(notch);
-		this._meter_d_shaft.setMeter(0);
 		this._meter_d_shaft.prepare(this.content);
 	}
 
@@ -262,7 +257,6 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		this._meter_x_shaft = new DefaultArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0xD7D7D7, 33), new Color(0xD7D7D7, 100), new Color(0xFFFFFF, 100), ShotgunGauge.SHELL_MAX, false);
 		this._meter_x_shaft.setNotch(notch);
-		this._meter_x_shaft.setMeter(0);
 		this._meter_x_shaft.prepare(this.content);
 	}
 
@@ -314,9 +308,10 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		if (value == this._meter_x_value.getMeter())
 			return;
 
-		TweenMax.to(this, 0.3, {
+		Tweener.addTween(this, {
 			setMeter: value,
-			ease: Linear.easeNone,
+			time: 0.3,
+			transition: "linear",
 			onComplete: this.meter_onMeter,
 			onCompleteParams: [value],
 			onCompleteScope: this
@@ -495,7 +490,7 @@ class descendent.hud.reticle.special.ShotgunGauge extends Gauge
 		SpellBase.SignalPassiveAdded.Disconnect(this.loadout_onPlant, this);
 		SpellBase.SignalPassiveRemoved.Disconnect(this.loadout_onPluck, this);
 
-		TweenMax.killTweensOf(this);
+		Tweener.removeTweens(this);
 
 		this.discard_meter();
 

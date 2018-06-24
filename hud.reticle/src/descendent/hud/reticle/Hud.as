@@ -8,7 +8,7 @@ import com.GameInterface.Game.Character;
 import com.GameInterface.Game.CharacterBase;
 import com.GameInterface.Game.Dynel;
 
-import com.greensock.TweenMax;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Callout;
 import descendent.hud.reticle.Deg;
@@ -248,7 +248,7 @@ class descendent.hud.reticle.Hud extends Shape
 
 		CharacterBase.SignalClientCharacterAlive.Disconnect(this.character_onEnter, this);
 
-		TweenMax.killTweensOf(this);
+		Tweener.removeTweens(this);
 
 		this.discard_rangefinder();
 		this.discard_callout();
@@ -270,8 +270,6 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private function discard_power_1():Void
 	{
-		TweenMax.killTweensOf(this._power_1);
-
 		this._power_1.discard();
 		this._power_1.onRouse.Disconnect(this.gauge_onRouse, this);
 		this._power_1.onSleep.Disconnect(this.gauge_onSleep, this);
@@ -280,8 +278,6 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private function discard_power_2():Void
 	{
-		TweenMax.killTweensOf(this._power_2);
-
 		this._power_2.discard();
 		this._power_2.onRouse.Disconnect(this.gauge_onRouse, this);
 		this._power_2.onSleep.Disconnect(this.gauge_onSleep, this);
@@ -296,8 +292,6 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private function discard_special_1():Void
 	{
-		TweenMax.killTweensOf(this._special_1);
-
 		this._special_1.discard();
 		this._special_1.onRouse.Disconnect(this.gauge_onRouse, this);
 		this._special_1.onSleep.Disconnect(this.gauge_onSleep, this);
@@ -306,8 +300,6 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private function discard_special_2():Void
 	{
-		TweenMax.killTweensOf(this._special_2);
-
 		this._special_2.discard();
 		this._special_2.onRouse.Disconnect(this.gauge_onRouse, this);
 		this._special_2.onSleep.Disconnect(this.gauge_onSleep, this);
@@ -411,9 +403,10 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._state = Hud.STATE_AWAKE;
 
-		TweenMax.to(this, 0.0, {
+		Tweener.addTween(this, {
 			setGaugeAlpha: 100,
-			overwrite: "allOnStart",
+			time: 0.0,
+			transition: "linear",
 			onStart: this.gauge_present,
 			onStartScope: this
 		});
@@ -431,9 +424,10 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._state = Hud.STATE_ROUSE;
 
-		TweenMax.to(this, 0.0, {
+		Tweener.addTween(this, {
 			setGaugeAlpha: 50,
-			overwrite: "allOnStart",
+			time: 0.0,
+			transition: "linear",
 			onStart: this.gauge_present,
 			onStartScope: this
 		});
@@ -464,10 +458,11 @@ class descendent.hud.reticle.Hud extends Shape
 			delay = 0.3;
 		}
 
-		TweenMax.to(this, timer, {
+		Tweener.addTween(this, {
 			setGaugeAlpha: 0,
+			time: timer,
 			delay: delay,
-			overwrite: "allOnStart",
+			transition: "linear",
 			onComplete: this.gauge_dismiss,
 			onCompleteScope: this
 		});

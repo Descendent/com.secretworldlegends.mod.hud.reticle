@@ -2,8 +2,7 @@ import com.GameInterface.Game.Character;
 import com.GameInterface.Game.Dynel;
 import com.Utils.Colors;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.Gauge;
@@ -35,6 +34,16 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	private var _shaft_a:IMeter;
 
 	private var _shaft_b:IMeter;
+
+	private var _shaft_our:IMeter;
+
+	private var _notch:IMeter;
+
+	private var _notch_a:IMeter;
+
+	private var _notch_b:IMeter;
+
+	private var _notch_our:IMeter;
 
 	private var _dynel:Dynel;
 
@@ -73,6 +82,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 		this.prepare_shaft();
 		this.prepare_meter();
+		this.prepare_notch();
 
 		this._meter_current_a.dismiss();
 		this._meter_current_b.dismiss();
@@ -80,28 +90,47 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._meter_pending.dismiss();
 		this._shaft_a.dismiss();
 		this._shaft_b.dismiss();
+		this._shaft_our.dismiss();
+		this._notch_a.dismiss();
+		this._notch_b.dismiss();
+		this._notch_our.dismiss();
 	}
 
 	private function prepare_shaft():Void
 	{
 		this.prepare_shaft_a();
 		this.prepare_shaft_b();
+		this.prepare_shaft_our();
 	}
 
 	private function prepare_shaft_a():Void
 	{
+		var notch:/*Number*/Array = [0.25, 0.5, 0.75];
+
 		this._shaft_a = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0x20FF8A, 33), new Color(0x20FF8A, 100), new Color(0xFFFFFF, 100), 1.0, false);
 //			new Color(0x88FCCC, 33), new Color(0x88FCCC, 100), new Color(0xFFFFFF, 100), 1.0, false);
+		this._shaft_a.setNotch(notch);
 		this._shaft_a.prepare(this.content);
 	}
 
 	private function prepare_shaft_b():Void
 	{
+		var notch:/*Number*/Array = [0.25, 0.5, 0.75];
+
 		this._shaft_b = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			new Color(0xFF4646, 33), new Color(0xFF4646, 100), new Color(0xFFFFFF, 100), 1.0, false);
 //			new Color(0xFFB1B1, 33), new Color(0xFFB1B1, 100), new Color(0xFFFFFF, 100), 1.0, false);
+		this._shaft_b.setNotch(notch);
 		this._shaft_b.prepare(this.content);
+	}
+
+	private function prepare_shaft_our():Void
+	{
+		this._shaft_our = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
+			new Color(0x20FF8A, 33), new Color(0x20FF8A, 100), new Color(0xFFFFFF, 100), 1.0, false);
+//			new Color(0x88FCCC, 33), new Color(0x88FCCC, 100), new Color(0xFFFFFF, 100), 1.0, false);
+		this._shaft_our.prepare(this.content);
 	}
 
 	private function prepare_meter():Void
@@ -149,6 +178,40 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._meter_pending.prepare(this.content);
 	}
 
+	private function prepare_notch():Void
+	{
+		this.prepare_notch_a();
+		this.prepare_notch_b();
+		this.prepare_notch_our();
+	}
+
+	private function prepare_notch_a():Void
+	{
+		var notch:/*Number*/Array = [0.25, 0.5, 0.75];
+
+		this._notch_a = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
+			null, new Color(0x000000, 0), new Color(0xFFFFFF, 100), 1.0, false);
+		this._notch_a.setNotch(notch);
+		this._notch_a.prepare(this.content);
+	}
+
+	private function prepare_notch_b():Void
+	{
+		var notch:/*Number*/Array = [0.25, 0.5, 0.75];
+
+		this._notch_b = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
+			null, new Color(0x000000, 0), new Color(0xFFFFFF, 100), 1.0, false);
+		this._notch_b.setNotch(notch);
+		this._notch_b.prepare(this.content);
+	}
+
+	private function prepare_notch_our():Void
+	{
+		this._notch_our = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
+			null, new Color(0x000000, 0), new Color(0xFFFFFF, 100), 1.0, false);
+		this._notch_our.prepare(this.content);
+	}
+
 	private function prepare_dynel(dynel:Dynel):Void
 	{
 		if (dynel == null)
@@ -161,11 +224,19 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		{
 			this._meter_current = this._meter_current_b;
 			this._shaft = this._shaft_b;
+			this._notch = this._notch_b;
+		}
+		else if (this._character.IsClientChar())
+		{
+			this._meter_current = this._meter_current_a;
+			this._shaft = this._shaft_our;
+			this._notch = this._notch_our;
 		}
 		else
 		{
 			this._meter_current = this._meter_current_a;
 			this._shaft = this._shaft_a;
+			this._notch = this._notch_a;
 		}
 
 		this._value_maximum = this._dynel.GetStat(_global.Enums.Stat.e_Life, 2);
@@ -176,12 +247,11 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		if (this._value_maximum == 0)
 			return;
 
-		this.refresh_meter();
-
 		this._meter_current.present();
-		this._meter_barrier.present();
-		this._meter_pending.present();
 		this._shaft.present();
+		this._notch.present();
+
+		this.refresh_meter();
 
 		this._dynel.SignalStatChanged.Connect(this.dynel_onValue, this);
 	}
@@ -215,9 +285,10 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 			? 0.0
 			: 0.3;
 
-		TweenMax.to(this, timer, {
+		Tweener.addTween(this, {
 			setPending: value,
-			ease: Linear.easeNone
+			time: timer,
+			transition: "linear"
 		});
 	}
 
@@ -282,6 +353,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._meter_current.setMeter(this._value_current / maximum);
 		this._meter_barrier.setMeter(combine / maximum);
 		this._meter_pending.setMeter(this._value_pending / maximum);
+		this._notch.setMeter(combine / maximum);
 
 		this.refresh_awake();
 	}
@@ -312,9 +384,10 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	public function discard():Void
 	{
-		TweenMax.killTweensOf(this);
+		Tweener.removeTweens(this);
 
 		this.discard_dynel();
+		this.discard_notch();
 		this.discard_meter();
 		this.discard_shaft();
 
@@ -325,6 +398,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	{
 		this.discard_shaft_a();
 		this.discard_shaft_b();
+		this.discard_shaft_our();
 	}
 
 	private function discard_shaft_a():Void
@@ -343,6 +417,15 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 		this._shaft_b.discard();
 		this._shaft_b = null;
+	}
+
+	private function discard_shaft_our():Void
+	{
+		if (this._shaft_our == null)
+			return;
+
+		this._shaft_our.discard();
+		this._shaft_our = null;
 	}
 
 	private function discard_meter():Void
@@ -396,6 +479,40 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._meter_pending = null;
 	}
 
+	private function discard_notch():Void
+	{
+		this.discard_notch_a();
+		this.discard_notch_b();
+		this.discard_notch_our();
+	}
+
+	private function discard_notch_a():Void
+	{
+		if (this._notch_a == null)
+			return;
+
+		this._notch_a.discard();
+		this._notch_a = null;
+	}
+
+	private function discard_notch_b():Void
+	{
+		if (this._notch_b == null)
+			return;
+
+		this._notch_b.discard();
+		this._notch_b = null;
+	}
+
+	private function discard_notch_our():Void
+	{
+		if (this._notch_our == null)
+			return;
+
+		this._notch_our.discard();
+		this._notch_our = null;
+	}
+
 	private function discard_dynel():Void
 	{
 		if (this._dynel == null)
@@ -406,12 +523,18 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._dynel = null;
 		this._character = null;
 
+		Tweener.removeTweens(this, "setPending");
+
 		this._meter_current_a.dismiss();
 		this._meter_current_b.dismiss();
 		this._meter_barrier.dismiss();
 		this._meter_pending.dismiss();
 		this._shaft_a.dismiss();
 		this._shaft_b.dismiss();
+		this._shaft_our.dismiss();
+		this._notch_a.dismiss();
+		this._notch_b.dismiss();
+		this._notch_our.dismiss();
 
 		this._value_maximum = 0;
 		this._value_current = 0;

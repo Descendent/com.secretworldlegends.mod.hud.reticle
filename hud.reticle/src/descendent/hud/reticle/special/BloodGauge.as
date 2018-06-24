@@ -1,8 +1,7 @@
 import com.GameInterface.Game.BuffData;
 import com.GameInterface.Game.Character;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
+import caurina.transitions.Tweener;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.DefaultArcBarMeter;
@@ -94,9 +93,10 @@ class descendent.hud.reticle.special.BloodGauge extends Gauge
 		if (value == this._meter_a.getMeter())
 			return;
 
-		TweenMax.to(this, 0.3, {
+		Tweener.addTween(this, {
 			setMeter: value,
-			ease: Linear.easeNone
+			time: 0.3,
+			transition: "linear"
 		});
 	}
 
@@ -135,7 +135,7 @@ class descendent.hud.reticle.special.BloodGauge extends Gauge
 		this._character.SignalInvisibleBuffUpdated.Disconnect(this.character_onTag, this);
 		this._character.SignalBuffRemoved.Disconnect(this.character_onTag, this);
 
-		TweenMax.killTweensOf(this);
+		Tweener.removeTweens(this);
 
 		this.discard_meter();
 

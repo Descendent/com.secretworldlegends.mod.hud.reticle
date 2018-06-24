@@ -1,8 +1,8 @@
+import flash.filters.GlowFilter;
 import flash.geom.Point;
 
-import com.greensock.TweenMax;
-import com.greensock.easing.Linear;
-import com.greensock.easing.Sine;
+import caurina.transitions.Tweener;
+import caurina.transitions.Equations;
 
 import descendent.hud.reticle.ArcBar;
 import descendent.hud.reticle.Color;
@@ -34,11 +34,11 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 
 	private var _notch_meter_stencil:MovieClip;
 
-	private var _tween_pulse:TweenMax;
-
 	private var _value_meter:Number;
 
 	private var _value_notch:/*Number*/Array;
+
+	private var _pulse:Boolean;
 
 	public function DefaultArcBarMeter(r:Number, angle_a:Number, angle_b:Number, thickness:Number,
 		color_shaft:Color, color_meter:Color, color_notch:Color,
@@ -109,7 +109,6 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 		this.prepare_notch_shaft();
 		this.prepare_meter();
 		this.prepare_notch_meter();
-		this.prepare_pulse();
 
 		this.refresh_notch();
 		this.refresh_meter();
@@ -120,11 +119,20 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 		if (this._color_shaft == null)
 			return;
 
+		var s:MovieClip = this.content.createEmptyMovieClip("", this.content.getNextHighestDepth());
+
+		s.lineStyle();
+		s.beginFill(0x000000, 100);
+		this._shape.traceShape(s, new Point(0.0, 0.0));
+		s.endFill();
+
+		s.filters = [new GlowFilter(0x000000, 0.8, 2.0, 2.0, 1, 3, false, true)];
+
 		var c:Number = this._color_shaft.color;
-		var t:Number = this._color_shaft.alpha / 100.0;
-		var r:Number = Math.floor(((c & 0xFF0000) >> 16) * t);
-		var g:Number = Math.floor(((c & 0x00FF00) >> 8) * t);
-		var b:Number = Math.floor(((c & 0x0000FF) >> 0) * t);
+		var k:Number = this._color_shaft.alpha / 100.0;
+		var r:Number = Math.floor(((c & 0xFF0000) >> 16) * k);
+		var g:Number = Math.floor(((c & 0x00FF00) >> 8) * k);
+		var b:Number = Math.floor(((c & 0x0000FF) >> 0) * k);
 
 		var o:MovieClip = this.content.createEmptyMovieClip("", this.content.getNextHighestDepth());
 
@@ -198,27 +206,6 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 
 		this._notch_meter = o;
 		this._notch_meter_stencil = m;
-	}
-
-	private function prepare_pulse():Void
-	{
-		var o:Array = (this._shaft != null)
-			? [this._shaft, this._meter]
-			: [this._meter];
-
-		this._tween_pulse = TweenMax.fromTo(o, 0.3, {
-			colorTransform: {
-				brightness: 1.0
-			}
-		}, {
-			colorTransform: {
-				brightness: 1.5
-			},
-			ease: Sine.easeInOut,
-			repeat: -1,
-			yoyo: true,
-			paused: true
-		});
 	}
 
 	private function refresh_notch():Void
@@ -312,31 +299,68 @@ class descendent.hud.reticle.DefaultArcBarMeter extends Shape implements IMeter
 
 	public function discard():Void
 	{
-		this._tween_pulse.kill();
+		Tweener.removeTweens(this._shaft);
+		Tweener.removeTweens(this._meter);
 
 		super.discard();
 	}
 
 	public function pulseBegin():Void
 	{
-		if (this._tween_pulse == null)
+		if (this._pulse)
 			return;
 
-		if (this._tween_pulse.isActive())
-			return;
+		this._pulse = true;
 
-		this._tween_pulse.play(0.0);
+		var o:Array = (this._shaft != null)
+			? [this._meter, this._shaft]
+			: [this._meter];
+
+		this.pulseTween_forward(o);
+	}
+
+	private function pulseTween_forward(o:Array):Void
+	{
+		Tweener.addTween(o, {
+			_brightness: 0.5,
+			time: 0.3,
+			transition: Equations.easeInOutSine,
+			onComplete: this.pulseTween_reverse,
+			onCompleteParams: [o],
+			onCompleteScope: this
+		});
+	}
+
+	private function pulseTween_reverse(o:Array):Void
+	{
+		Tweener.addTween(o, {
+			_brightness: 0.0,
+			time: 0.3,
+			transition: Equations.easeInOutSine,
+			onComplete: this.pulseTween_forward,
+			onCompleteParams: [o],
+			onCompleteScope: this
+		});
 	}
 
 	public function pulseEnd():Void
 	{
-		if (this._tween_pulse == null)
+		if (!this._pulse)
 			return;
 
-		if (!this._tween_pulse.isActive())
-			return;
+		this._pulse = false;
 
-		this._tween_pulse.restart();
-		this._tween_pulse.kill();
+		Tweener.removeTweens(this._shaft, "_brightness");
+		Tweener.removeTweens(this._meter, "_brightness");
+
+		var o:Array = (this._shaft != null)
+			? [this._meter, this._shaft]
+			: [this._meter];
+
+		Tweener.addTween(o, {
+			_brightness: 0.0,
+			time: 0.0,
+			transition: "linear"
+		});
 	}
 }
