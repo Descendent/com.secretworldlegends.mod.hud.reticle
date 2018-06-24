@@ -41,7 +41,8 @@ class descendent.hud.reticle.Callout extends Gauge
 	private function prepare_label():Void
 	{
 		var style:TextFormat = new TextFormat();
-		style.font = "res.Renner-Medium.ttf";
+		style.font = "_StandardFont";
+		style.bold = true;
 		style.size = 12.0;
 		style.align = "center";
 
