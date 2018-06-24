@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<movie width="1920" height="1080" framerate="30">
+	<background color="#000000"/>
+	<frame>
+		<library>
+			<font id="res.Renner-Medium.ttf" import="..\submodules\com.indestructibletype.renner\Finished TrueType\Renner-Medium.ttf"
+				name="res.Renner-Medium.ttf"/>
+		</library>
+	</frame>
+</movie>

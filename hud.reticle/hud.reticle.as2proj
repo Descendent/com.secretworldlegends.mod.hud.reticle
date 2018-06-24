@@ -3,7 +3,7 @@
   <!-- Output SWF options -->
   <output>
     <movie outputType="Application" />
-    <movie input="" />
+    <movie input="obj\App.swf" />
     <movie path="bin\App.swf" />
     <movie fps="30" />
     <movie width="1920" />
@@ -42,14 +42,14 @@
   </compileTargets>
   <!-- Assets to embed into the output SWF -->
   <library>
-    <asset path="res\Renner-Medium.ttf" update="..\submodules\com.indestructibletype.renner\Finished TrueType\Renner-Medium.ttf" />
+    <!-- example: <asset path="..." id="..." update="..." glyphs="..." mode="..." place="..." sharepoint="..." /> -->
   </library>
   <!-- Paths to exclude from the Project Explorer tree -->
   <hiddenPaths>
     <hidden path="obj" />
   </hiddenPaths>
   <!-- Executed before build -->
-  <preBuildCommand />
+  <preBuildCommand>"$(ToolsDir)\swfmill\swfmill.exe" simple "$(ProjectDir)\$(ProjectName).xml" "$(ProjectDir)\obj\$(OutputName)"</preBuildCommand>
   <!-- Executed after build -->
   <postBuildCommand alwaysRun="False" />
   <!-- Other project options -->
