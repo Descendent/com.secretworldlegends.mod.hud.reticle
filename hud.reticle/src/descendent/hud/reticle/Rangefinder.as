@@ -47,8 +47,9 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 	private function prepare_label():Void
 	{
 		var style:TextFormat = new TextFormat();
-		style.font = "res.Renner-Medium.ttf";
-		style.size = 11.0;
+		style.font = "_StandardFont";
+		style.bold = true;
+		style.size = 10.0;
 		style.align = "right";
 
 		var a:TextField = this.content.createTextField("", this.content.getNextHighestDepth(),
