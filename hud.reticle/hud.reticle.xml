@@ -3,8 +3,6 @@
 	<background color="#000000"/>
 	<frame>
 		<library>
-			<font id="res.Renner-Medium.ttf" import="..\submodules\com.indestructibletype.renner\Finished TrueType\Renner-Medium.ttf"
-				name="res.Renner-Medium.ttf"/>
 			<clip id="gfxfontlib.swf" import="res\gfxfontlib.swf"/>
 		</library>
 	</frame>

@@ -4,6 +4,3 @@
 [submodule "submodules/tweener-as2"]
 	path = submodules/tweener-as2
 	url = https://github.com/Descendent/tweener-as2.git
-[submodule "submodules/com.indestructibletype.renner"]
-	path = submodules/com.indestructibletype.renner
-	url = https://github.com/indestructible-type/Renner.git
