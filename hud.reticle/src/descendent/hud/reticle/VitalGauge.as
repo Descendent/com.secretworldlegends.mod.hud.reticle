@@ -163,8 +163,6 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._meter_current_b = new ReflectArcBarMeter(this._r, this._angle_a, this._angle_b, this._thickness,
 			null, new Color(0xFF4646, 100), new Color(0xFFFFFF, 100), 1.0, false);
 //			null, new Color(0xFFB1B1, 100), new Color(0xFFFFFF, 100), 1.0, false);
-		var notches:/*Number*/Array = [0.25, 0.50, 0.75];
-		this._meter_current_b.setNotch(notches);
 		this._meter_current_b.prepare(this.content);
 	}
 
@@ -366,6 +364,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._meter_current.setMeter(this._value_current / this._value_maximum);
 		this._meter_barrier.setMeter(this._value_barrier / this._value_barrier_maximum);
 		this._meter_pending.setMeter(this._value_pending / this._value_maximum);
+		this._notch.setMeter(Math.max(this._value_current, this._value_pending) / this._value_maximum);
 
 		this.refresh_awake();
 	}
