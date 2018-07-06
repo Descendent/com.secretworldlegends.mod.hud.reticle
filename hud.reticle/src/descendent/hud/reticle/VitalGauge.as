@@ -1,9 +1,12 @@
+import flash.geom.Point;
+
 import com.GameInterface.Game.Character;
 import com.GameInterface.Game.Dynel;
 import com.Utils.Colors;
 
 import caurina.transitions.Tweener;
 
+import descendent.hud.reticle.ArcBar;
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.Gauge;
 import descendent.hud.reticle.IMeter;
@@ -84,7 +87,6 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	{
 		super.prepare(o);
 
-		this.prepare_meter_barrier();
 		this.prepare_shaft();
 		this.prepare_meter();
 		this.prepare_notch();
@@ -142,6 +144,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	{
 		this.prepare_meter_pending();
 		this.prepare_meter_current();
+		this.prepare_meter_barrier();
 	}
 
 	private function prepare_meter_current():Void
@@ -168,14 +171,30 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function prepare_meter_barrier():Void
 	{
-		var border_thickness:Number = this._thickness * 0.20;
-		var padding_degrees:Number = border_thickness / this._r;
-				
-		this._meter_barrier = new ReflectArcBarMeter(this._r - border_thickness, this._angle_a - padding_degrees, this._angle_b + padding_degrees, this._thickness + 2 * border_thickness,
+		var outline:Number = 3.0;
+		var t:Number = (outline * 0.5) / (this._r + (this._thickness * 0.5));
+		if (!(this._angle_b >= this._angle_a))
+			t = -t;
+		var shape_outer:ArcBar = new ArcBar(this._r - (outline * 0.5), this._angle_a - t, this._angle_b + t, this._thickness + outline);
+		var shape_inner:ArcBar = new ArcBar(this._r + (outline * 0.5), this._angle_a + t, this._angle_b - t, this._thickness - outline);
+
+		var o:MovieClip = this.content.createEmptyMovieClip("", this.content.getNextHighestDepth());
+
+		var m:MovieClip = this.content.createEmptyMovieClip("", this.content.getNextHighestDepth());
+
+		m.lineStyle();
+		m.beginFill(0x000000, 100);
+		shape_outer.traceShape(m, new Point(0.0, 0.0));
+		shape_inner.traceShape(m, new Point(0.0, 0.0));
+		m.endFill();
+
+		o.setMask(m);
+
+		this._meter_barrier = new ReflectArcBarMeter(this._r - (outline * 0.5), this._angle_a - t, this._angle_b + t, this._thickness + outline,
 			null, new Color(0xFFED70, 100), new Color(0xFFFFFF, 100), 1.0, false);
 //			null, new Color(0xFFF585, 100), new Color(0xFFFFFF, 100), 1.0, false);
 //			null, new Color(0xFFFFFF, 100), new Color(0xFFFFFF, 100), 1.0, false);
-		this._meter_barrier.prepare(this.content);
+		this._meter_barrier.prepare(o);
 	}
 
 	private function prepare_meter_pending():Void
