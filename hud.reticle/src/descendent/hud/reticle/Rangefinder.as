@@ -128,7 +128,12 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 		if (this._dynel == null)
 			return;
 
-		var value:String = Format.Printf("%.1f", Math.round(this._dynel.GetDistanceToPlayer() * 10.0) / 10.0) + " m";
+		var range:Number = this._dynel.GetDistanceToPlayer();
+
+		if (range == 0.0)
+			return;
+
+		var value:String = Format.Printf("%.1f", Math.round(range * 10.0) / 10.0) + " m";
 
 		this._label.text = value;
 		this._label._visible = true;
