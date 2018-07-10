@@ -2,6 +2,7 @@ import flash.filters.BlurFilter;
 
 import mx.utils.Delegate;
 
+import com.GameInterface.DistributedValue;
 import com.GameInterface.Game.Dynel;
 import com.Utils.Format;
 import com.Utils.ID32;
@@ -97,6 +98,9 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 		{
 			return;
 		}
+
+		if (!DistributedValue.GetDValue("ShowNametagDistance", false))
+			return;
 
 		this.timerBegin();
 	}
