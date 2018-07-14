@@ -260,8 +260,16 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		if (dynel == null)
 			return;
 
+		var which:ID32 = dynel.GetID();
+
+		if ((which.GetType() != _global.Enums.TypeID.e_Type_GC_Character)
+			&& (which.GetType() != _global.Enums.TypeID.e_Type_GC_Destructible))
+		{
+			return;
+		}
+
 		this._dynel = dynel;
-		this._character = Character.GetCharacter(dynel.GetID());
+		this._character = Character.GetCharacter(which);
 
 		if (dynel.IsEnemy())
 		{
@@ -407,13 +415,9 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function refresh_awake():Void
 	{
-		var ghostmode:Boolean = (this._character != null)
-			? this._character.IsGhosting()
-			: false;
-
 		if (this._dynel.IsDead())
 			this.sleep();
-		else if (ghostmode)
+		else if (this._character.IsGhosting())
 			this.sleep();
 		else if (this._value_current >= this._value_maximum)
 			this.sleep();

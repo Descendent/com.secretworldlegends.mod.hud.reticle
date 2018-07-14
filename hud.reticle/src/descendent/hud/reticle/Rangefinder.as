@@ -105,8 +105,6 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 		if (dynel == null)
 			return;
 
-		this._dynel = dynel;
-
 		var which:ID32 = dynel.GetID();
 
 		if ((which.GetType() != _global.Enums.TypeID.e_Type_GC_Character)
@@ -114,6 +112,8 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 		{
 			return;
 		}
+
+		this._dynel = dynel;
 
 		if (!DistributedValue.GetDValue("ShowNametagDistance", false))
 			return;

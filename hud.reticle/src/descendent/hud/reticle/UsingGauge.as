@@ -133,17 +133,13 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 
 	private function prepare_character(character:Character):Void
 	{
-		this._character = character;
-
 		if (character == null)
 			return;
 
 		if (character.GetID().GetType() != _global.Enums.TypeID.e_Type_GC_Character)
-		{
-			this._character = null;
-
 			return;
-		}
+
+		this._character = character;
 
 		this._character.SignalCommandStarted.Connect(this.character_onUsingBegin, this);
         this._character.SignalCommandAborted.Connect(this.character_onUsingEnd, this);

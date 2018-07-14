@@ -244,7 +244,7 @@ class descendent.hud.reticle.Nametag extends Gauge
 		}
 
 		this._dynel = dynel;
-		this._character = Character.GetCharacter(dynel.GetID());
+		this._character = Character.GetCharacter(which);
 
 		this.refresh_label();
 		this.refresh_color();
