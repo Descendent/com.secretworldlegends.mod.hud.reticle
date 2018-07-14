@@ -3,6 +3,7 @@ import flash.geom.Point;
 import com.GameInterface.Game.Character;
 import com.GameInterface.Game.Dynel;
 import com.Utils.Colors;
+import com.Utils.ID32;
 
 import caurina.transitions.Tweener;
 
@@ -49,7 +50,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	private var _notch_our:IMeter;
 
 	private var _dynel:Dynel;
-	
+
 	private var _character:Character;
 
 	private var _value_maximum:Number;
@@ -57,11 +58,11 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	private var _value_current:Number;
 
 	private var _value_barrier:Number;
-	
+
 	private var _value_barrier_maximum:Number;
 
 	private var _value_pending:Number;
-	
+
 	private var _previous_barriers:Object = new Object();
 
 	public function VitalGauge(r:Number, angle_a:Number, angle_b:Number, thickness:Number)
@@ -76,11 +77,27 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	public function setSubject(value:Dynel):Void
 	{
-		if (value == this._dynel)
-			return;
+		if (value == null)
+		{
+			if (this._dynel == null)
+				return;
+		}
+		else
+		{
+			var which:ID32 = value.GetID();
+
+			if ((this._dynel != null)
+				&& (which.Equal(this._dynel.GetID())))
+			{
+				return;
+			}
+
+			if (which.IsNull())
+				value = null;
+		}
 
 		this.discard_dynel();
-		this.prepare_dynel(value)
+		this.prepare_dynel(value);
 	}
 
 	public function prepare(o:MovieClip):Void
@@ -547,7 +564,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	{
 		if (this._dynel == null)
 			return;
-			
+
 		if (this._dynel.IsDead())
 			delete this._previous_barriers[this._dynel.GetID()];
 

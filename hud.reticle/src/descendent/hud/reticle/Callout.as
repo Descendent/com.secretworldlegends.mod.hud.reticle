@@ -1,6 +1,7 @@
 import flash.filters.BlurFilter;
 
 import com.GameInterface.Game.Character;
+import com.Utils.ID32;
 
 import descendent.hud.reticle.Deg;
 import descendent.hud.reticle.Gauge;
@@ -14,7 +15,7 @@ class descendent.hud.reticle.Callout extends Gauge
 	private var _label_backing:TextField;
 
 	private var _character:Character;
-	
+
 	public function Callout(w:Number)
 	{
 		super();
@@ -24,8 +25,24 @@ class descendent.hud.reticle.Callout extends Gauge
 
 	public function setSubject(value:Character):Void
 	{
-		if (value == this._character)
-			return;
+		if (value == null)
+		{
+			if (this._character == null)
+				return;
+		}
+		else
+		{
+			var which:ID32 = value.GetID();
+
+			if ((this._character != null)
+				&& (which.Equal(this._character.GetID())))
+			{
+				return;
+			}
+
+			if (which.IsNull())
+				value = null;
+		}
 
 		this.discard_character();
 		this.prepare_character(value);

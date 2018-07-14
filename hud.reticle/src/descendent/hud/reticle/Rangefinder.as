@@ -31,8 +31,24 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 
 	public function setSubject(value:Dynel):Void
 	{
-		if (value == this._dynel)
-			return;
+		if (value == null)
+		{
+			if (this._dynel == null)
+				return;
+		}
+		else
+		{
+			var which:ID32 = value.GetID();
+
+			if ((this._dynel != null)
+				&& (which.Equal(this._dynel.GetID())))
+			{
+				return;
+			}
+
+			if (which.IsNull())
+				value = null;
+		}
 
 		this.discard_dynel();
 		this.prepare_dynel(value);

@@ -2,6 +2,7 @@ import mx.utils.Delegate;
 
 import com.GameInterface.Game.Character;
 import com.Utils.Colors;
+import com.Utils.ID32;
 
 import descendent.hud.reticle.Color;
 import descendent.hud.reticle.Gauge;
@@ -52,11 +53,26 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 
 	public function setSubject(value:Character):Void
 	{
-		if (value == this._character)
-			return;
+		if (value == null)
+		{
+			if (this._character == null)
+				return;
+		}
+		else
+		{
+			var which:ID32 = value.GetID();
+
+			if ((this._character != null)
+				&& (which.Equal(this._character.GetID())))
+			{
+				return;
+			}
+
+			if (which.IsNull())
+				value = null;
+		}
 
 		this.discard_character();
-		
 		this.prepare_character(value);
 
 		this.refresh_color();
