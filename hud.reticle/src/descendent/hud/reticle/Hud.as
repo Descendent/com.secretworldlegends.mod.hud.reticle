@@ -403,18 +403,14 @@ class descendent.hud.reticle.Hud extends Shape
 
 	private function awake():Void
 	{
-		if (this._state == Hud.STATE_AWAKE)
-			return;
+//		if (this._state == Hud.STATE_AWAKE)
+//			return;
 
 		this._state = Hud.STATE_AWAKE;
 
-		Tweener.addTween(this, {
-			setGaugeAlpha: 100,
-			time: 0.0,
-			transition: "linear",
-			onStart: this.gauge_present,
-			onStartScope: this
-		});
+		Tweener.removeTweens(this, "setGaugeAlpha");
+		this.gauge_present();
+		this.setGaugeAlpha(100);
 
 		this._our_using.setAlpha(100);
 		this._their_vital.setAlpha(100);
@@ -429,13 +425,9 @@ class descendent.hud.reticle.Hud extends Shape
 
 		this._state = Hud.STATE_ROUSE;
 
-		Tweener.addTween(this, {
-			setGaugeAlpha: 50,
-			time: 0.0,
-			transition: "linear",
-			onStart: this.gauge_present,
-			onStartScope: this
-		});
+		Tweener.removeTweens(this, "setGaugeAlpha");
+		this.gauge_present();
+		this.setGaugeAlpha(50);
 
 		this._our_using.setAlpha(50);
 		this._their_vital.setAlpha(50);
