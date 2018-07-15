@@ -410,14 +410,6 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._level_backing._visible = true;
 	}
 
-	private function refresh_subject():Void
-	{
-		var subject:Character = this._subject;
-
-		this.discard_subject();
-		this.prepare_subject(subject);
-	}
-
 	public function discard():Void
 	{
 		this.discard_subject();
@@ -443,10 +435,10 @@ class descendent.hud.reticle.Nametag extends Gauge
 	private function subject_onValue(which:Number):Void
 	{
 		if (which == _global.Enums.Stat.e_PlayerFaction)
-			this.refresh_subject();
+			this.refresh_color();
 		else if (which == _global.Enums.Stat.e_Side)
-			this.refresh_subject();
+			this.refresh_color();
 		else if (which == _global.Enums.Stat.e_CarsGroup)
-			this.refresh_subject();
+			this.refresh_color();
 	}
 }
