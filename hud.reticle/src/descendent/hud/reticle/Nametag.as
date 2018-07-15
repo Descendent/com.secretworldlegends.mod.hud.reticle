@@ -249,6 +249,8 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this.refresh_level();
 
 		this._subject.SignalStatChanged.Connect(this.subject_onValue, this);
+
+		Nametags.SignalNametagAggroUpdated.Connect(this.nametag_onAggro, this);
 	}
 
 	private function refresh_label():Void
@@ -422,11 +424,14 @@ class descendent.hud.reticle.Nametag extends Gauge
 		if (this._subject == null)
 			return;
 
+		Nametags.SignalNametagAggroUpdated.Disconnect(this.nametag_onAggro, this);
+
 		this._subject.SignalStatChanged.Disconnect(this.subject_onValue, this);
 
 		this._subject = null;
 
 		this.refresh_label();
+		this.refresh_color();
 		this.refresh_title();
 		this.refresh_cabal();
 		this.refresh_level();
@@ -440,5 +445,13 @@ class descendent.hud.reticle.Nametag extends Gauge
 			this.refresh_color();
 		else if (which == _global.Enums.Stat.e_CarsGroup)
 			this.refresh_color();
+	}
+
+	private function nametag_onAggro(which:ID32, aggro:Number):Void
+	{
+		if (!which.Equal(this._subject.GetID()))
+			return;
+
+		this.refresh_color();
 	}
 }
