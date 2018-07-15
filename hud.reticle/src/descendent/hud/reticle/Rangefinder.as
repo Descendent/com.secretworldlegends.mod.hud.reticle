@@ -3,7 +3,7 @@ import flash.filters.BlurFilter;
 import mx.utils.Delegate;
 
 import com.GameInterface.DistributedValue;
-import com.GameInterface.Game.Dynel;
+import com.GameInterface.Game.Character;
 import com.Utils.Format;
 import com.Utils.ID32;
 
@@ -16,7 +16,7 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 
 	private var _label_backing:TextField;
 
-	private var _dynel:Dynel;
+	private var _subject:Character;
 
 	private var _timer:Number;
 
@@ -29,19 +29,19 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 		this._refresh_label = Delegate.create(this, this.refresh_label);
 	}
 
-	public function setSubject(value:Dynel):Void
+	public function setSubject(value:Character):Void
 	{
 		if (value == null)
 		{
-			if (this._dynel == null)
+			if (this._subject == null)
 				return;
 		}
 		else
 		{
 			var which:ID32 = value.GetID();
 
-			if ((this._dynel != null)
-				&& (which.Equal(this._dynel.GetID())))
+			if ((this._subject != null)
+				&& (which.Equal(this._subject.GetID())))
 			{
 				return;
 			}
@@ -50,8 +50,8 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 				value = null;
 		}
 
-		this.discard_dynel();
-		this.prepare_dynel(value);
+		this.discard_subject();
+		this.prepare_subject(value);
 	}
 
 	public function prepare(o:MovieClip):Void
@@ -100,12 +100,12 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 		this._label_backing = a;
 	}
 
-	private function prepare_dynel(dynel:Dynel):Void
+	private function prepare_subject(subject:Character):Void
 	{
-		if (dynel == null)
+		if (subject == null)
 			return;
 
-		var which:ID32 = dynel.GetID();
+		var which:ID32 = subject.GetID();
 
 		if ((which.GetType() != _global.Enums.TypeID.e_Type_GC_Character)
 			&& (which.GetType() != _global.Enums.TypeID.e_Type_GC_Destructible))
@@ -113,7 +113,7 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 			return;
 		}
 
-		this._dynel = dynel;
+		this._subject = subject;
 
 		if (!DistributedValue.GetDValue("ShowNametagDistance", false))
 			return;
@@ -145,10 +145,10 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 		this._label_backing._visible = false;
 		this._label_backing.text = "";
 
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
-		var range:Number = this._dynel.GetDistanceToPlayer();
+		var range:Number = this._subject.GetDistanceToPlayer();
 
 		if (range == 0.0)
 			return;
@@ -166,17 +166,17 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 	{
 		clearInterval(this._timer);
 
-		this.discard_dynel();
+		this.discard_subject();
 
 		super.discard();
 	}
 
-	private function discard_dynel():Void
+	private function discard_subject():Void
 	{
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
-		this._dynel = null;
+		this._subject = null;
 
 		this.timerEnd();
 	}

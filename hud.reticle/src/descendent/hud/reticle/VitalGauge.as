@@ -1,7 +1,6 @@
 import flash.geom.Point;
 
 import com.GameInterface.Game.Character;
-import com.GameInterface.Game.Dynel;
 import com.Utils.Colors;
 import com.Utils.ID32;
 
@@ -49,9 +48,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private var _notch_our:IMeter;
 
-	private var _dynel:Dynel;
-
-	private var _character:Character;
+	private var _subject:Character;
 
 	private var _value_maximum:Number;
 
@@ -75,19 +72,19 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._thickness = thickness;
 	}
 
-	public function setSubject(value:Dynel):Void
+	public function setSubject(value:Character):Void
 	{
 		if (value == null)
 		{
-			if (this._dynel == null)
+			if (this._subject == null)
 				return;
 		}
 		else
 		{
 			var which:ID32 = value.GetID();
 
-			if ((this._dynel != null)
-				&& (which.Equal(this._dynel.GetID())))
+			if ((this._subject != null)
+				&& (which.Equal(this._subject.GetID())))
 			{
 				return;
 			}
@@ -96,8 +93,8 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 				value = null;
 		}
 
-		this.discard_dynel();
-		this.prepare_dynel(value);
+		this.discard_subject();
+		this.prepare_subject(value);
 	}
 
 	public function prepare(o:MovieClip):Void
@@ -255,12 +252,12 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._notch_our.prepare(this.content);
 	}
 
-	private function prepare_dynel(dynel:Dynel):Void
+	private function prepare_subject(subject:Character):Void
 	{
-		if (dynel == null)
+		if (subject == null)
 			return;
 
-		var which:ID32 = dynel.GetID();
+		var which:ID32 = subject.GetID();
 
 		if ((which.GetType() != _global.Enums.TypeID.e_Type_GC_Character)
 			&& (which.GetType() != _global.Enums.TypeID.e_Type_GC_Destructible))
@@ -268,16 +265,15 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 			return;
 		}
 
-		this._dynel = dynel;
-		this._character = Character.GetCharacter(which);
+		this._subject = subject;
 
-		if (dynel.IsEnemy())
+		if (subject.IsEnemy())
 		{
 			this._meter_current = this._meter_current_b;
 			this._shaft = this._shaft_b;
 			this._notch = this._notch_b;
 		}
-		else if (this._character.IsClientChar())
+		else if (subject.IsClientChar())
 		{
 			this._meter_current = this._meter_current_a;
 			this._shaft = this._shaft_our;
@@ -290,12 +286,12 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 			this._notch = this._notch_a;
 		}
 
-		this._value_maximum = this._dynel.GetStat(_global.Enums.Stat.e_Life, 2);
-		this._value_current = this._dynel.GetStat(_global.Enums.Stat.e_Health, 2);
-		this._value_barrier = this._dynel.GetStat(_global.Enums.Stat.e_BarrierHealthPool, 2);
-		if (this._previous_barriers[this._dynel.GetID()] == null)
-			this._previous_barriers[this._dynel.GetID()] = this._value_barrier;
-		this._value_barrier_maximum = this._value_barrier == 0 ? Number.MAX_VALUE : this._previous_barriers[this._dynel.GetID()];
+		this._value_maximum = this._subject.GetStat(_global.Enums.Stat.e_Life, 2);
+		this._value_current = this._subject.GetStat(_global.Enums.Stat.e_Health, 2);
+		this._value_barrier = this._subject.GetStat(_global.Enums.Stat.e_BarrierHealthPool, 2);
+		if (this._previous_barriers[this._subject.GetID()] == null)
+			this._previous_barriers[this._subject.GetID()] = this._value_barrier;
+		this._value_barrier_maximum = this._value_barrier == 0 ? Number.MAX_VALUE : this._previous_barriers[this._subject.GetID()];
 		this._value_pending = this._value_current;
 
 		if (this._value_maximum == 0)
@@ -307,12 +303,12 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 		this.refresh_meter();
 
-		this._dynel.SignalStatChanged.Connect(this.dynel_onValue, this);
+		this._subject.SignalStatChanged.Connect(this.subject_onValue, this);
 	}
 
 	private function refresh_maximum():Void
 	{
-		var value:Number = this._dynel.GetStat(_global.Enums.Stat.e_Life, 2);
+		var value:Number = this._subject.GetStat(_global.Enums.Stat.e_Life, 2);
 
 		this.setMaximum(value);
 	}
@@ -331,7 +327,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function refresh_current():Void
 	{
-		var value:Number = this._dynel.GetStat(_global.Enums.Stat.e_Health, 2);
+		var value:Number = this._subject.GetStat(_global.Enums.Stat.e_Health, 2);
 
 		this.setCurrent(value);
 
@@ -372,7 +368,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function refresh_barrier():Void
 	{
-		var value:Number = this._dynel.GetStat(_global.Enums.Stat.e_BarrierHealthPool, 2);
+		var value:Number = this._subject.GetStat(_global.Enums.Stat.e_BarrierHealthPool, 2);
 
 		this.setBarrier(value);
 	}
@@ -386,7 +382,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 	{
 		if (value > this._value_barrier) {
 			this._value_barrier_maximum = value;
-			this._previous_barriers[this._dynel.GetID()] = value;
+			this._previous_barriers[this._subject.GetID()] = value;
 		}
 		this._value_barrier = value;
 
@@ -415,9 +411,9 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function refresh_awake():Void
 	{
-		if (this._dynel.IsDead())
+		if (this._subject.IsDead())
 			this.sleep();
-		else if (this._character.IsGhosting())
+		else if (this._subject.IsGhosting())
 			this.sleep();
 		else if (this._value_current >= this._value_maximum)
 			this.sleep();
@@ -425,19 +421,19 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 			this.rouse();
 	}
 
-	private function refresh_dynel():Void
+	private function refresh_subject():Void
 	{
-		var dynel:Dynel = this._dynel;
+		var subject:Character = this._subject;
 
-		this.discard_dynel();
-		this.prepare_dynel(dynel);
+		this.discard_subject();
+		this.prepare_subject(subject);
 	}
 
 	public function discard():Void
 	{
 		Tweener.removeTweens(this);
 
-		this.discard_dynel();
+		this.discard_subject();
 		this.discard_notch();
 		this.discard_meter();
 		this.discard_shaft();
@@ -564,18 +560,17 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._notch_our = null;
 	}
 
-	private function discard_dynel():Void
+	private function discard_subject():Void
 	{
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
-		if (this._dynel.IsDead())
-			delete this._previous_barriers[this._dynel.GetID()];
+		if (this._subject.IsDead())
+			delete this._previous_barriers[this._subject.GetID()];
 
-		this._dynel.SignalStatChanged.Disconnect(this.dynel_onValue, this);
+		this._subject.SignalStatChanged.Disconnect(this.subject_onValue, this);
 
-		this._dynel = null;
-		this._character = null;
+		this._subject = null;
 
 		Tweener.removeTweens(this, "setPending");
 
@@ -599,7 +594,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this.sleep();
 	}
 
-	private function dynel_onValue(which:Number):Void
+	private function subject_onValue(which:Number):Void
 	{
 		if (which == _global.Enums.Stat.e_Life)
 			this.refresh_maximum();
@@ -608,16 +603,16 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		else if (which == _global.Enums.Stat.e_BarrierHealthPool)
 			this.refresh_barrier();
 		else if (which == _global.Enums.Stat.e_GmLevel)
-			this.refresh_dynel();
+			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_PlayerFaction)
-			this.refresh_dynel();
+			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_Side)
-			this.refresh_dynel();
+			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_CarsGroup)
-			this.refresh_dynel();
+			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_RankTag)
-			this.refresh_dynel();
+			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_VeteranMonths)
-			this.refresh_dynel();
+			this.refresh_subject();
 	}
 }

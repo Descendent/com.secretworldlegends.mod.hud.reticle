@@ -27,7 +27,7 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 
 	private var _meter_b_conditional:IMeter;
 
-	private var _character:Character;
+	private var _subject:Character;
 
 	private var _timer:Number;
 
@@ -55,15 +55,15 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 	{
 		if (value == null)
 		{
-			if (this._character == null)
+			if (this._subject == null)
 				return;
 		}
 		else
 		{
 			var which:ID32 = value.GetID();
 
-			if ((this._character != null)
-				&& (which.Equal(this._character.GetID())))
+			if ((this._subject != null)
+				&& (which.Equal(this._subject.GetID())))
 			{
 				return;
 			}
@@ -72,8 +72,8 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 				value = null;
 		}
 
-		this.discard_character();
-		this.prepare_character(value);
+		this.discard_subject();
+		this.prepare_subject(value);
 
 		this.refresh_color();
 	}
@@ -131,22 +131,22 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 		this._meter_b_conditional.prepare(this.content);
 	}
 
-	private function prepare_character(character:Character):Void
+	private function prepare_subject(subject:Character):Void
 	{
-		if (character == null)
+		if (subject == null)
 			return;
 
-		if (character.GetID().GetType() != _global.Enums.TypeID.e_Type_GC_Character)
+		if (subject.GetID().GetType() != _global.Enums.TypeID.e_Type_GC_Character)
 			return;
 
-		this._character = character;
+		this._subject = subject;
 
-		this._character.SignalCommandStarted.Connect(this.character_onUsingBegin, this);
-        this._character.SignalCommandAborted.Connect(this.character_onUsingEnd, this);
-        this._character.SignalCommandEnded.Connect(this.character_onUsingEnd, this);
-		this._character.SignalStatChanged.Connect(this.character_onValue, this);
+		this._subject.SignalCommandStarted.Connect(this.subject_onUsingBegin, this);
+        this._subject.SignalCommandAborted.Connect(this.subject_onUsingEnd, this);
+        this._subject.SignalCommandEnded.Connect(this.subject_onUsingEnd, this);
+		this._subject.SignalStatChanged.Connect(this.subject_onValue, this);
 
-		this._character.ConnectToCommandQueue();
+		this._subject.ConnectToCommandQueue();
 	}
 
 	private function timerBegin():Void
@@ -172,7 +172,7 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 
 	private function refresh_meter():Void
 	{
-		var value:Number = this._character.GetCommandProgress();
+		var value:Number = this._subject.GetCommandProgress();
 
 		if (value == this.getMeter())
 			return;
@@ -218,7 +218,7 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 
 		if (this._using_uninterruptible)
 			meter_x_conditional.present();
-		else if (this._character.GetStat(_global.Enums.Stat.e_Uninterruptable, 2) > 0)
+		else if (this._subject.GetStat(_global.Enums.Stat.e_Uninterruptable, 2) > 0)
 			meter_x_conditional.present();
 		else
 			meter_x.present();
@@ -228,7 +228,7 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 	{
 		clearInterval(this._timer);
 
-		this.discard_character();
+		this.discard_subject();
 		this.discard_meter();
 
 		super.discard();
@@ -280,22 +280,22 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 		this._meter_b_conditional = null;
 	}
 
-	private function discard_character():Void
+	private function discard_subject():Void
 	{
-		if (this._character == null)
+		if (this._subject == null)
 			return;
 
-		this._character.SignalCommandStarted.Disconnect(this.character_onUsingBegin, this);
-        this._character.SignalCommandAborted.Disconnect(this.character_onUsingEnd, this);
-        this._character.SignalCommandEnded.Disconnect(this.character_onUsingEnd, this);
-		this._character.SignalStatChanged.Disconnect(this.character_onValue, this);
+		this._subject.SignalCommandStarted.Disconnect(this.subject_onUsingBegin, this);
+        this._subject.SignalCommandAborted.Disconnect(this.subject_onUsingEnd, this);
+        this._subject.SignalCommandEnded.Disconnect(this.subject_onUsingEnd, this);
+		this._subject.SignalStatChanged.Disconnect(this.subject_onValue, this);
 
-		this._character = null;
+		this._subject = null;
 
-		this.character_onUsingEnd();
+		this.subject_onUsingEnd();
 	}
 
-	private function character_onUsingBegin(label:String, direction:Number, uninterruptible:Boolean):Void
+	private function subject_onUsingBegin(label:String, direction:Number, uninterruptible:Boolean):Void
 	{
 		this._using = true;
 		this._using_direction = direction;
@@ -304,7 +304,7 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 		this.timerBegin();
 	}
 
-	private function character_onUsingEnd():Void
+	private function subject_onUsingEnd():Void
 	{
 		this._using = false;
 		this._using_direction = _global.Enums.CommandProgressbarType.e_CommandProgressbar_Fill;
@@ -313,7 +313,7 @@ class descendent.hud.reticle.UsingGauge extends Gauge
 		this.timerEnd();
 	}
 
-	private function character_onValue(which:Number):Void
+	private function subject_onValue(which:Number):Void
 	{
 		if (!this._using)
 			return;
