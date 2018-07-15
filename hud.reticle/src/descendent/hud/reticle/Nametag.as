@@ -442,17 +442,11 @@ class descendent.hud.reticle.Nametag extends Gauge
 
 	private function subject_onValue(which:Number):Void
 	{
-		if (which == _global.Enums.Stat.e_GmLevel)
-			this.refresh_subject();
-		else if (which == _global.Enums.Stat.e_PlayerFaction)
+		if (which == _global.Enums.Stat.e_PlayerFaction)
 			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_Side)
 			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_CarsGroup)
-			this.refresh_subject();
-		else if (which == _global.Enums.Stat.e_RankTag)
-			this.refresh_subject();
-		else if (which == _global.Enums.Stat.e_VeteranMonths)
 			this.refresh_subject();
 	}
 }

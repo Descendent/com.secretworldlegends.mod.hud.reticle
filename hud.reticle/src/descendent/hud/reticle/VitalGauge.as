@@ -602,17 +602,11 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 			this.refresh_current();
 		else if (which == _global.Enums.Stat.e_BarrierHealthPool)
 			this.refresh_barrier();
-		else if (which == _global.Enums.Stat.e_GmLevel)
-			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_PlayerFaction)
 			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_Side)
 			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_CarsGroup)
-			this.refresh_subject();
-		else if (which == _global.Enums.Stat.e_RankTag)
-			this.refresh_subject();
-		else if (which == _global.Enums.Stat.e_VeteranMonths)
 			this.refresh_subject();
 	}
 }
