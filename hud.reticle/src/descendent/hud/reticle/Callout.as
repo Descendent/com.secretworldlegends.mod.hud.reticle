@@ -25,25 +25,6 @@ class descendent.hud.reticle.Callout extends Gauge
 
 	public function setSubject(value:Character):Void
 	{
-		if (value == null)
-		{
-			if (this._subject == null)
-				return;
-		}
-		else
-		{
-			var which:ID32 = value.GetID();
-
-			if ((this._subject != null)
-				&& (which.Equal(this._subject.GetID())))
-			{
-				return;
-			}
-
-			if (which.IsNull())
-				value = null;
-		}
-
 		this.discard_subject();
 		this.prepare_subject(value);
 	}
