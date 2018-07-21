@@ -2,7 +2,8 @@ import flash.filters.BlurFilter;
 
 import mx.utils.Delegate;
 
-import com.GameInterface.Game.Dynel;
+import com.GameInterface.DistributedValue;
+import com.GameInterface.Game.Character;
 import com.Utils.Format;
 import com.Utils.ID32;
 
@@ -15,7 +16,7 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 
 	private var _label_backing:TextField;
 
-	private var _dynel:Dynel;
+	private var _subject:Character;
 
 	private var _timer:Number;
 
@@ -28,13 +29,10 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 		this._refresh_label = Delegate.create(this, this.refresh_label);
 	}
 
-	public function setSubject(value:Dynel):Void
+	public function setSubject(value:Character):Void
 	{
-		if (value == this._dynel)
-			return;
-
-		this.discard_dynel();
-		this.prepare_dynel(value);
+		this.discard_subject();
+		this.prepare_subject(value);
 	}
 
 	public function prepare(o:MovieClip):Void
@@ -83,20 +81,23 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 		this._label_backing = a;
 	}
 
-	private function prepare_dynel(dynel:Dynel):Void
+	private function prepare_subject(subject:Character):Void
 	{
-		if (dynel == null)
+		if (subject == null)
 			return;
 
-		this._dynel = dynel;
-
-		var which:ID32 = dynel.GetID();
+		var which:ID32 = subject.GetID();
 
 		if ((which.GetType() != _global.Enums.TypeID.e_Type_GC_Character)
 			&& (which.GetType() != _global.Enums.TypeID.e_Type_GC_Destructible))
 		{
 			return;
 		}
+
+		this._subject = subject;
+
+		if (!DistributedValue.GetDValue("ShowNametagDistance", false))
+			return;
 
 		this.timerBegin();
 	}
@@ -125,10 +126,15 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 		this._label_backing._visible = false;
 		this._label_backing.text = "";
 
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
-		var value:String = Format.Printf("%.1f", Math.round(this._dynel.GetDistanceToPlayer() * 10.0) / 10.0) + " m";
+		var range:Number = this._subject.GetDistanceToPlayer();
+
+		if (range == 0.0)
+			return;
+
+		var value:String = Format.Printf("%.1f", Math.round(range * 10.0) / 10.0) + " m";
 
 		this._label.text = value;
 		this._label._visible = true;
@@ -141,17 +147,17 @@ class descendent.hud.reticle.Rangefinder extends Gauge
 	{
 		clearInterval(this._timer);
 
-		this.discard_dynel();
+		this.discard_subject();
 
 		super.discard();
 	}
 
-	private function discard_dynel():Void
+	private function discard_subject():Void
 	{
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
-		this._dynel = null;
+		this._subject = null;
 
 		this.timerEnd();
 	}

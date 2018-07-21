@@ -1,6 +1,7 @@
 import flash.filters.BlurFilter;
 
 import com.GameInterface.Game.Character;
+import com.Utils.ID32;
 
 import descendent.hud.reticle.Deg;
 import descendent.hud.reticle.Gauge;
@@ -13,7 +14,7 @@ class descendent.hud.reticle.Callout extends Gauge
 
 	private var _label_backing:TextField;
 
-	private var _character:Character;
+	private var _subject:Character;
 
 	public function Callout(w:Number)
 	{
@@ -24,11 +25,8 @@ class descendent.hud.reticle.Callout extends Gauge
 
 	public function setSubject(value:Character):Void
 	{
-		if (value == this._character)
-			return;
-
-		this.discard_character();
-		this.prepare_character(value);
+		this.discard_subject();
+		this.prepare_subject(value);
 	}
 
 	public function prepare(o:MovieClip):Void
@@ -86,21 +84,21 @@ class descendent.hud.reticle.Callout extends Gauge
 		this._label_backing = a;
 	}
 
-	private function prepare_character(character:Character):Void
+	private function prepare_subject(subject:Character):Void
 	{
-		if (character == null)
+		if (subject == null)
 			return;
 
-		if (character.GetID().GetType() != _global.Enums.TypeID.e_Type_GC_Character)
+		if (subject.GetID().GetType() != _global.Enums.TypeID.e_Type_GC_Character)
 			return;
 
-		this._character = character;
+		this._subject = subject;
 
-		this._character.SignalCommandStarted.Connect(this.character_onUsingBegin, this);
-        this._character.SignalCommandAborted.Connect(this.character_onUsingEnd, this);
-        this._character.SignalCommandEnded.Connect(this.character_onUsingEnd, this);
+		this._subject.SignalCommandStarted.Connect(this.subject_onUsingBegin, this);
+        this._subject.SignalCommandAborted.Connect(this.subject_onUsingEnd, this);
+        this._subject.SignalCommandEnded.Connect(this.subject_onUsingEnd, this);
 
-		this._character.ConnectToCommandQueue();
+		this._subject.ConnectToCommandQueue();
 	}
 
 	private function labelBegin(label:String):Void
@@ -132,31 +130,31 @@ class descendent.hud.reticle.Callout extends Gauge
 
 	public function discard():Void
 	{
-		this.discard_character();
+		this.discard_subject();
 
 		super.discard();
 	}
 
-	private function discard_character():Void
+	private function discard_subject():Void
 	{
-		if (this._character == null)
+		if (this._subject == null)
 			return;
 
-		this._character.SignalCommandStarted.Disconnect(this.character_onUsingBegin, this);
-        this._character.SignalCommandAborted.Disconnect(this.character_onUsingEnd, this);
-        this._character.SignalCommandEnded.Disconnect(this.character_onUsingEnd, this);
+		this._subject.SignalCommandStarted.Disconnect(this.subject_onUsingBegin, this);
+        this._subject.SignalCommandAborted.Disconnect(this.subject_onUsingEnd, this);
+        this._subject.SignalCommandEnded.Disconnect(this.subject_onUsingEnd, this);
 
-		this._character = null;
+		this._subject = null;
 
-		this.character_onUsingEnd();
+		this.subject_onUsingEnd();
 	}
 
-	private function character_onUsingBegin(label:String, direction:Number, uninterruptible:Boolean):Void
+	private function subject_onUsingBegin(label:String, direction:Number, uninterruptible:Boolean):Void
 	{
 		this.labelBegin(label);
 	}
 
-	private function character_onUsingEnd():Void
+	private function subject_onUsingEnd():Void
 	{
 		this.labelEnd();
 	}

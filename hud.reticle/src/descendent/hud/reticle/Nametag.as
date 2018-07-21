@@ -2,7 +2,6 @@ import flash.filters.BlurFilter;
 
 import com.GameInterface.DistributedValue;
 import com.GameInterface.Game.Character;
-import com.GameInterface.Game.Dynel;
 import com.GameInterface.Lore;
 import com.GameInterface.Nametags;
 import com.Utils.Colors;
@@ -30,22 +29,17 @@ class descendent.hud.reticle.Nametag extends Gauge
 
 	private var _level_backing:TextField;
 
-	private var _dynel:Dynel;
-
-	private var _character:Character;
+	private var _subject:Character;
 
 	public function Nametag()
 	{
 		super();
 	}
 
-	public function setSubject(value:Dynel):Void
+	public function setSubject(value:Character):Void
 	{
-		if (value == this._dynel)
-			return;
-
-		this.discard_dynel();
-		this.prepare_dynel(value);
+		this.discard_subject();
+		this.prepare_subject(value);
 	}
 
 	public function prepare(o:MovieClip):Void
@@ -214,12 +208,12 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._level_backing = a;
 	}
 
-	private function prepare_dynel(dynel:Dynel):Void
+	private function prepare_subject(subject:Character):Void
 	{
-		if (dynel == null)
+		if (subject == null)
 			return;
 
-		var which:ID32 = dynel.GetID();
+		var which:ID32 = subject.GetID();
 
 		if ((which.GetType() != _global.Enums.TypeID.e_Type_GC_Character)
 			&& (which.GetType() != _global.Enums.TypeID.e_Type_GC_Destructible))
@@ -227,8 +221,7 @@ class descendent.hud.reticle.Nametag extends Gauge
 			return;
 		}
 
-		this._dynel = dynel;
-		this._character = Character.GetCharacter(dynel.GetID());
+		this._subject = subject;
 
 		this.refresh_label();
 		this.refresh_color();
@@ -236,7 +229,9 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this.refresh_cabal();
 		this.refresh_level();
 
-		this._dynel.SignalStatChanged.Connect(this.dynel_onValue, this);
+		this._subject.SignalStatChanged.Connect(this.subject_onValue, this);
+
+		Nametags.SignalNametagAggroUpdated.Connect(this.nametag_onAggro, this);
 	}
 
 	private function refresh_label():Void
@@ -247,20 +242,20 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._label_backing._visible = false;
 		this._label_backing.text = "";
 
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
-		var which:ID32 = this._dynel.GetID();
-		var label:String = LDBFormat.Translate(this._dynel.GetName());
+		var which:ID32 = this._subject.GetID();
+		var label:String = LDBFormat.Translate(this._subject.GetName());
 
 		var value:String;
 		if ((which.IsPlayer())
 			&& (DistributedValue.GetDValue("ShowNametagFullName", 0)))
 		{
-			value = this._character.GetFirstName() + " \"" + label + "\" " + this._character.GetLastName();
+			value = this._subject.GetFirstName() + " \"" + label + "\" " + this._subject.GetLastName();
 		}
 		else if ((which.IsNpc())
-			&& (this._dynel.IsDead()))
+			&& (this._subject.IsDead()))
 		{
 			value = LDBFormat.Printf(LDBFormat.LDBGetText("Gamecode", "CorpseOfMonsterName"), label);
 		}
@@ -278,10 +273,10 @@ class descendent.hud.reticle.Nametag extends Gauge
 
 	private function refresh_color():Void
 	{
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
-		var color:Number = Colors.GetNametagColor(this._dynel.GetNametagCategory(), Nametags.GetAggroStanding(this._dynel.GetID()));
+		var color:Number = Colors.GetNametagColor(this._subject.GetNametagCategory(), Nametags.GetAggroStanding(this._subject.GetID()));
 
 		this._label.textColor = color;
 	}
@@ -294,13 +289,13 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._title_backing._visible = false;
 		this._title_backing.text = "";
 
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
 		if (!DistributedValue.GetDValue("ShowNametagTitle", false))
 			return;
 
-		var title:Number = this._character.GetStat(_global.Enums.Stat.e_SelectedTag);
+		var title:Number = this._subject.GetStat(_global.Enums.Stat.e_SelectedTag);
 
 		if (title == 0)
 			return;
@@ -322,13 +317,13 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._cabal_backing._visible = false;
 		this._cabal_backing.text = "";
 
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
 		if (!DistributedValue.GetDValue("ShowNametagGuild", false))
 			return;
 
-		var cabal:String = this._character.GetGuildName();
+		var cabal:String = this._subject.GetGuildName();
 
 		if (cabal == null)
 			return;
@@ -353,24 +348,24 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._level_backing._visible = false;
 		this._level_backing.text = "";
 
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
-		var level:String = this._dynel.GetStat(_global.Enums.Stat.e_Level);
+		var level:String = this._subject.GetStat(_global.Enums.Stat.e_Level);
 
 		if (level == 0)
 			return;
 
 		var value:String;
-		if (this._character.IsBoss())
+		if (this._subject.IsBoss())
 			value = level + "*";
 		else
 			value = level;
 
 		var color:Number;
-		if (this._dynel.IsEnemy())
+		if (this._subject.IsEnemy())
 		{
-			var delta:Number = this._dynel.GetStat(_global.Enums.Stat.e_Level, 2) - Character.GetClientCharacter().GetStat(_global.Enums.Stat.e_Level, 2);
+			var delta:Number = this._subject.GetStat(_global.Enums.Stat.e_Level, 2) - Character.GetClientCharacter().GetStat(_global.Enums.Stat.e_Level, 2);
 
 			if (delta <= -10)
 				color = 0xB88ECD;
@@ -398,50 +393,46 @@ class descendent.hud.reticle.Nametag extends Gauge
 		this._level_backing._visible = true;
 	}
 
-	private function refresh_dynel():Void
-	{
-		var dynel:Dynel = this._dynel;
-
-		this.discard_dynel();
-		this.prepare_dynel(dynel);
-	}
-
 	public function discard():Void
 	{
-		this.discard_dynel();
+		this.discard_subject();
 
 		super.discard();
 	}
 
-	private function discard_dynel():Void
+	private function discard_subject():Void
 	{
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
-		this._dynel.SignalStatChanged.Disconnect(this.dynel_onValue, this);
+		Nametags.SignalNametagAggroUpdated.Disconnect(this.nametag_onAggro, this);
 
-		this._dynel = null;
-		this._character = null;
+		this._subject.SignalStatChanged.Disconnect(this.subject_onValue, this);
+
+		this._subject = null;
 
 		this.refresh_label();
+		this.refresh_color();
 		this.refresh_title();
 		this.refresh_cabal();
 		this.refresh_level();
 	}
 
-	private function dynel_onValue(which:Number):Void
+	private function subject_onValue(which:Number):Void
 	{
-		if (which == _global.Enums.Stat.e_GmLevel)
-			this.refresh_dynel();
-		else if (which == _global.Enums.Stat.e_PlayerFaction)
-			this.refresh_dynel();
+		if (which == _global.Enums.Stat.e_PlayerFaction)
+			this.refresh_color();
 		else if (which == _global.Enums.Stat.e_Side)
-			this.refresh_dynel();
+			this.refresh_color();
 		else if (which == _global.Enums.Stat.e_CarsGroup)
-			this.refresh_dynel();
-		else if (which == _global.Enums.Stat.e_RankTag)
-			this.refresh_dynel();
-		else if (which == _global.Enums.Stat.e_VeteranMonths)
-			this.refresh_dynel();
+			this.refresh_color();
+	}
+
+	private function nametag_onAggro(which:ID32, aggro:Number):Void
+	{
+		if (!which.Equal(this._subject.GetID()))
+			return;
+
+		this.refresh_color();
 	}
 }

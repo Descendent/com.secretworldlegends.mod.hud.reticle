@@ -83,7 +83,8 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 
 	private function prepare_meter_a():Void
 	{
-		var t:Number = 2.0 / (this._r + (this._thickness * 0.5));
+		var spacing:Number = 4.0;
+		var t:Number = (spacing * 0.5) / (this._r + (this._thickness * 0.5));
 		var angle_m:Number = this._angle_a + ((this._angle_b - this._angle_a) / 3.0);
 		var angle_b:Number = (this._angle_b >= this._angle_a)
 			? angle_m - t
@@ -98,7 +99,8 @@ class descendent.hud.reticle.special.BladeGauge extends Gauge
 	{
 		var notch:/*Number*/Array = [1, 3];
 
-		var t:Number = 2.0 / (this._r + (this._thickness * 0.5));
+		var spacing:Number = 4.0;
+		var t:Number = (spacing * 0.5) / (this._r + (this._thickness * 0.5));
 		var angle_m:Number = this._angle_a + ((this._angle_b - this._angle_a) / 3.0);
 		var angle_a:Number = (this._angle_b >= this._angle_a)
 			? angle_m + t

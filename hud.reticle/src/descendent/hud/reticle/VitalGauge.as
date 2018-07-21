@@ -1,6 +1,6 @@
 import com.GameInterface.Game.Character;
-import com.GameInterface.Game.Dynel;
 import com.Utils.Colors;
+import com.Utils.ID32;
 
 import caurina.transitions.Tweener;
 
@@ -45,9 +45,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private var _notch_our:IMeter;
 
-	private var _dynel:Dynel;
-
-	private var _character:Character;
+	private var _subject:Character;
 
 	private var _value_maximum:Number;
 
@@ -67,13 +65,10 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._thickness = thickness;
 	}
 
-	public function setSubject(value:Dynel):Void
+	public function setSubject(value:Character):Void
 	{
-		if (value == this._dynel)
-			return;
-
-		this.discard_dynel();
-		this.prepare_dynel(value);
+		this.discard_subject();
+		this.prepare_subject(value);
 	}
 
 	public function prepare(o:MovieClip):Void
@@ -212,21 +207,28 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._notch_our.prepare(this.content);
 	}
 
-	private function prepare_dynel(dynel:Dynel):Void
+	private function prepare_subject(subject:Character):Void
 	{
-		if (dynel == null)
+		if (subject == null)
 			return;
 
-		this._dynel = dynel;
-		this._character = Character.GetCharacter(dynel.GetID());
+		var which:ID32 = subject.GetID();
 
-		if (dynel.IsEnemy())
+		if ((which.GetType() != _global.Enums.TypeID.e_Type_GC_Character)
+			&& (which.GetType() != _global.Enums.TypeID.e_Type_GC_Destructible))
+		{
+			return;
+		}
+
+		this._subject = subject;
+
+		if (subject.IsEnemy())
 		{
 			this._meter_current = this._meter_current_b;
 			this._shaft = this._shaft_b;
 			this._notch = this._notch_b;
 		}
-		else if (this._character.IsClientChar())
+		else if (subject.IsClientChar())
 		{
 			this._meter_current = this._meter_current_a;
 			this._shaft = this._shaft_our;
@@ -239,9 +241,9 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 			this._notch = this._notch_a;
 		}
 
-		this._value_maximum = this._dynel.GetStat(_global.Enums.Stat.e_Life, 2);
-		this._value_current = this._dynel.GetStat(_global.Enums.Stat.e_Health, 2);
-		this._value_barrier = this._dynel.GetStat(_global.Enums.Stat.e_BarrierHealthPool, 2);
+		this._value_maximum = this._subject.GetStat(_global.Enums.Stat.e_Life, 2);
+		this._value_current = this._subject.GetStat(_global.Enums.Stat.e_Health, 2);
+		this._value_barrier = this._subject.GetStat(_global.Enums.Stat.e_BarrierHealthPool, 2);
 		this._value_pending = this._value_current;
 
 		if (this._value_maximum == 0)
@@ -253,12 +255,12 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 		this.refresh_meter();
 
-		this._dynel.SignalStatChanged.Connect(this.dynel_onValue, this);
+		this._subject.SignalStatChanged.Connect(this.subject_onValue, this);
 	}
 
 	private function refresh_maximum():Void
 	{
-		var value:Number = this._dynel.GetStat(_global.Enums.Stat.e_Life, 2);
+		var value:Number = this._subject.GetStat(_global.Enums.Stat.e_Life, 2);
 
 		this.setMaximum(value);
 	}
@@ -277,7 +279,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function refresh_current():Void
 	{
-		var value:Number = this._dynel.GetStat(_global.Enums.Stat.e_Health, 2);
+		var value:Number = this._subject.GetStat(_global.Enums.Stat.e_Health, 2);
 
 		this.setCurrent(value);
 
@@ -318,7 +320,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 
 	private function refresh_barrier():Void
 	{
-		var value:Number = this._dynel.GetStat(_global.Enums.Stat.e_BarrierHealthPool, 2);
+		var value:Number = this._subject.GetStat(_global.Enums.Stat.e_BarrierHealthPool, 2);
 
 		this.setBarrier(value);
 	}
@@ -347,26 +349,22 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		else
 			this._meter_pending.present();
 
-		var combine:Number = Math.max(this._value_current, this._value_pending) + this._value_barrier;
-		var maximum:Number = Math.max(combine, this._value_maximum);
+        var combine:Number = Math.max(this._value_current, this._value_pending) + this._value_barrier;
+        var maximum:Number = Math.max(combine, this._value_maximum);
 
-		this._meter_current.setMeter(this._value_current / maximum);
-		this._meter_barrier.setMeter(combine / maximum);
-		this._meter_pending.setMeter(this._value_pending / maximum);
-		this._notch.setMeter(combine / maximum);
+        this._meter_current.setMeter(this._value_current / maximum);
+        this._meter_barrier.setMeter(combine / maximum);
+        this._meter_pending.setMeter(this._value_pending / maximum);
+        this._notch.setMeter(combine / maximum);
 
 		this.refresh_awake();
 	}
 
 	private function refresh_awake():Void
 	{
-		var ghostmode:Boolean = (this._character != null)
-			? this._character.IsGhosting()
-			: false;
-
-		if (this._dynel.IsDead())
+		if (this._subject.IsDead())
 			this.sleep();
-		else if (ghostmode)
+		else if (this._subject.IsGhosting())
 			this.sleep();
 		else if (this._value_current >= this._value_maximum)
 			this.sleep();
@@ -374,19 +372,19 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 			this.rouse();
 	}
 
-	private function refresh_dynel():Void
+	private function refresh_subject():Void
 	{
-		var dynel:Dynel = this._dynel;
+		var subject:Character = this._subject;
 
-		this.discard_dynel();
-		this.prepare_dynel(dynel);
+		this.discard_subject();
+		this.prepare_subject(subject);
 	}
 
 	public function discard():Void
 	{
 		Tweener.removeTweens(this);
 
-		this.discard_dynel();
+		this.discard_subject();
 		this.discard_notch();
 		this.discard_meter();
 		this.discard_shaft();
@@ -513,15 +511,14 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this._notch_our = null;
 	}
 
-	private function discard_dynel():Void
+	private function discard_subject():Void
 	{
-		if (this._dynel == null)
+		if (this._subject == null)
 			return;
 
-		this._dynel.SignalStatChanged.Disconnect(this.dynel_onValue, this);
+		this._subject.SignalStatChanged.Disconnect(this.subject_onValue, this);
 
-		this._dynel = null;
-		this._character = null;
+		this._subject = null;
 
 		Tweener.removeTweens(this, "setPending");
 
@@ -544,7 +541,7 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 		this.sleep();
 	}
 
-	private function dynel_onValue(which:Number):Void
+	private function subject_onValue(which:Number):Void
 	{
 		if (which == _global.Enums.Stat.e_Life)
 			this.refresh_maximum();
@@ -552,17 +549,11 @@ class descendent.hud.reticle.VitalGauge extends Gauge
 			this.refresh_current();
 		else if (which == _global.Enums.Stat.e_BarrierHealthPool)
 			this.refresh_barrier();
-		else if (which == _global.Enums.Stat.e_GmLevel)
-			this.refresh_dynel();
 		else if (which == _global.Enums.Stat.e_PlayerFaction)
-			this.refresh_dynel();
+			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_Side)
-			this.refresh_dynel();
+			this.refresh_subject();
 		else if (which == _global.Enums.Stat.e_CarsGroup)
-			this.refresh_dynel();
-		else if (which == _global.Enums.Stat.e_RankTag)
-			this.refresh_dynel();
-		else if (which == _global.Enums.Stat.e_VeteranMonths)
-			this.refresh_dynel();
+			this.refresh_subject();
 	}
 }
