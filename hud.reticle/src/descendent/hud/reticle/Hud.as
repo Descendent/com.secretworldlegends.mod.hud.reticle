@@ -675,7 +675,15 @@ class descendent.hud.reticle.Hud extends Shape
 		if (this._subject == null)
 			return;
 
-		this.subject_onDeath();
+		if (this._reticle_stick.Equal(this._reticle_hover))
+			return;
+
+		if (this._reticle_stick.Equal(this._reticle_focus))
+			return;
+
+		this._reticle_stick = new ID32();
+
+		this.refresh_reticle();
 	}
 
 	private function character_onDeath():Void
