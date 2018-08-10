@@ -592,7 +592,9 @@ class descendent.hud.reticle.Hud extends Shape
 
 		var subject:Character = Character.GetCharacter(which);
 
-		if (!this._character.IsThreatened())
+		if ((!this._character.IsThreatened())
+			|| (subject.GetStat(_global.Enums.Stat.e_CarsGroup, 2) == Hud.CARSGROUP_UNTARGETABLE)
+			|| (subject.IsDead()))
 		{
 			this._reticle_stick = new ID32();
 
